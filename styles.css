@@ -1,0 +1,494 @@
+/* Variables CSS para colores, espaciados y otros valores reutilizables */
+:root {
+    /* Colores */
+    --color-primary: #A02828;     /* Color primario - rojo */
+    --color-secondary: #000000;   /* Negro */
+    --color-accent: #E3E3E3;      /* Color acento - gris claro */
+    --color-background: #FFFFFF;   /* Color principal - blanco */
+    --color-border: #E3E3E3;      /* Usando el acento para bordes */
+    --color-footer: #000000;      /* Negro para el footer */
+    --color-button: #A02828;      /* Botones en color primario */
+    --color-button-text: #FFFFFF; /* Texto de botones en blanco */
+    --color-nav-hover: #A02828;   /* Hover en color primario */
+    --color-header-bg: #FFFFFF;   /* Fondo del header en blanco */
+
+    /* Tipografía */
+    --font-family-primary: 'Arial', sans-serif;
+    --font-weight-bold: 700;
+    --font-weight-normal: 400;
+    --font-weight-light: 300;
+
+    /* Espaciados */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+
+    /* Tamaños de fuente */
+    --font-size-xs: 0.875rem;
+    --font-size-sm: 1rem;
+    --font-size-md: 1.25rem;
+    --font-size-lg: 1.5rem;
+    --font-size-xl: 1.75rem;
+    --font-size-xxl: 2rem;
+
+    /* Bordes */
+    --border-radius: 4px;
+    --border-width: 1px;
+}
+
+/* Reset y estilos base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family-primary);
+    font-weight: var(--font-weight-normal);
+    color: var(--color-primary);
+    background-color: var(--color-background);
+    line-height: 1.6;
+}
+
+/* Prevent overscroll behavior/scroll chaining in modern browsers */
+html, body {
+    overscroll-behavior: none; /* prevents scroll chaining and some bounce behaviors */
+}
+
+.container {
+    width: 100%;
+    min-width: 320px;
+    margin: 0 auto;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* Header con logo, título y navegación */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: var(--spacing-md) var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+    border-bottom: var(--border-width) solid var(--color-border);
+    background-color: var(--color-primary); /* header in maroon */
+}
+
+/* Make header and footer span the full viewport width even when inside a centered .container */
+.header,
+.footer {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    box-sizing: border-box;
+}
+
+.header__left {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    /* allow children to shrink so text-overflow works */
+    min-width: 0;
+}
+
+.header__logo .logo {
+    height: 50px;
+    width: auto;
+    display: block;
+}
+
+.header__title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-button-text); /* white text on maroon */
+    margin: 0;
+    /* keep title to one line and show ellipsis when it overflows */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+.nav__list {
+    display: flex;
+    list-style: none;
+    gap: var(--spacing-lg);
+}
+
+.nav__link {
+    text-decoration: none;
+    color: var(--color-button-text);
+    font-weight: var(--font-weight-normal);
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-xs) var(--spacing-sm);
+}
+
+/* Highlight the "Proyectos" nav item (second item) with white background */
+.nav__list li:nth-child(2) .nav__link {
+    background-color: #ffffff;
+    color: var(--color-primary);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-xs) var(--spacing-sm);
+}
+
+.nav__list li:nth-child(2) .nav__link:hover {
+    background-color: #ffffff; /* keep white on hover */
+    color: var(--color-primary);
+}
+
+/* Contenido principal */
+.main-content {
+    margin-bottom: var(--spacing-xl);
+    padding: var(--spacing-md);
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    background-color: var(--color-background);
+}
+
+/* Projects intro section (shows same on desktop and mobile) */
+.projects-intro {
+    max-width: 1200px;
+    margin: 0 auto var(--spacing-lg);
+    padding: 0 var(--spacing-md);
+    text-align: center;
+}
+
+.projects-intro__title {
+    font-size: var(--font-size-xxl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-secondary);
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+}
+
+.projects-intro__subtitle {
+    color: #6b6b6b;
+    font-size: var(--font-size-sm);
+    margin: 0 auto;
+    max-width: 720px;
+}
+
+/* Secciones de contenido */
+.content-section {
+    margin-bottom: var(--spacing-lg);
+    padding: var(--spacing-md);
+    /* Tarjetas con borde en color primario (rojo) */
+    border: var(--border-width) solid var(--color-primary);
+    border-radius: var(--border-radius);
+    background-color: var(--color-background);
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Project card: image on left, content on right */
+.project-card {
+    display: flex;
+    gap: var(--spacing-lg);
+    align-items: flex-start;
+}
+
+.project-image {
+    width: 120px;
+    height: 120px;
+    flex: 0 0 120px;
+    border-radius: 6px;
+    overflow: hidden;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 60%;
+}
+
+.project-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.project-info {
+    flex: 1 1 auto;
+}
+
+@media (max-width: 767px) {
+    .project-card {
+        flex-direction: column;
+        /* Align items to start so image and text are left-aligned on mobile */
+        align-items: flex-start;
+    }
+
+    .project-image {
+        width: 180px;
+        height: 180px;
+        flex: 0 0 auto;
+        margin-bottom: var(--spacing-sm);
+        /* ensure image aligns left when parent aligns to flex-start */
+        margin-left: 0;
+    }
+
+    /* Make the textual content left-aligned on mobile while keeping the image centered */
+    .project-info {
+        width: 100%;
+        text-align: left;
+    }
+}
+
+.content-section__title {
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-secondary);
+}
+
+.content-section__body {
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--spacing-md);
+    color: var(--color-secondary);
+    line-height: 1.7;
+}
+
+.content-section__button {
+    display: inline-block;
+    padding: var(--spacing-xs) var(--spacing-md);
+    background-color: var(--color-button);
+    color: var(--color-button-text);
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.content-section__button:hover {
+    background-color: var(--color-button);
+    transform: none;
+}
+
+.content-section__button,
+.content-section__button:focus,
+.content-section__button:active {
+    transform: none;
+    outline: none;
+    box-shadow: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.content-section__button:focus-visible {
+    outline: none;
+}
+
+/* Separador */
+.separator {
+    /* separator removed per design request */
+    display: none;
+}
+
+.footer {
+    /* make footer span full viewport width like header */
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    margin-top: var(--spacing-xl);
+    color: var(--color-button-text); /* white text */
+    font-size: var(--font-size-xs);
+    padding: var(--spacing-lg) var(--spacing-xl);
+    border-top: var(--border-width) solid var(--color-border);
+    background-color: var(--color-primary); /* footer in maroon */
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: var(--spacing-lg);
+}
+
+.footer__social {
+    display: flex;
+    justify-content: flex-start;
+    gap: var(--spacing-md);
+    margin: 0;
+    align-items: center;
+    justify-self: start;
+}
+
+.social__icon {
+    height: 28px;
+    width: auto;
+    transition: all 0.3s ease;
+    filter: invert(1) brightness(1); /* make icons appear white on maroon */
+    display: inline-block;
+}
+
+.social__icon:hover {
+    opacity: 0.95;
+}
+
+.footer__contact {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.25rem;
+    justify-self: end;
+}
+
+.contact__email,
+.contact__phone {
+    font-size: var(--font-size-xs);
+    color: var(--color-button-text);
+}
+
+.footer__copyright {
+    margin: 0;
+    justify-self: center;
+    color: var(--color-button-text);
+}
+
+/* Default: show full copyright, hide short variant */
+.copyright--short { display: none; }
+
+/* Footer layout on small screens: stack and center */
+@media (max-width: 767px) {
+    /* Mobile footer: three columns - icons | copyright | contact (right) */
+    .footer {
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        text-align: left;
+        padding: calc(var(--spacing-sm)) var(--spacing-md);
+        row-gap: 0;
+        gap: var(--spacing-md);
+    }
+
+    .footer__social {
+        justify-self: start;
+    }
+
+    .footer__copyright {
+        justify-self: center;
+        margin: 0;
+        /* ensure copyright text centered and visible on mobile */
+        text-align: center;
+    }
+
+    .footer__contact {
+        align-items: flex-end;
+        justify-self: end;
+        text-align: right;
+    }
+
+    .contact__email,
+    .contact__phone {
+        color: var(--color-button-text);
+    }
+
+    /* On mobile show the short copyright and hide the full sentence */
+    .copyright--full { display: none; }
+    .copyright--short { display: inline; }
+}
+
+/* Estilos responsivos */
+@media (min-width: 768px) {
+    .container {
+        padding: 0 var(--spacing-lg);
+    }
+
+    .header {
+        padding: var(--spacing-md) var(--spacing-xl);
+    }
+
+    .header__logo .logo {
+        height: 60px;
+    }
+
+    .header__title {
+        font-size: var(--font-size-xl);
+    }
+
+    .nav__list {
+        gap: var(--spacing-xl);
+    }
+
+    .content-section {
+        padding: var(--spacing-lg);
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 1200px;
+    }
+
+    .main-content {
+        padding: var(--spacing-lg);
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 1200px;
+    }
+}
+
+@media (max-width: 767px) {
+    /* On small screens show logo + nav pills, hide the long title text */
+    .header {
+        flex-direction: row;
+        gap: var(--spacing-md);
+        align-items: center;
+        justify-content: space-between;
+        text-align: left;
+    }
+
+    .header__left {
+        flex-direction: row;
+        gap: var(--spacing-sm);
+        align-items: center;
+        /* add right margin so logo is separated from the nav on small screens */
+        margin-right: var(--spacing-lg);
+    }
+
+    .header__logo .logo {
+        height: 40px;
+    }
+
+
+    /* Hide the long title on mobile so header shows only logo + nav */
+    .header__title {
+        display: none;
+    }
+
+    /* Keep nav in a horizontal pill row on small screens */
+    .nav__list {
+        gap: var(--spacing-md);
+        flex-direction: row;
+        justify-content: center;
+        /* prevent items from wrapping so 'Sobre mí' stays on one line */
+        flex-wrap: nowrap;
+    }
+
+    /* Prevent nav links from wrapping on small screens (keep 'Sobre mí' on one line) */
+    .nav__link {
+        white-space: nowrap;
+    }
+
+    .content-section {
+        padding: var(--spacing-sm);
+    }
+
+    .footer__contact {
+        flex-direction: column;
+        gap: var(--spacing-xs);
+    }
+}
+
+@media (max-width: 480px) {
+    /* Keep nav horizontal on very small screens as well (pills centered) */
+    .nav__list {
+        flex-direction: row;
+        gap: var(--spacing-sm);
+        justify-content: center;
+    }
+
+    .header__title {
+        font-size: var(--font-size-sm);
+    }
+}

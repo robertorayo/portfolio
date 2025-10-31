@@ -8,8 +8,137 @@
 </head>
 
 <body>
-    <a href="https://www.figma.com/design/2IacCussqQ5tznzDNnF5h0/Portfolio?t=KYJEC8eQdCwRsKiz-1"
-        target="_blank">Guía de Estilos y Portfolio</a>
+    <a href="https://www.figma.com/design/2IacCussqQ5tznzDNnF5h0/Portfolio?t=KYJEC8eQdCwRsKiz-1" target="_blank">Guía de
+        Estilos y Portfolio</a>
 </body>
 
+</html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STUDIOS BZ - LOS VERDADEROS MONTAJES</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header__left">
+                <div class="header__logo">
+                    <img src="logo-studios-bz.png" alt="STUDIOS BZ Logo" class="logo">
+                </div>
+                <h1 class="header__title">STUDIOS BZ - LOS VERDADEROS MONTAJES</h1>
+            </div>
+            <nav class="header__nav">
+                <ul class="nav__list">
+                    <li class="nav__item"><a href="#" class="nav__link">Inicio</a></li>
+                    <li class="nav__item"><a href="#" class="nav__link">Proyectos</a></li>
+                    <li class="nav__item"><a href="#" class="nav__link">Sobre mí</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <section class="projects-intro">
+                <h2 class="projects-intro__title">PROYECTOS</h2>
+                <p class="projects-intro__subtitle">Aquí encontrarás mis proyectos más destacados.</p>
+            </section>
+            <section class="content-section">
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="image.png" alt="Proyecto 1">
+                    </div>
+                    <div class="project-info">
+                        <h2 class="content-section__title">Title</h2>
+                        <p class="content-section__body">
+                            Body text for whatever you'd like to say. Add main takeaway points, quotes, anecdotes, or even a very very short story.
+                        </p>
+                        <button class="content-section__button">Button</button>
+                    </div>
+                </div>
+            </section>
+
+            <div class="separator"></div>
+
+            <section class="content-section">
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="image.png" alt="Proyecto 2">
+                    </div>
+                    <div class="project-info">
+                        <h2 class="content-section__title">Title</h2>
+                        <p class="content-section__body">
+                            Body text for whatever you'd like to say. Add main takeaway points, quotes, anecdotes, or even a very very short story.
+                        </p>
+                        <button class="content-section__button">Button</button>
+                    </div>
+                </div>
+            </section>
+
+            <div class="separator"></div>
+
+            <section class="content-section">
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="image.png" alt="Proyecto 3">
+                    </div>
+                    <div class="project-info">
+                        <h2 class="content-section__title">Title</h2>
+                        <p class="content-section__body">
+                            Body text for whatever you'd like to say. Add main takeaway points, quotes, anecdotes, or even a very very short story.
+                        </p>
+                        <button class="content-section__button">Button</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <div class="footer__social">
+                <a href="#" class="social__link">
+                    <img src="github-logo.png" alt="GitHub" class="social__icon">
+                </a>
+                <a href="#" class="social__link">
+                    <img src="linkedin-logo.png" alt="LinkedIn" class="social__icon">
+                </a>
+            </div>
+            <p class="footer__copyright">
+                <span class="copyright--full">© 2025 Studios BZ. Todos los derechos reservados.</span>
+                <span class="copyright--short">© 2025 Studios BZ</span>
+            </p>
+            <div class="footer__contact">
+                <span class="contact__email">roberto@gmail.com</span>
+                <span class="contact__phone">687 34 97 31</span>
+            </div>
+        </footer>
+    </div>
+    <script>
+    (function(){
+        var startY = 0;
+        var supportsPassive = false;
+        try {
+            var opts = Object.defineProperty({}, 'passive', {
+                get: function() { supportsPassive = true; }
+            });
+            window.addEventListener('testPassive', null, opts);
+            window.removeEventListener('testPassive', null, opts);
+        } catch(e) {}
+
+        document.addEventListener('touchstart', function(e){
+            if(e.touches && e.touches.length) startY = e.touches[0].clientY;
+        }, supportsPassive ? {passive: true} : false);
+
+        document.addEventListener('touchmove', function(e){
+            if(!e.touches || !e.touches.length) return;
+            var y = e.touches[0].clientY;
+            var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+            var maxScroll = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) - window.innerHeight;
+            if ((scrollTop <= 0 && y > startY) || (scrollTop >= maxScroll && y < startY)) {
+                e.preventDefault();
+            }
+        }, supportsPassive ? {passive: false} : false);
+    })();
+    </script>
+</body>
 </html>
