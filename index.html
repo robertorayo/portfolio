@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>STUDIOS BZ - LOS VERDADEROS MONTAJES</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <div class="container">
         <header class="header">
@@ -32,14 +34,16 @@
             <section class="content-section">
                 <div class="project-card">
                     <div class="project-image">
-                        <img src="image.png" alt="Proyecto 1">
+                        <img src="kanban-preview.png" alt="Tablero Kanban">
                     </div>
                     <div class="project-info">
-                        <h2 class="content-section__title">Title</h2>
+                        <h2 class="content-section__title">Tablero Kanban</h2>
                         <p class="content-section__body">
-                            Body text for whatever you'd like to say. Add main takeaway points, quotes, anecdotes, or even a very very short story.
+                            Un tablero Kanban interactivo para gestión de tareas con funcionalidades de arrastrar y
+                            soltar.
                         </p>
-                        <button class="content-section__button">Button</button>
+                        <a href="https://github.com/robertorayo/tablero-kanban.git" class="content-section__button"
+                            target="_blank">Ver Proyecto</a>
                     </div>
                 </div>
             </section>
@@ -54,7 +58,8 @@
                     <div class="project-info">
                         <h2 class="content-section__title">Title</h2>
                         <p class="content-section__body">
-                            Body text for whatever you'd like to say. Add main takeaway points, quotes, anecdotes, or even a very very short story.
+                            Body text for whatever you'd like to say. Add main takeaway points, quotes, anecdotes, or
+                            even a very very short story.
                         </p>
                         <button class="content-section__button">Button</button>
                     </div>
@@ -71,7 +76,8 @@
                     <div class="project-info">
                         <h2 class="content-section__title">Title</h2>
                         <p class="content-section__body">
-                            Body text for whatever you'd like to say. Add main takeaway points, quotes, anecdotes, or even a very very short story.
+                            Body text for whatever you'd like to say. Add main takeaway points, quotes, anecdotes, or
+                            even a very very short story.
                         </p>
                         <button class="content-section__button">Button</button>
                     </div>
@@ -99,31 +105,32 @@
         </footer>
     </div>
     <script>
-    (function(){
-        var startY = 0;
-        var supportsPassive = false;
-        try {
-            var opts = Object.defineProperty({}, 'passive', {
-                get: function() { supportsPassive = true; }
-            });
-            window.addEventListener('testPassive', null, opts);
-            window.removeEventListener('testPassive', null, opts);
-        } catch(e) {}
+        (function () {
+            var startY = 0;
+            var supportsPassive = false;
+            try {
+                var opts = Object.defineProperty({}, 'passive', {
+                    get: function () { supportsPassive = true; }
+                });
+                window.addEventListener('testPassive', null, opts);
+                window.removeEventListener('testPassive', null, opts);
+            } catch (e) { }
 
-        document.addEventListener('touchstart', function(e){
-            if(e.touches && e.touches.length) startY = e.touches[0].clientY;
-        }, supportsPassive ? {passive: true} : false);
+            document.addEventListener('touchstart', function (e) {
+                if (e.touches && e.touches.length) startY = e.touches[0].clientY;
+            }, supportsPassive ? { passive: true } : false);
 
-        document.addEventListener('touchmove', function(e){
-            if(!e.touches || !e.touches.length) return;
-            var y = e.touches[0].clientY;
-            var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-            var maxScroll = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) - window.innerHeight;
-            if ((scrollTop <= 0 && y > startY) || (scrollTop >= maxScroll && y < startY)) {
-                e.preventDefault();
-            }
-        }, supportsPassive ? {passive: false} : false);
-    })();
+            document.addEventListener('touchmove', function (e) {
+                if (!e.touches || !e.touches.length) return;
+                var y = e.touches[0].clientY;
+                var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+                var maxScroll = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) - window.innerHeight;
+                if ((scrollTop <= 0 && y > startY) || (scrollTop >= maxScroll && y < startY)) {
+                    e.preventDefault();
+                }
+            }, supportsPassive ? { passive: false } : false);
+        })();
     </script>
 </body>
+
 </html>
