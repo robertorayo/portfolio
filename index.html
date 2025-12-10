@@ -6,177 +6,314 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>STUDIOS BZ - LOS VERDADEROS MONTAJES</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
     <div class="container">
+        <!-- Header -->
         <header class="header">
-            <div class="header__left">
-                <div class="header__logo">
-                    <img src="logo-studios-bz.png" alt="STUDIOS BZ Logo" class="logo">
+            <div class="header__content">
+                <div class="header__left">
+                    <div class="header__logo">
+                        <div class="logo-circle">
+                            <img src="logo-studios-bz.png" alt="STUDIOS BZ Logo" class="logo">
+                        </div>
+                    </div>
+                    <div class="header-titles">
+                        <h1 class="header__title">STUDIOS BZ</h1>
+                        <p class="header__subtitle">LOS VERDADEROS MONTAJES</p>
+                    </div>
                 </div>
-                <h1 class="header__title">STUDIOS BZ - LOS VERDADEROS MONTAJES</h1>
+                <nav class="header__nav">
+                    <ul class="nav__list">
+                        <li class="nav__item"><a href="#" class="nav__link"><i class="fas fa-home"></i> Inicio</a></li>
+                        <li class="nav__item"><a href="#" class="nav__link active"><i
+                                    class="fas fa-project-diagram"></i> Proyectos</a></li>
+                        <li class="nav__item"><a href="#" class="nav__link"><i class="fas fa-user"></i> Sobre mí</a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
-            <nav class="header__nav">
-                <ul class="nav__list">
-                    <li class="nav__item"><a href="#" class="nav__link">Inicio</a></li>
-                    <li class="nav__item"><a href="#" class="nav__link">Proyectos</a></li>
-                    <li class="nav__item"><a href="#" class="nav__link">Sobre mí</a></li>
-                </ul>
-            </nav>
         </header>
-
         <main class="main-content">
-            <section class="projects-intro">
-                <h2 class="projects-intro__title">PROYECTOS</h2>
-                <p class="projects-intro__subtitle">Aquí encontrarás mis proyectos más destacados.</p>
-            </section>
-            <section class="content-section">
-                <div class="project-card">
-                    <div class="project-image">
-                        <img src="image.png" alt="Tarea 1 Diseño">
+            <!-- Projects Section -->
+            <section class="projects-section">
+                <div class="section-header">
+                    <h2 class="section-title">PROYECTOS <span class="title-line"></span></h2>
+                    <p class="section-subtitle">Explora mis trabajos más recientes y descubre el proceso creativo detrás
+                        de cada uno.</p>
+                </div>
+
+                <div class="projects-grid">
+                    <!-- Project 1 -->
+                    <div class="project-card modern-card">
+                        <div class="project-card-header">
+                            <div class="project-badge">Diseño</div>
+                            <div class="project-icon"><i class="fas fa-palette"></i></div>
+                        </div>
+                        <div class="project-image-wrapper">
+                            <img src="image.png" alt="Tarea 1 Diseño" class="project-image">
+                            <div class="image-overlay"></div>
+                        </div>
+                        <div class="project-card-content">
+                            <h3 class="project-title">Tarea 1 Diseño</h3>
+                            <p class="project-description">Guía de estilo y prototipo en Figma con enfoque en UX/UI.</p>
+                            <div class="project-tags">
+                                <span class="tag">Figma</span>
+                                <span class="tag">Prototipo</span>
+                                <span class="tag">UX/UI</span>
+                            </div>
+                        </div>
+                        <div class="project-card-footer">
+                            <a href="https://www.figma.com/design/dH8uovC3BQyAcsep4YTGcA/Gu%C3%ADa-de-Estilos-y-Portfolio?node-id=0-1&t=UiJohpuDtZZQGozK-1"
+                                class="project-link" target="_blank">
+                                <i class="fas fa-external-link-alt"></i> Ver en Figma
+                            </a>
+                        </div>
                     </div>
-                    <div class="project-info">
-                        <h2 class="content-section__title">Tarea 1 Diseño</h2>
-                        <p class="content-section__body">
-                            Guía de estilo y prototipo.
-                        </p>
-                        <a href="https://www.figma.com/design/2IacCussqQ5tznzDNnF5h0/Portfolio_y_Guia_de_Estilos?node-id=0-1&t=JKNb6F9SLa14uvzu-1"
-                            class="content-section__button" target="_blank">Ver Figma</a>
+
+                    <!-- Project 2 -->
+                    <div class="project-card modern-card">
+                        <div class="project-card-header">
+                            <div class="project-badge">Desarrollo</div>
+                            <div class="project-icon"><i class="fas fa-code"></i></div>
+                        </div>
+                        <div class="project-image-wrapper">
+                            <img src="image.png" alt="Tarea 2 Diseño" class="project-image">
+                            <div class="image-overlay"></div>
+                        </div>
+                        <div class="project-card-content">
+                            <h3 class="project-title">Tarea 2 Diseño</h3>
+                            <p class="project-description">Prototipo funcional implementado con CSS moderno y
+                                responsive.</p>
+                            <div class="project-tags">
+                                <span class="tag">HTML/CSS</span>
+                                <span class="tag">Responsive</span>
+                                <span class="tag">GitHub</span>
+                            </div>
+                        </div>
+                        <div class="project-card-footer">
+                            <a href="https://github.com/robertorayo/portfolio.git" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i> Repositorio
+                            </a>
+                            <a href="https://robertorayo.github.io/portfolio/" class="project-link primary"
+                                target="_blank">
+                                <i class="fas fa-eye"></i> Demo
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Project 3 -->
+                    <div class="project-card modern-card">
+                        <div class="project-card-header">
+                            <div class="project-badge">Productividad</div>
+                            <div class="project-icon"><i class="fas fa-tasks"></i></div>
+                        </div>
+                        <div class="project-image-wrapper">
+                            <img src="image.png" alt="Tarea 3 Diseño" class="project-image">
+                            <div class="image-overlay"></div>
+                        </div>
+                        <div class="project-card-content">
+                            <h3 class="project-title">Tarea 3 Diseño</h3>
+                            <p class="project-description">Tablero Kanban</p>
+                            <div class="project-tags">
+                                <span class="tag">JavaScript</span>
+                                <span class="tag">Drag & Drop</span>
+                                <span class="tag">Productividad</span>
+                            </div>
+                        </div>
+                        <div class="project-card-footer">
+                            <a href="https://github.com/robertorayo/tablero-kanban.git" class="project-link"
+                                target="_blank">
+                                <i class="fab fa-github"></i> Repositorio
+                            </a>
+                            <a href="https://robertorayo.github.io/tablero-kanban/" class="project-link primary"
+                                target="_blank">
+                                <i class="fas fa-eye"></i> Demo
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Project 4 -->
+                    <div class="project-card modern-card">
+                        <div class="project-card-header">
+                            <div class="project-badge">Juego</div>
+                            <div class="project-icon"><i class="fas fa-magic"></i></div>
+                        </div>
+                        <div class="project-image-wrapper">
+                            <img src="image.png" alt="Taller Crafteo Mágico" class="project-image">
+                            <div class="image-overlay"></div>
+                        </div>
+                        <div class="project-card-content">
+                            <h3 class="project-title">Taller Crafteo Mágico</h3>
+                            <p class="project-description">Juego interactivo de combinación de elementos con mecánicas
+                                únicas.</p>
+                            <div class="project-tags">
+                                <span class="tag">Juego</span>
+                                <span class="tag">Interactivo</span>
+                                <span class="tag">Creativo</span>
+                            </div>
+                        </div>
+                        <div class="project-card-footer">
+                            <a href="https://github.com/robertorayo/taller-krafteo-magico.git" class="project-link"
+                                target="_blank">
+                                <i class="fab fa-github"></i> Repositorio
+                            </a>
+                            <a href="https://robertorayo.github.io/taller-krafteo-magico/" class="project-link primary"
+                                target="_blank">
+                                <i class="fas fa-eye"></i> Demo
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Project 5 -->
+                    <div class="project-card modern-card">
+                        <div class="project-card-header">
+                            <div class="project-badge">Aventura</div>
+                            <div class="project-icon"><i class="fas fa-dragon"></i></div>
+                        </div>
+                        <div class="project-image-wrapper">
+                            <img src="image.png" alt="Aventura en el Reino JS" class="project-image">
+                            <div class="image-overlay"></div>
+                        </div>
+                        <div class="project-card-content">
+                            <h3 class="project-title">Aventura en el Reino JS</h3>
+                            <p class="project-description">Juego de rol con combates, tienda y progresión de personaje.
+                            </p>
+                            <div class="project-tags">
+                                <span class="tag">JavaScript</span>
+                                <span class="tag">Juego RPG</span>
+                                <span class="tag">Aventura</span>
+                            </div>
+                        </div>
+                        <div class="project-card-footer">
+                            <a href="https://github.com/robertorayo/Aventura-en-el-Reino-JS.git" class="project-link"
+                                target="_blank">
+                                <i class="fab fa-github"></i> Repositorio
+                            </a>
+                            <a href="https://robertorayo.github.io/Aventura-en-el-Reino-JS/"
+                                class="project-link primary" target="_blank">
+                                <i class="fas fa-eye"></i> Demo
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Project 6 -->
+                    <div class="project-card modern-card">
+                        <div class="project-card-header">
+                            <div class="project-badge">Estilo</div>
+                            <div class="project-icon"><i class="fas fa-palette"></i></div>
+                        </div>
+                        <div class="project-image-wrapper">
+                            <img src="image.png" alt="Tarea 4 Diseño" class="project-image">
+                            <div class="image-overlay"></div>
+                        </div>
+                        <div class="project-card-content">
+                            <h3 class="project-title">Tarea 4 Diseño</h3>
+                            <p class="project-description">Animaciones.
+                            </p>
+                            <div class="project-tags">
+                                <span class="tag">HTML/CSS</span>
+                                <span class="tag">GSAP</span>
+                                <span class="tag">Responsive</span>
+                            </div>
+                        </div>
+                        <div class="project-card-footer">
+                            <a href="https://github.com/robertorayo/Tarea4-Animaciones.git" class="project-link"
+                                target="_blank">
+                                <i class="fab fa-github"></i> Repositorio
+                            </a>
+                            <a href="https://robertorayo.github.io/Tarea4-Animaciones/" class="project-link primary"
+                                target="_blank">
+                                <i class="fas fa-eye"></i> Demo
+                            </a>
+                        </div>
                     </div>
                 </div>
             </section>
-
-            <div class="separator"></div>
-
-            <section class="content-section">
-                <div class="project-card">
-                    <div class="project-image">
-                        <img src="image.png" alt="Tarea 2 Diseño">
-                    </div>
-                    <div class="project-info">
-                        <h2 class="content-section__title">Tarea 2 Diseño</h2>
-                        <p class="content-section__body">
-                            Prototipo con CSS.
-                        </p>
-                        <a href="https://github.com/robertorayo/portfolio.git" class="content-section__button"
-                            target="_blank">Ver Repositorio</a>
-                        <a href="https://robertorayo.github.io/portfolio/" class="content-section__button"
-                            target="_blank">Ver Proyecto</a>
-                    </div>
-                </div>
-            </section>
-
-            <div class="separator"></div>
-
-            <section class="content-section">
-                <div class="project-card">
-                    <div class="project-image">
-                        <img src="image.png" alt="Tarea 3 Diseño">
-                    </div>
-                    <div class="project-info">
-                        <h2 class="content-section__title">Tarea 3 Diseño</h2>
-                        <p class="content-section__body">
-                            Tablero Kanban.
-                        </p>
-                        <a href="https://github.com/robertorayo/tablero-kanban.git" class="content-section__button"
-                            target="_blank">Ver Repositorio</a>
-                        <a href="https://robertorayo.github.io/tablero-kanban/" class="content-section__button"
-                            target="_blank">Ver Proyecto</a>
-                    </div>
-                </div>
-            </section>
-
-            <div class="separator"></div>
-
-            <section class="content-section">
-                <div class="project-card">
-                    <div class="project-image">
-                        <img src="image.png" alt="Taller Crafteo Mágico">
-                    </div>
-                    <div class="project-info">
-                        <h2 class="content-section__title">Taller Crafteo Mágico</h2>
-                        <p class="content-section__body">
-                            Un taller de crafteo mágico. Transforma y fusiona elementos para obtener objetos
-                            misteriosos.
-                        </p>
-                        <a href="https://github.com/robertorayo/taller-krafteo-magico.git"
-                            class="content-section__button" target="_blank">Ver Repositorio</a>
-                        <a href="https://robertorayo.github.io/taller-krafteo-magico/" class="content-section__button"
-                            target="_blank">Ver Proyecto</a>
-                    </div>
-                </div>
-            </section>
-
-            <div class="separator"></div>
-
-            <section class="content-section">
-                <div class="project-card">
-                    <div class="project-image">
-                        <img src="image.png" alt="Aventura en el Reino JS">
-                    </div>
-                    <div class="project-info">
-                        <h2 class="content-section__title">Aventura en el Reino JS</h2>
-                        <p class="content-section__body">
-                            Un guerrero que gracias a la compra en el mercado, se enfrentará a los enemigos.
-                        </p>
-                        <a href="https://github.com/robertorayo/Aventura-en-el-Reino-JS.git"
-                            class="content-section__button" target="_blank">Ver Repositorio</a>
-                        <a href="https://robertorayo.github.io/Aventura-en-el-Reino-JS/" class="content-section__button"
-                            target="_blank">Ver Proyecto</a>
-                    </div>
-                </div>
-            </section>
-
-            <div class="separator"></div>
         </main>
 
         <footer class="footer">
-            <div class="footer__social">
-                <a href="#" class="social__link">
-                    <img src="github-logo.png" alt="GitHub" class="social__icon">
-                </a>
-                <a href="#" class="social__link">
-                    <img src="linkedin-logo.png" alt="LinkedIn" class="social__icon">
-                </a>
-            </div>
-            <p class="footer__copyright">
-                <span class="copyright--full">© 2025 Studios BZ. Todos los derechos reservados.</span>
-                <span class="copyright--short">© 2025 Studios BZ</span>
-            </p>
-            <div class="footer__contact">
-                <span class="contact__email">roberto@gmail.com</span>
-                <span class="contact__phone">687 34 97 31</span>
+
+
+            <div class="footer-content">
+                <div class="footer-main">
+                    <div class="footer-brand">
+                        <div class="footer-logo">
+                            <img src="logo-studios-bz.png" alt="STUDIOS BZ Logo">
+                        </div>
+                        <h3 class="footer-title">STUDIOS BZ</h3>
+                        <p class="footer-tagline">Transformando ideas en experiencias digitales</p>
+                    </div>
+
+                    <div class="footer-social">
+                        <h4 class="social-title">Conéctate conmigo</h4>
+                        <div class="social-icons">
+                            <a href="#" class="social-icon">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="#" class="social-icon">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            <a href="#" class="social-icon">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="social-icon">
+                                <i class="fab fa-dribbble"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="footer-contact">
+                        <h4 class="contact-title">Contacto</h4>
+                        <div class="contact-info">
+                            <p class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>roberto@gmail.com</span>
+                            </p>
+                            <p class="contact-item">
+                                <i class="fas fa-phone"></i>
+                                <span>687 34 97 31</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-bottom">
+                    <p class="footer-copyright">
+                        © 2025 Studios BZ. Todos los derechos reservados.
+                    </p>
+                </div>
             </div>
         </footer>
     </div>
+
     <script>
-        (function () {
-            var startY = 0;
-            var supportsPassive = false;
-            try {
-                var opts = Object.defineProperty({}, 'passive', {
-                    get: function () { supportsPassive = true; }
+        // Animación para las tarjetas al hacer scroll
+        document.addEventListener('DOMContentLoaded', function () {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-in');
+                    }
                 });
-                window.addEventListener('testPassive', null, opts);
-                window.removeEventListener('testPassive', null, opts);
-            } catch (e) { }
+            }, observerOptions);
 
-            document.addEventListener('touchstart', function (e) {
-                if (e.touches && e.touches.length) startY = e.touches[0].clientY;
-            }, supportsPassive ? { passive: true } : false);
-
-            document.addEventListener('touchmove', function (e) {
-                if (!e.touches || !e.touches.length) return;
-                var y = e.touches[0].clientY;
-                var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-                var maxScroll = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) - window.innerHeight;
-                if ((scrollTop <= 0 && y > startY) || (scrollTop >= maxScroll && y < startY)) {
-                    e.preventDefault();
-                }
-            }, supportsPassive ? { passive: false } : false);
-        })();
+            // Observar todas las tarjetas de proyecto
+            document.querySelectorAll('.modern-card').forEach(card => {
+                observer.observe(card);
+            });
+        });
     </script>
+</body>
+
+</html>
 </body>
 
 </html>
