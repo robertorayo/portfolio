@@ -4,13 +4,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STUDIOS BZ - LOS VERDADEROS MONTAJES</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>STUDIOS BZ - DistribuTech Pro</title>
+    <meta name="description"
+        content="Portafolio de Studios BZ. Descubre DistribuTech Pro: plataforma B2B de distribución multisectorial desarrollada con React, TypeScript y Supabase.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=2">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
-    <div class="container">
+    <!-- Fondo dinámico e interactivo -->
+    <div class="dynamic-background-container" aria-hidden="true">
+        <div class="ambient-glow glow-1"></div>
+        <div class="ambient-glow glow-2"></div>
+        <div class="ambient-glow glow-3"></div>
+        <div class="tech-grid-overlay"></div>
+        <div class="mouse-spotlight"></div>
+        <canvas id="interactive-canvas"></canvas>
+    </div>
+
+    <div class="container" id="inicio">
         <!-- Header -->
         <header class="header">
             <div class="header__content">
@@ -27,216 +44,257 @@
                 </div>
                 <nav class="header__nav">
                     <ul class="nav__list">
-                        <li class="nav__item"><a href="#" class="nav__link"><i class="fas fa-home"></i> Inicio</a></li>
-                        <li class="nav__item"><a href="#" class="nav__link active"><i
-                                    class="fas fa-project-diagram"></i> Proyectos</a></li>
-                        <li class="nav__item"><a href="#" class="nav__link"><i class="fas fa-user"></i> Sobre mí</a>
+                        <li class="nav__item"><a href="#inicio" class="nav__link"><i class="fas fa-home"></i> Inicio</a>
                         </li>
+                        <li class="nav__item"><a href="#proyectos" class="nav__link active"><i
+                                    class="fas fa-project-diagram"></i> Proyecto</a></li>
+                        <li class="nav__item"><a href="#contacto" class="nav__link"><i class="fas fa-envelope"></i>
+                                Contacto</a></li>
                     </ul>
                 </nav>
             </div>
         </header>
+
         <main class="main-content">
-            <!-- Projects Section -->
-            <section class="projects-section">
+            <!-- Sección de Proyecto: Exclusivamente DistribuTech Pro -->
+            <section class="projects-section" id="proyectos">
                 <div class="section-header">
-                    <h2 class="section-title">PROYECTOS <span class="title-line"></span></h2>
-                    <p class="section-subtitle">Explora mis trabajos más recientes y descubre el proceso creativo detrás
-                        de cada uno.</p>
+                    <div class="spotlight-tag">
+                        <span class="spotlight-pulse"></span>
+                        <i class="fas fa-cube"></i> PROYECTO PRINCIPAL & PÚBLICO
+                    </div>
+                    <h2 class="section-title">PROYECTO DESTACADO <span class="title-line"></span></h2>
+                    <p class="section-subtitle">
+                        Explora la arquitectura y capacidades de <strong>DistribuTech Pro</strong>, el proyecto público
+                        actual: una plataforma B2B moderna desarrollada como Proyecto Fin de Grado.
+                    </p>
                 </div>
 
-                <div class="projects-grid">
-                    <!-- Project 1 -->
-                    <div class="project-card modern-card">
-                        <div class="project-card-header">
-                            <div class="project-badge">Diseño</div>
-                            <div class="project-icon"><i class="fas fa-palette"></i></div>
+                <!-- Showcase Destacado de DistribuTech Pro -->
+                <article class="featured-showcase-card">
+                    <!-- Barra superior de estado -->
+                    <div class="showcase-topbar">
+                        <div class="topbar-left">
+                            <span class="badge-tfg"><i class="fas fa-graduation-cap"></i> Proyecto Fin de Grado</span>
+                            <span class="badge-sector"><i class="fas fa-industry"></i> B2B Multisectorial</span>
                         </div>
-                        <div class="project-image-wrapper">
-                            <img src="image.png" alt="Tarea 1 Diseño" class="project-image">
-                            <div class="image-overlay"></div>
-                        </div>
-                        <div class="project-card-content">
-                            <h3 class="project-title">Tarea 1 Diseño</h3>
-                            <p class="project-description">Guía de estilo y prototipo en Figma con enfoque en UX/UI.</p>
-                            <div class="project-tags">
-                                <span class="tag">Figma</span>
-                                <span class="tag">Prototipo</span>
-                                <span class="tag">UX/UI</span>
-                            </div>
-                        </div>
-                        <div class="project-card-footer">
-                            <a href="https://www.figma.com/design/dH8uovC3BQyAcsep4YTGcA/Gu%C3%ADa-de-Estilos-y-Portfolio?node-id=0-1&t=UiJohpuDtZZQGozK-1"
-                                class="project-link" target="_blank">
-                                <i class="fas fa-external-link-alt"></i> Ver en Figma
-                            </a>
+                        <div class="topbar-right">
+                            <span class="badge-status-live">
+                                <span class="pulse-indicator"></span>
+                                Repositorio Público Activo
+                            </span>
                         </div>
                     </div>
 
-                    <!-- Project 2 -->
-                    <div class="project-card modern-card">
-                        <div class="project-card-header">
-                            <div class="project-badge">Desarrollo</div>
-                            <div class="project-icon"><i class="fas fa-code"></i></div>
-                        </div>
-                        <div class="project-image-wrapper">
-                            <img src="image.png" alt="Tarea 2 Diseño" class="project-image">
-                            <div class="image-overlay"></div>
-                        </div>
-                        <div class="project-card-content">
-                            <h3 class="project-title">Tarea 2 Diseño</h3>
-                            <p class="project-description">Prototipo funcional implementado con CSS moderno y
-                                responsive.</p>
-                            <div class="project-tags">
-                                <span class="tag">HTML/CSS</span>
-                                <span class="tag">Responsive</span>
-                                <span class="tag">GitHub</span>
+                    <div class="showcase-grid-layout">
+                        <!-- Columna Izquierda: Mockup de interfaz de software realista e interactivo -->
+                        <div class="showcase-visual-wrapper">
+                            <div class="mockup-window">
+                                <div class="mockup-window-header">
+                                    <div class="window-controls">
+                                        <span class="window-dot dot-close"></span>
+                                        <span class="window-dot dot-minimize"></span>
+                                        <span class="window-dot dot-expand"></span>
+                                    </div>
+                                    <div class="window-url-bar">
+                                        <i class="fas fa-shield-alt"></i>
+                                        <span>https://distributech-pro.app/dashboard</span>
+                                    </div>
+                                    <div class="window-env-badge">
+                                        <i class="fas fa-bolt"></i> Vite + React
+                                    </div>
+                                </div>
+
+                                <div class="mockup-window-body">
+                                    <!-- Cabecera de la aplicación dentro del Mockup -->
+                                    <div class="mockup-app-header">
+                                        <div class="mockup-app-brand">
+                                            <div class="brand-icon"><i class="fas fa-boxes-stacked"></i></div>
+                                            <div>
+                                                <div class="brand-name">DistribuTech Pro</div>
+                                                <div class="brand-role">Sesión: Administrador / Comercial</div>
+                                            </div>
+                                        </div>
+                                        <div class="mockup-app-search">
+                                            <i class="fas fa-search"></i>
+                                            <span>Buscar en ferretería, fontanería, riego...</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- KPIs del Mockup -->
+                                    <div class="mockup-kpis">
+                                        <div class="kpi-card">
+                                            <div class="kpi-icon blue"><i class="fas fa-layer-group"></i></div>
+                                            <div class="kpi-data">
+                                                <span class="kpi-value">Catálogo 3FN</span>
+                                                <span class="kpi-label">Atributos JSONB</span>
+                                            </div>
+                                        </div>
+                                        <div class="kpi-card">
+                                            <div class="kpi-icon green"><i class="fas fa-hand-holding-dollar"></i></div>
+                                            <div class="kpi-data">
+                                                <span class="kpi-value">Cotizaciones</span>
+                                                <span class="kpi-label">Baremación en Vivo</span>
+                                            </div>
+                                        </div>
+                                        <div class="kpi-card">
+                                            <div class="kpi-icon purple"><i class="fas fa-user-lock"></i></div>
+                                            <div class="kpi-data">
+                                                <span class="kpi-value">RBAC + RLS</span>
+                                                <span class="kpi-label">Supabase Auth</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Fila de sub-tarjetas del Mockup -->
+                                    <div class="mockup-cards-row">
+                                        <!-- Panel 1: Flujo de Cotizaciones -->
+                                        <div class="mockup-subcard">
+                                            <div class="subcard-header">
+                                                <span><i class="fas fa-file-invoice"></i> Cotización Activa
+                                                    #COT-2025</span>
+                                                <span class="status-pill success">Aprobada</span>
+                                            </div>
+                                            <div class="subcard-content">
+                                                <div class="subcard-line">
+                                                    <span>Cliente:</span>
+                                                    <strong>Suministros Industriales S.L.</strong>
+                                                </div>
+                                                <div class="subcard-line">
+                                                    <span>Sector:</span>
+                                                    <span>Fontanería & Riego</span>
+                                                </div>
+                                                <div class="progress-track">
+                                                    <div class="progress-fill" style="width: 85%;"></div>
+                                                </div>
+                                                <div class="subcard-footer-info">
+                                                    <span>Margen: <strong class="text-highlight">24.5%</strong></span>
+                                                    <span class="subcard-price">14.850,00 €</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Panel 2: Esquema Técnico JSONB -->
+                                        <div class="mockup-subcard">
+                                            <div class="subcard-header">
+                                                <span><i class="fas fa-code"></i> Ficha Técnica JSONB</span>
+                                                <span class="status-pill dark">PostgreSQL</span>
+                                            </div>
+                                            <div class="subcard-code">
+                                                <span class="code-key">"sector"</span>: <span
+                                                    class="code-str">"Fontanería"</span>,
+                                                <span class="code-key">"diametro"</span>: <span class="code-str">"32mm
+                                                    PE100"</span>,
+                                                <span class="code-key">"presion_pn"</span>: <span
+                                                    class="code-num">16</span>,
+                                                <span class="code-key">"certificacion"</span>: <span
+                                                    class="code-str">"AENOR"</span>
+                                            </div>
+                                            <div class="subcard-tags">
+                                                <span class="sub-tag">Ferretería</span>
+                                                <span class="sub-tag">Fontanería</span>
+                                                <span class="sub-tag">Riego</span>
+                                                <span class="sub-tag">Industrial</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Pie del Mockup -->
+                                    <div class="mockup-bottom-bar">
+                                        <div class="tech-indicator">
+                                            <i class="fas fa-check-double"></i> Arquitectura Full Stack React +
+                                            TypeScript + Supabase + PostgreSQL
+                                        </div>
+                                        <div class="pdf-indicator">
+                                            <i class="fas fa-file-pdf"></i> Exportación jsPDF
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="project-card-footer">
-                            <a href="https://github.com/robertorayo/portfolio.git" class="project-link" target="_blank">
-                                <i class="fab fa-github"></i> Repositorio
-                            </a>
-                            <a href="https://robertorayo.github.io/portfolio/" class="project-link primary"
-                                target="_blank">
-                                <i class="fas fa-eye"></i> Demo
-                            </a>
-                        </div>
-                    </div>
 
-                    <!-- Project 3 -->
-                    <div class="project-card modern-card">
-                        <div class="project-card-header">
-                            <div class="project-badge">Productividad</div>
-                            <div class="project-icon"><i class="fas fa-tasks"></i></div>
-                        </div>
-                        <div class="project-image-wrapper">
-                            <img src="image.png" alt="Tarea 3 Diseño" class="project-image">
-                            <div class="image-overlay"></div>
-                        </div>
-                        <div class="project-card-content">
-                            <h3 class="project-title">Tarea 3 Diseño</h3>
-                            <p class="project-description">Tablero Kanban</p>
-                            <div class="project-tags">
-                                <span class="tag">JavaScript</span>
-                                <span class="tag">Drag & Drop</span>
-                                <span class="tag">Productividad</span>
+                        <!-- Columna Derecha: Descripción, Pilares Técnicos y Botón de Acción -->
+                        <div class="showcase-info-wrapper">
+                            <div class="info-header">
+                                <h3 class="showcase-title">DistribuTech Pro</h3>
+                                <p class="showcase-tagline">Plataforma B2B de Gestión de Distribución Multisectorial</p>
                             </div>
-                        </div>
-                        <div class="project-card-footer">
-                            <a href="https://github.com/robertorayo/tablero-kanban.git" class="project-link"
-                                target="_blank">
-                                <i class="fab fa-github"></i> Repositorio
-                            </a>
-                            <a href="https://robertorayo.github.io/tablero-kanban/" class="project-link primary"
-                                target="_blank">
-                                <i class="fas fa-eye"></i> Demo
-                            </a>
-                        </div>
-                    </div>
 
-                    <!-- Project 4 -->
-                    <div class="project-card modern-card">
-                        <div class="project-card-header">
-                            <div class="project-badge">Juego</div>
-                            <div class="project-icon"><i class="fas fa-magic"></i></div>
-                        </div>
-                        <div class="project-image-wrapper">
-                            <img src="image.png" alt="Taller Crafteo Mágico" class="project-image">
-                            <div class="image-overlay"></div>
-                        </div>
-                        <div class="project-card-content">
-                            <h3 class="project-title">Taller Crafteo Mágico</h3>
-                            <p class="project-description">Juego interactivo de combinación de elementos con mecánicas
-                                únicas.</p>
-                            <div class="project-tags">
-                                <span class="tag">Juego</span>
-                                <span class="tag">Interactivo</span>
-                                <span class="tag">Creativo</span>
-                            </div>
-                        </div>
-                        <div class="project-card-footer">
-                            <a href="https://github.com/robertorayo/taller-krafteo-magico.git" class="project-link"
-                                target="_blank">
-                                <i class="fab fa-github"></i> Repositorio
-                            </a>
-                            <a href="https://robertorayo.github.io/taller-krafteo-magico/" class="project-link primary"
-                                target="_blank">
-                                <i class="fas fa-eye"></i> Demo
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Project 5 -->
-                    <div class="project-card modern-card">
-                        <div class="project-card-header">
-                            <div class="project-badge">Aventura</div>
-                            <div class="project-icon"><i class="fas fa-dragon"></i></div>
-                        </div>
-                        <div class="project-image-wrapper">
-                            <img src="image.png" alt="Aventura en el Reino JS" class="project-image">
-                            <div class="image-overlay"></div>
-                        </div>
-                        <div class="project-card-content">
-                            <h3 class="project-title">Aventura en el Reino JS</h3>
-                            <p class="project-description">Juego de rol con combates, tienda y progresión de personaje.
+                            <p class="showcase-description">
+                                Solución SaaS integral desarrollada para digitalizar y centralizar el flujo completo de
+                                preventa y venta mayorista en sectores industriales de alta heterogeneidad (ferretería,
+                                fontanería, climatización, riego, baño e industrial). Elimina la dispersión de canales
+                                analógicos mediante una plataforma web reactiva, escalable y con estricto control de
+                                accesos.
                             </p>
-                            <div class="project-tags">
-                                <span class="tag">JavaScript</span>
-                                <span class="tag">Juego RPG</span>
-                                <span class="tag">Aventura</span>
-                            </div>
-                        </div>
-                        <div class="project-card-footer">
-                            <a href="https://github.com/robertorayo/AventuraReinoJSrec.git" class="project-link"
-                                target="_blank">
-                                <i class="fab fa-github"></i> Repositorio
-                            </a>
-                            <a href="https://robertorayo.github.io/AventuraReinoJSrec/" class="project-link primary"
-                                target="_blank">
-                                <i class="fas fa-eye"></i> Demo
-                            </a>
-                        </div>
-                    </div>
 
-                    <!-- Project 6 -->
-                    <div class="project-card modern-card">
-                        <div class="project-card-header">
-                            <div class="project-badge">Estilo</div>
-                            <div class="project-icon"><i class="fas fa-palette"></i></div>
-                        </div>
-                        <div class="project-image-wrapper">
-                            <img src="image.png" alt="Tarea 4 Diseño" class="project-image">
-                            <div class="image-overlay"></div>
-                        </div>
-                        <div class="project-card-content">
-                            <h3 class="project-title">Tarea 4 Diseño</h3>
-                            <p class="project-description">Animaciones.
-                            </p>
-                            <div class="project-tags">
-                                <span class="tag">HTML/CSS</span>
-                                <span class="tag">GSAP</span>
-                                <span class="tag">Responsive</span>
+                            <!-- Pilares clave de arquitectura -->
+                            <div class="pillars-grid">
+                                <div class="pillar-card">
+                                    <div class="pillar-icon"><i class="fas fa-database"></i></div>
+                                    <div class="pillar-text">
+                                        <h4>Catálogo Dinámico Multisectorial</h4>
+                                        <p>Esquema relacional (3FN) con atributos JSONB para catalogar especificaciones
+                                            técnicas complejas sin modificar tablas físicas.</p>
+                                    </div>
+                                </div>
+
+                                <div class="pillar-card">
+                                    <div class="pillar-icon"><i class="fas fa-comments-dollar"></i></div>
+                                    <div class="pillar-text">
+                                        <h4>Negociación y Cotizaciones B2B</h4>
+                                        <p>Flujo interactivo Cliente–Comercial en tiempo real con baremación dinámica de
+                                            márgenes comerciales y conversión a pedido.</p>
+                                    </div>
+                                </div>
+
+                                <div class="pillar-card">
+                                    <div class="pillar-icon"><i class="fas fa-shield-halved"></i></div>
+                                    <div class="pillar-text">
+                                        <h4>Seguridad RBAC y Políticas RLS</h4>
+                                        <p>Control granular de accesos por roles (Cliente, Comercial, Administrador) y
+                                            aislamiento de datos a nivel de fila en Supabase.</p>
+                                    </div>
+                                </div>
+
+                                <div class="pillar-card">
+                                    <div class="pillar-icon"><i class="fas fa-chart-pie"></i></div>
+                                    <div class="pillar-text">
+                                        <h4>Métricas en Vivo & Generación PDF</h4>
+                                        <p>Dashboards con KPIs analíticos mediante Recharts y generación cliente de
+                                            cotizaciones y albaranes oficiales con jsPDF.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tecnologías utilizadas -->
+                            <div class="showcase-tech-stack">
+                                <span class="tech-pill"><i class="fab fa-react"></i> React 18</span>
+                                <span class="tech-pill"><i class="fab fa-js"></i> TypeScript 5</span>
+                                <span class="tech-pill"><i class="fas fa-bolt"></i> Vite</span>
+                                <span class="tech-pill"><i class="fab fa-css3-alt"></i> Tailwind CSS</span>
+                                <span class="tech-pill"><i class="fas fa-database"></i> Supabase / PostgreSQL</span>
+                                <span class="tech-pill"><i class="fas fa-cubes"></i> Zustand</span>
+                                <span class="tech-pill"><i class="fas fa-chart-line"></i> Recharts</span>
+                                <span class="tech-pill"><i class="fas fa-file-pdf"></i> jsPDF</span>
+                            </div>
+
+                            <!-- Botón de acción principal -->
+                            <div class="showcase-actions">
+                                <a href="https://github.com/robertorayo/DistribuTech-Pro" class="btn-showcase primary"
+                                    target="_blank" rel="noopener noreferrer">
+                                    <i class="fab fa-github"></i>
+                                    <span>Ver Repositorio en GitHub</span>
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
                             </div>
                         </div>
-                        <div class="project-card-footer">
-                            <a href="https://github.com/robertorayo/Tarea4-Animaciones.git" class="project-link"
-                                target="_blank">
-                                <i class="fab fa-github"></i> Repositorio
-                            </a>
-                            <a href="https://robertorayo.github.io/Tarea4-Animaciones/" class="project-link primary"
-                                target="_blank">
-                                <i class="fas fa-eye"></i> Demo
-                            </a>
-                        </div>
                     </div>
-                </div>
+                </article>
             </section>
         </main>
 
-        <footer class="footer">
-
-
+        <footer class="footer" id="contacto">
             <div class="footer-content">
                 <div class="footer-main">
                     <div class="footer-brand">
@@ -250,17 +308,15 @@
                     <div class="footer-social">
                         <h4 class="social-title">Conéctate conmigo</h4>
                         <div class="social-icons">
-                            <a href="#" class="social-icon">
+                            <a href="https://github.com/robertorayo" class="social-icon" target="_blank"
+                                rel="noopener noreferrer" aria-label="GitHub">
                                 <i class="fab fa-github"></i>
                             </a>
-                            <a href="#" class="social-icon">
+                            <a href="#" class="social-icon" aria-label="LinkedIn">
                                 <i class="fab fa-linkedin-in"></i>
                             </a>
-                            <a href="#" class="social-icon">
+                            <a href="#" class="social-icon" aria-label="Twitter">
                                 <i class="fab fa-twitter"></i>
-                            </a>
-                            <a href="#" class="social-icon">
-                                <i class="fab fa-dribbble"></i>
                             </a>
                         </div>
                     </div>
@@ -270,11 +326,7 @@
                         <div class="contact-info">
                             <p class="contact-item">
                                 <i class="fas fa-envelope"></i>
-                                <span>roberto@gmail.com</span>
-                            </p>
-                            <p class="contact-item">
-                                <i class="fas fa-phone"></i>
-                                <span>687 34 97 31</span>
+                                <span>studiosbzlosverdaderosmontajes@gmail.com</span>
                             </p>
                         </div>
                     </div>
@@ -289,26 +341,128 @@
         </footer>
     </div>
 
+    <!-- Script del fondo dinámico interactivo y animaciones -->
     <script>
-        // Animación para las tarjetas al hacer scroll
         document.addEventListener('DOMContentLoaded', function () {
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
+            // 1. Efecto spotlight que sigue al cursor
+            let targetX = window.innerWidth / 2;
+            let targetY = window.innerHeight / 2;
 
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('animate-in');
+            window.addEventListener('pointermove', function (e) {
+                targetX = e.clientX;
+                targetY = e.clientY;
+                document.documentElement.style.setProperty('--mouse-x', targetX + 'px');
+                document.documentElement.style.setProperty('--mouse-y', targetY + 'px');
+            }, { passive: true });
+
+            // 2. Canvas interactivo de constelación / red de partículas dinámicas
+            const canvas = document.getElementById('interactive-canvas');
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                let width = 0;
+                let height = 0;
+                let particles = [];
+                const particleCount = Math.min(Math.floor(window.innerWidth / 16), 80);
+                const connectionDistance = 140;
+                const mouseRadius = 190;
+
+                function resize() {
+                    width = canvas.width = window.innerWidth;
+                    height = canvas.height = window.innerHeight;
+                }
+                resize();
+                window.addEventListener('resize', resize, { passive: true });
+
+                class Particle {
+                    constructor() {
+                        this.x = Math.random() * width;
+                        this.y = Math.random() * height;
+                        this.vx = (Math.random() - 0.5) * 0.75;
+                        this.vy = (Math.random() - 0.5) * 0.75;
+                        this.radius = Math.random() * 2 + 1;
+                        this.baseAlpha = Math.random() * 0.35 + 0.15;
                     }
-                });
-            }, observerOptions);
 
-            // Observar todas las tarjetas de proyecto
-            document.querySelectorAll('.modern-card').forEach(card => {
-                observer.observe(card);
-            });
+                    update() {
+                        this.x += this.vx;
+                        this.y += this.vy;
+
+                        if (this.x < 0) this.x = width;
+                        else if (this.x > width) this.x = 0;
+
+                        if (this.y < 0) this.y = height;
+                        else if (this.y > height) this.y = 0;
+
+                        // Interacción suave con el puntero
+                        const dx = targetX - this.x;
+                        const dy = targetY - this.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < mouseRadius) {
+                            const force = (mouseRadius - dist) / mouseRadius;
+                            this.x -= (dx / dist) * force * 1.6;
+                            this.y -= (dy / dist) * force * 1.6;
+                        }
+                    }
+
+                    draw() {
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                        ctx.fillStyle = `rgba(30, 41, 59, ${this.baseAlpha})`;
+                        ctx.fill();
+                    }
+                }
+
+                for (let i = 0; i < particleCount; i++) {
+                    particles.push(new Particle());
+                }
+
+                function animate() {
+                    ctx.clearRect(0, 0, width, height);
+
+                    // Conexiones entre partículas cercanas
+                    for (let i = 0; i < particles.length; i++) {
+                        for (let j = i + 1; j < particles.length; j++) {
+                            const dx = particles[i].x - particles[j].x;
+                            const dy = particles[i].y - particles[j].y;
+                            const dist = Math.sqrt(dx * dx + dy * dy);
+
+                            if (dist < connectionDistance) {
+                                const alpha = (1 - dist / connectionDistance) * 0.18;
+                                ctx.beginPath();
+                                ctx.moveTo(particles[i].x, particles[i].y);
+                                ctx.lineTo(particles[j].x, particles[j].y);
+                                ctx.strokeStyle = `rgba(71, 85, 105, ${alpha})`;
+                                ctx.lineWidth = 0.8;
+                                ctx.stroke();
+                            }
+                        }
+                    }
+
+                    // Conexión dinámica con el cursor
+                    for (let i = 0; i < particles.length; i++) {
+                        const dx = targetX - particles[i].x;
+                        const dy = targetY - particles[i].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+
+                        if (dist < mouseRadius) {
+                            const alpha = (1 - dist / mouseRadius) * 0.35;
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(targetX, targetY);
+                            ctx.strokeStyle = `rgba(15, 23, 42, ${alpha})`;
+                            ctx.lineWidth = 1;
+                            ctx.stroke();
+                        }
+
+                        particles[i].update();
+                        particles[i].draw();
+                    }
+
+                    requestAnimationFrame(animate);
+                }
+
+                animate();
+            }
         });
     </script>
 </body>
