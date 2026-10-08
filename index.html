@@ -588,7 +588,7 @@
                 animateTitle3D();
             }
 
-            // 4. Canvas interactivo: Fluid Plasma & Dendritic Lightning Tendrils (Blanco & Gris Alto Contraste)
+            // 4. Canvas interactivo: Electric Lightning Bolts (rayos auténticos zigzag)
             const canvas = document.getElementById('interactive-canvas');
             if (canvas) {
                 const ctx = canvas.getContext('2d');
@@ -601,272 +601,228 @@
                 };
                 window.addEventListener('resize', resizeCanvas, { passive: true });
 
-                // Sistema de tendrilos fractales y plasma reactivo
-                const tendrils = [];
+                const bolts = [];
                 const sparks = [];
-                const maxTendrils = 120;
-                const maxSparks = 90;
+                const maxBolts = 22;  // pocos — es un detalle, no protagonista
+                const maxSparks = 25;
 
                 let lastX = width / 2;
                 let lastY = height * 0.35;
-                let mouseSpeed = 0;
                 let globalTime = 0;
 
-                class Tendril {
-                    constructor(x, y, vx, vy, branchLevel = 0, energy = 1.0) {
-                        this.x = x;
-                        this.y = y;
-                        this.vx = vx;
-                        this.vy = vy;
+                // ─── Genera el trayecto completo de un rayo de forma instantánea ───
+                function generateLightningPath(startX, startY, dirAngle, segmentCount, spread, segLen) {
+                    const pts = [{ x: startX, y: startY }];
+                    let angle = dirAngle;
+                    let cx = startX;
+                    let cy = startY;
+                    for (let i = 0; i < segmentCount; i++) {
+                        // Desviación angulosa agresiva — esto es lo que da el aspecto de rayo
+                        angle += (Math.random() - 0.5) * spread;
+                        const len = segLen * (0.6 + Math.random() * 0.9);
+                        cx += Math.cos(angle) * len;
+                        cy += Math.sin(angle) * len;
+                        pts.push({ x: cx, y: cy });
+                    }
+                    return pts;
+                }
+
+                // ─── Clase Rayo Eléctrico ───
+                class LightningBolt {
+                    constructor(startX, startY, dirAngle, branchLevel = 0, energy = 1.0) {
                         this.branchLevel = branchLevel;
                         this.energy = energy;
-                        this.points = [{ x, y, alpha: energy, width: (3.5 - branchLevel * 0.8) * energy }];
-                        this.maxPoints = Math.floor(22 + Math.random() * 20 - branchLevel * 4);
                         this.life = 1.0;
-                        this.decay = 0.018 + Math.random() * 0.018 + branchLevel * 0.01;
-                        this.curlSeed = Math.random() * 100;
+
+                        // Rayos cortos y discretos — elemento secundario
+                        const segs = branchLevel === 0
+                            ? Math.floor(6 + Math.random() * 5)
+                            : Math.floor(3 + Math.random() * 4);
+                        const spread = branchLevel === 0 ? 0.85 : 1.1;
+                        const segLen = branchLevel === 0 ? 18 : 11;
+
+                        this.points = generateLightningPath(startX, startY, dirAngle, segs, spread, segLen);
+
+                        // Desvanecimiento muy rápido — flash fugaz
+                        this.decay = branchLevel === 0
+                            ? 0.07 + Math.random() * 0.05
+                            : 0.10 + Math.random() * 0.06;
+
                         this.branched = false;
+                        this.hasBranched = false;
                     }
 
-                    update(time) {
+                    update() {
                         this.life -= this.decay;
                         if (this.life <= 0) return false;
 
-                        // Curl noise y física de fluidos
-                        const noise = Math.sin(this.y * 0.007 + this.curlSeed + time * 1.5) *
-                                      Math.cos(this.x * 0.007 + this.curlSeed + time * 1.2);
-                        const angle = noise * 2.8;
-                        
-                        this.vx = this.vx * 0.94 + Math.cos(angle) * 0.45;
-                        this.vy = this.vy * 0.94 + Math.sin(angle) * 0.45;
-
-                        this.x += this.vx;
-                        this.y += this.vy;
-
-                        const curWidth = Math.max(0.4, (3.2 - this.branchLevel * 0.7) * this.life * this.energy);
-                        this.points.unshift({
-                            x: this.x,
-                            y: this.y,
-                            alpha: this.life * this.energy,
-                            width: curWidth
-                        });
-
-                        if (this.points.length > this.maxPoints) {
-                            this.points.pop();
-                        }
-
-                        // Ramificación fractal (como rayos y vetas orgánicas)
-                        if (!this.branched && this.branchLevel < 2 && this.points.length > 6 && Math.random() < 0.22) {
-                            this.branched = true;
-                            const branchAngle = Math.atan2(this.vy, this.vx) + (Math.random() - 0.5) * 1.2;
-                            const branchSpeed = Math.hypot(this.vx, this.vy) * 0.85;
-                            if (tendrils.length < maxTendrils) {
-                                tendrils.push(new Tendril(
-                                    this.x,
-                                    this.y,
-                                    Math.cos(branchAngle) * branchSpeed,
-                                    Math.sin(branchAngle) * branchSpeed,
-                                    this.branchLevel + 1,
-                                    this.energy * 0.8
-                                ));
+                        // Ramificación muy ocasional (sólo nivel 0→1, baja probabilidad)
+                        if (!this.hasBranched && this.branchLevel < 1 && this.life < 0.65 && Math.random() < 0.2) {
+                            this.hasBranched = true;
+                            if (bolts.length < maxBolts) {
+                                const srcIdx = Math.floor(this.points.length * (0.3 + Math.random() * 0.3));
+                                const src = this.points[srcIdx];
+                                const prev = this.points[Math.max(0, srcIdx - 1)];
+                                const parentAngle = Math.atan2(src.y - prev.y, src.x - prev.x);
+                                const branchAngle = parentAngle + (Math.random() < 0.5 ? 1 : -1) * (0.6 + Math.random() * 0.7);
+                                bolts.push(new LightningBolt(src.x, src.y, branchAngle, 1, this.energy * 0.55));
                             }
                         }
 
-                        // Generación de micro-chispas de plasma
-                        if (Math.random() < 0.15 && sparks.length < maxSparks) {
-                            sparks.push(new Spark(this.x, this.y, this.vx * 0.5, this.vy * 0.5));
+                        // Chispas muy escasas
+                        if (this.life > 0.6 && Math.random() < 0.08 && sparks.length < maxSparks) {
+                            const tip = this.points[this.points.length - 1];
+                            sparks.push(new Spark(tip.x, tip.y));
                         }
 
                         return true;
                     }
 
-                    draw(ctx) {
+                    draw() {
                         if (this.points.length < 2) return;
+                        const alpha = this.life * this.energy;
 
-                        // 1. Capa externa: Halo gris grafito profundo
+                        const baseWidth = this.branchLevel === 0 ? 1.4 : 0.8;
+
+                        // Capa 1: Halo muy tenue — apenas visible
                         ctx.beginPath();
                         ctx.moveTo(this.points[0].x, this.points[0].y);
                         for (let i = 1; i < this.points.length; i++) {
-                            const p0 = this.points[i - 1];
-                            const p1 = this.points[i];
-                            const xc = (p0.x + p1.x) / 2;
-                            const yc = (p0.y + p1.y) / 2;
-                            ctx.quadraticCurveTo(p0.x, p0.y, xc, yc);
+                            ctx.lineTo(this.points[i].x, this.points[i].y);
                         }
-                        ctx.strokeStyle = `rgba(148, 163, 184, ${this.life * 0.25})`;
-                        ctx.lineWidth = Math.max(1, this.points[0].width * 2.8);
+                        ctx.strokeStyle = `rgba(160, 175, 200, ${alpha * 0.10})`;
+                        ctx.lineWidth = baseWidth * 3.5;
                         ctx.lineCap = 'round';
+                        ctx.lineJoin = 'round';
                         ctx.stroke();
 
-                        // 2. Capa media: Veta plateada brillante
+                        // Capa 2: Resplandor plata suave
                         ctx.beginPath();
                         ctx.moveTo(this.points[0].x, this.points[0].y);
                         for (let i = 1; i < this.points.length; i++) {
-                            const p0 = this.points[i - 1];
-                            const p1 = this.points[i];
-                            const xc = (p0.x + p1.x) / 2;
-                            const yc = (p0.y + p1.y) / 2;
-                            ctx.quadraticCurveTo(p0.x, p0.y, xc, yc);
+                            ctx.lineTo(this.points[i].x, this.points[i].y);
                         }
-                        ctx.strokeStyle = `rgba(226, 232, 240, ${this.life * 0.65})`;
-                        ctx.lineWidth = Math.max(0.8, this.points[0].width * 1.4);
+                        ctx.strokeStyle = `rgba(200, 215, 235, ${alpha * 0.32})`;
+                        ctx.lineWidth = baseWidth * 1.2;
                         ctx.stroke();
 
-                        // 3. Núcleo central: Blanco puro incandescente de alto contraste
+                        // Capa 3: Núcleo fino — el zigzag legible pero discreto
                         ctx.beginPath();
                         ctx.moveTo(this.points[0].x, this.points[0].y);
                         for (let i = 1; i < this.points.length; i++) {
-                            const p0 = this.points[i - 1];
-                            const p1 = this.points[i];
-                            const xc = (p0.x + p1.x) / 2;
-                            const yc = (p0.y + p1.y) / 2;
-                            ctx.quadraticCurveTo(p0.x, p0.y, xc, yc);
+                            ctx.lineTo(this.points[i].x, this.points[i].y);
                         }
-                        ctx.strokeStyle = `rgba(255, 255, 255, ${this.life * 0.95})`;
-                        ctx.lineWidth = Math.max(0.5, this.points[0].width * 0.6);
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${alpha * 0.52})`;
+                        ctx.lineWidth = Math.max(0.4, baseWidth * 0.45);
                         ctx.stroke();
                     }
                 }
 
+                // ─── Clase Chispa (muy pequeña y discreta) ───
                 class Spark {
-                    constructor(x, y, vx, vy) {
+                    constructor(x, y) {
                         this.x = x;
                         this.y = y;
-                        this.vx = (Math.random() - 0.5) * 1.8 + vx * 0.4;
-                        this.vy = (Math.random() - 0.5) * 1.8 + vy * 0.4;
-                        this.size = Math.random() * 2 + 0.8;
+                        this.vx = (Math.random() - 0.5) * 1.8;
+                        this.vy = (Math.random() - 0.5) * 1.8;
+                        this.size = Math.random() * 1.2 + 0.4;
                         this.life = 1.0;
-                        this.decay = 0.025 + Math.random() * 0.03;
+                        this.decay = 0.08 + Math.random() * 0.08;
                     }
-
                     update() {
                         this.life -= this.decay;
                         this.x += this.vx;
                         this.y += this.vy;
-                        this.vx *= 0.96;
-                        this.vy *= 0.96;
+                        this.vx *= 0.9;
+                        this.vy *= 0.9;
                         return this.life > 0;
                     }
-
-                    draw(ctx) {
+                    draw() {
+                        const a = this.life * 0.35;
                         ctx.beginPath();
                         ctx.arc(this.x, this.y, this.size * this.life, 0, Math.PI * 2);
-                        ctx.fillStyle = `rgba(255, 255, 255, ${this.life * 0.9})`;
-                        ctx.shadowColor = '#ffffff';
-                        ctx.shadowBlur = 8;
+                        ctx.fillStyle = `rgba(230, 240, 255, ${a})`;
                         ctx.fill();
-                        ctx.shadowBlur = 0;
                     }
                 }
 
-                // Generador de estelas orgánicas al mover el puntero
-                const emitFluid = (x, y, dx, dy, isHeroFocus = false) => {
-                    const speed = Math.hypot(dx, dy);
-                    const count = isHeroFocus ? Math.min(6, Math.floor(speed * 0.3) + 2) : Math.min(3, Math.floor(speed * 0.15) + 1);
-                    const energy = isHeroFocus ? 1.25 : 0.95;
+                // ─── Emitir 1 rayo por movimiento rápido ───
+                const emitLightning = (x, y, dx, dy, isNearTitle = false) => {
+                    if (bolts.length >= maxBolts) return;
+                    // Sólo 1 rayo por evento (2 si está cerca del nombre)
+                    const count = isNearTitle ? 2 : 1;
+                    const energy = isNearTitle ? 0.75 : 0.55;
 
                     for (let i = 0; i < count; i++) {
-                        if (tendrils.length >= maxTendrils) break;
-                        const spreadAngle = (Math.random() - 0.5) * (isHeroFocus ? 1.8 : 1.2);
-                        const baseAngle = Math.atan2(dy, dx) + spreadAngle;
-                        const tendrilSpeed = (Math.random() * 3 + 2.5) * (isHeroFocus ? 1.3 : 1.0);
-                        
-                        tendrils.push(new Tendril(
-                            x + (Math.random() - 0.5) * 12,
-                            y + (Math.random() - 0.5) * 12,
-                            Math.cos(baseAngle) * tendrilSpeed,
-                            Math.sin(baseAngle) * tendrilSpeed,
+                        if (bolts.length >= maxBolts) break;
+                        const spread = isNearTitle ? 1.2 : 0.8;
+                        const baseAngle = Math.atan2(dy, dx) + (Math.random() - 0.5) * spread;
+                        bolts.push(new LightningBolt(
+                            x + (Math.random() - 0.5) * 6,
+                            y + (Math.random() - 0.5) * 6,
+                            baseAngle,
                             0,
                             energy
                         ));
                     }
                 };
 
-                // Detección de foco en la sección del nombre
                 const heroTitleEl = document.getElementById('hero-title');
 
                 window.addEventListener('pointermove', (e) => {
                     const dx = e.clientX - lastX;
                     const dy = e.clientY - lastY;
-                    mouseSpeed = Math.hypot(dx, dy);
+                    const speed = Math.hypot(dx, dy);
 
                     let isNearTitle = false;
                     if (heroTitleEl) {
                         const r = heroTitleEl.getBoundingClientRect();
-                        const distToCenter = Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2));
-                        if (distToCenter < 280) {
-                            isNearTitle = true;
-                        }
+                        const dist = Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2));
+                        if (dist < 300) isNearTitle = true;
                     }
 
-                    if (mouseSpeed > 1.2) {
-                        emitFluid(e.clientX, e.clientY, dx, dy, isNearTitle);
+                    // Umbral: se activa con movimiento moderado-decidido
+                    if (speed > 5) {
+                        emitLightning(e.clientX, e.clientY, dx, dy, isNearTitle);
                     }
 
                     lastX = e.clientX;
                     lastY = e.clientY;
                 }, { passive: true });
 
-                // Pulso ambiental orgánico automático (mantiene el fondo sutilmente vivo)
-                let lastAmbientPulse = 0;
-                const triggerAmbientHeroPulse = () => {
-                    if (heroTitleEl && tendrils.length < 35) {
-                        const r = heroTitleEl.getBoundingClientRect();
-                        const originX = r.left + Math.random() * r.width;
-                        const originY = r.top + Math.random() * r.height;
-                        const angle = Math.random() * Math.PI * 2;
-                        tendrils.push(new Tendril(
-                            originX,
-                            originY,
-                            Math.cos(angle) * (Math.random() * 2 + 1.5),
-                            Math.sin(angle) * (Math.random() * 2 + 1.5),
-                            0,
-                            0.75
-                        ));
-                    }
-                };
-
-                // Bucle de renderizado fluido
-                function renderFluidSimulation() {
+                // ─── Loop de renderizado ───
+                function renderLightning() {
                     globalTime += 0.016;
 
-                    // Persistencia y disolución suave tipo humo/plasma
-                    ctx.fillStyle = 'rgba(8, 8, 8, 0.22)';
+                    // Limpieza rápida: los flashes no persisten demasiado
+                    ctx.fillStyle = 'rgba(6, 6, 8, 0.5)';
                     ctx.fillRect(0, 0, width, height);
 
                     ctx.globalCompositeOperation = 'screen';
 
-                    // Pulso ambiental ocasional cerca del nombre
-                    if (globalTime - lastAmbientPulse > 1.8) {
-                        triggerAmbientHeroPulse();
-                        lastAmbientPulse = globalTime;
-                    }
-
-                    // Actualizar y dibujar tendrilos
-                    for (let i = tendrils.length - 1; i >= 0; i--) {
-                        const t = tendrils[i];
-                        if (t.update(globalTime)) {
-                            t.draw(ctx);
+                    for (let i = bolts.length - 1; i >= 0; i--) {
+                        const b = bolts[i];
+                        if (b.update()) {
+                            b.draw();
                         } else {
-                            tendrils.splice(i, 1);
+                            bolts.splice(i, 1);
                         }
                     }
 
-                    // Actualizar y dibujar micro-chispas incandescentes
                     for (let i = sparks.length - 1; i >= 0; i--) {
                         const s = sparks[i];
                         if (s.update()) {
-                            s.draw(ctx);
+                            s.draw();
                         } else {
                             sparks.splice(i, 1);
                         }
                     }
 
                     ctx.globalCompositeOperation = 'source-over';
-                    requestAnimationFrame(renderFluidSimulation);
+                    requestAnimationFrame(renderLightning);
                 }
 
-                renderFluidSimulation();
+                renderLightning();
             }
 
             // 5. Efecto 3D Tilt SUAVE y CALIBRADO en tarjetas al mover el ratón
