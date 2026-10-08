@@ -4,464 +4,1013 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STUDIOS BZ - DistribuTech Pro</title>
+    <title>Roberto Borrallo Álvarez | Software Engineer & Full-Stack Developer</title>
     <meta name="description"
-        content="Portafolio de Studios BZ. Descubre DistribuTech Pro: plataforma B2B de distribución multisectorial desarrollada con React, TypeScript y Supabase.">
+        content="Portfolio profesional de Roberto Borrallo Álvarez. Especialista en ingeniería de software, arquitectura full-stack, React, TypeScript, PostgreSQL y soluciones SaaS empresariales.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=2">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css?v=5">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
-    <!-- Fondo dinámico e interactivo -->
+    <!-- Barra de progreso de lectura en scroll -->
+    <div class="scroll-progress-bar" id="scroll-progress" aria-hidden="true"></div>
+
+    <!-- Cursor interactivo con luz ambiente -->
+    <div class="cursor-glow" id="cursor-glow" aria-hidden="true"></div>
+
+    <!-- Fondo interactivo con orbes monocromáticos y canvas geométrico -->
     <div class="dynamic-background-container" aria-hidden="true">
-        <div class="ambient-glow glow-1"></div>
-        <div class="ambient-glow glow-2"></div>
-        <div class="ambient-glow glow-3"></div>
+        <div class="ambient-glow glow-mono-1"></div>
+        <div class="ambient-glow glow-mono-2"></div>
+        <div class="ambient-glow glow-mono-3"></div>
         <div class="tech-grid-overlay"></div>
-        <div class="mouse-spotlight"></div>
         <canvas id="interactive-canvas"></canvas>
     </div>
 
-    <div class="container" id="inicio">
-        <!-- Header -->
-        <header class="header">
-            <div class="header__content">
-                <div class="header__left">
-                    <div class="header__logo">
-                        <div class="logo-circle">
-                            <img src="logo-studios-bz.png" alt="STUDIOS BZ Logo" class="logo">
-                        </div>
-                    </div>
-                    <div class="header-titles">
-                        <h1 class="header__title">STUDIOS BZ</h1>
-                        <p class="header__subtitle">LOS VERDADEROS MONTAJES</p>
-                    </div>
+    <div class="page-wrapper">
+        <!-- Navegación Flotante Glassmorphism -->
+        <header class="navbar-wrapper">
+            <nav class="navbar glass-card">
+                <a href="#inicio" class="nav-brand">
+                    <span class="brand-monogram">RB</span>
+                    <span class="brand-text">Roberto Borrallo</span>
+                </a>
+
+                <ul class="nav-menu" id="nav-menu">
+                    <li><a href="#inicio" class="nav-link active"><i class="fas fa-home"></i> <span>Inicio</span></a></li>
+                    <li><a href="#sobre-mi" class="nav-link"><i class="fas fa-user"></i> <span>Perfil</span></a></li>
+                    <li><a href="#proyecto" class="nav-link"><i class="fas fa-layer-group"></i> <span>Proyecto</span></a></li>
+                    <li><a href="#habilidades" class="nav-link"><i class="fas fa-code"></i> <span>Stack</span></a></li>
+                    <li><a href="#contacto" class="nav-link"><i class="fas fa-envelope"></i> <span>Contacto</span></a></li>
+                </ul>
+
+                <div class="nav-actions">
+                    <a href="https://github.com/robertorayo" target="_blank" rel="noopener noreferrer" class="nav-icon-btn" title="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="nav-icon-btn" title="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="#contacto" class="btn-primary-sm">
+                        <span>Hablemos</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
                 </div>
-                <nav class="header__nav">
-                    <ul class="nav__list">
-                        <li class="nav__item"><a href="#inicio" class="nav__link"><i class="fas fa-home"></i> Inicio</a>
-                        </li>
-                        <li class="nav__item"><a href="#proyectos" class="nav__link active"><i
-                                    class="fas fa-project-diagram"></i> Proyecto</a></li>
-                        <li class="nav__item"><a href="#contacto" class="nav__link"><i class="fas fa-envelope"></i>
-                                Contacto</a></li>
-                    </ul>
-                </nav>
-            </div>
+            </nav>
         </header>
 
         <main class="main-content">
-            <!-- Sección de Proyecto: Exclusivamente DistribuTech Pro -->
-            <section class="projects-section" id="proyectos">
-                <div class="section-header">
-                    <div class="spotlight-tag">
-                        <span class="spotlight-pulse"></span>
-                        <i class="fas fa-cube"></i> PROYECTO PRINCIPAL & PÚBLICO
+            <!-- SECCIÓN HERO -->
+            <section class="hero-section" id="inicio">
+                <div class="hero-content">
+                    <div class="hero-badge reveal-fade">
+                        <span class="status-dot"></span>
+                        <span class="badge-text">DISPONIBLE PARA PROYECTOS</span>
+                        <span class="badge-separator">|</span>
+                        <span class="badge-time" id="local-time"><i class="far fa-clock"></i> MADRID <span id="clock-display">--:--:--</span></span>
                     </div>
-                    <h2 class="section-title">PROYECTO DESTACADO <span class="title-line"></span></h2>
-                    <p class="section-subtitle">
-                        Explora la arquitectura y capacidades de <strong>DistribuTech Pro</strong>, el proyecto público
-                        actual: una plataforma B2B moderna desarrollada como Proyecto Fin de Grado.
+
+                    <!-- Titular con efecto 3D Reactivo al ratón y scroll -->
+                    <div class="hero-title-container">
+                        <h1 class="hero-title reveal-fade" id="hero-title">
+                            Roberto Borrallo Álvarez
+                        </h1>
+                    </div>
+
+                    <p class="hero-description reveal-fade">
+                        Especializado en el diseño y desarrollo de arquitecturas web modernas, sistemas SaaS escalables y soluciones empresariales de alto rendimiento con <strong>React</strong>, <strong>TypeScript</strong>, <strong>Supabase</strong> y <strong>PostgreSQL</strong>.
                     </p>
+
+                    <div class="hero-stats-row reveal-fade">
+                        <div class="hero-stat-item">
+                            <span class="stat-number">Full-Stack</span>
+                            <span class="stat-label">Arquitectura Web & Cloud</span>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="hero-stat-item">
+                            <span class="stat-number">Type-Safe</span>
+                            <span class="stat-label">TypeScript & Clean Code</span>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="hero-stat-item">
+                            <span class="stat-number">B2B SaaS</span>
+                            <span class="stat-label">Sistemas de Alta Disponibilidad</span>
+                        </div>
+                    </div>
+
+                    <div class="hero-cta-group reveal-fade">
+                        <a href="#proyecto" class="btn-hero-primary magnetic-btn">
+                            <i class="fas fa-cube"></i>
+                            <span>Explorar Proyecto Destacado</span>
+                            <i class="fas fa-arrow-down arrow-animated"></i>
+                        </a>
+                        <a href="https://github.com/robertorayo" target="_blank" rel="noopener noreferrer" class="btn-hero-secondary magnetic-btn">
+                            <i class="fab fa-github"></i>
+                            <span>GitHub Profile</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="mailto:robertobamym@gmail.com" class="btn-hero-secondary magnetic-btn">
+                            <i class="fas fa-paper-plane"></i>
+                            <span>Contactar</span>
+                        </a>
+                    </div>
                 </div>
 
-                <!-- Showcase Destacado de DistribuTech Pro -->
-                <article class="featured-showcase-card">
-                    <!-- Barra superior de estado -->
-                    <div class="showcase-topbar">
-                        <div class="topbar-left">
-                            <span class="badge-tfg"><i class="fas fa-graduation-cap"></i> Proyecto Fin de Grado</span>
-                            <span class="badge-sector"><i class="fas fa-industry"></i> B2B Multisectorial</span>
-                        </div>
-                        <div class="topbar-right">
-                            <span class="badge-status-live">
-                                <span class="pulse-indicator"></span>
-                                Repositorio Público Activo
-                            </span>
-                        </div>
+                <div class="hero-scroll-indicator">
+                    <a href="#sobre-mi" aria-label="Desplazarse hacia abajo">
+                        <span class="mouse-scroll-wheel"></span>
+                    </a>
+                </div>
+            </section>
+
+            <!-- CINTA TICKER / MARQUEE MINIMALISTA (AWWWARDS REFERENCE) -->
+            <div class="marquee-strip-wrapper reveal-fade" aria-hidden="true">
+                <div class="marquee-track">
+                    <div class="marquee-group">
+                        <span>FULL-STACK ARCHITECTURE</span>
+                        <span class="marquee-sep">&bull;</span>
+                        <span>TYPESCRIPT</span>
+                        <span class="marquee-sep">&bull;</span>
+                        <span>REACT 18</span>
+                        <span class="marquee-sep">&bull;</span>
+                        <span>POSTGRESQL &amp; SUPABASE</span>
+                        <span class="marquee-sep">&bull;</span>
+                        <span>SCALABLE SAAS</span>
+                        <span class="marquee-sep">&bull;</span>
+                        <span>CLEAN CODE</span>
+                        <span class="marquee-sep">&bull;</span>
+                        <span>SYSTEM DESIGN</span>
+                        <span class="marquee-sep">&bull;</span>
+                        <span>UI/UX PRECISION</span>
+                        <span class="marquee-sep">&bull;</span>
+                    </div>
+                    <div class="marquee-group" aria-hidden="true">
+                        <span>FULL-STACK ARCHITECTURE</span>
+                        <span class="marquee-sep">&bull;</span>
+                        <span>TYPESCRIPT</span>
+                        <span class="marquee-sep">&bull;</span>
+                        <span>REACT 18</span>
+                        <span class="marquee-sep">&bull;</span>
+                        <span>POSTGRESQL &amp; SUPABASE</span>
+                        <span class="marquee-sep">&bull;</span>
+                        <span>SCALABLE SAAS</span>
+                        <span class="marquee-sep">&bull;</span>
+                        <span>CLEAN CODE</span>
+                        <span class="marquee-sep">&bull;</span>
+                        <span>SYSTEM DESIGN</span>
+                        <span class="marquee-sep">&bull;</span>
+                        <span>UI/UX PRECISION</span>
+                        <span class="marquee-sep">&bull;</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN SOBRE MÍ / FILOSOFÍA DE INGENIERÍA -->
+            <section class="profile-section" id="sobre-mi">
+                <div class="section-container">
+                    <div class="section-header-compact reveal-fade">
+                        <span class="section-tag"><span class="tag-mono-idx">01 //</span> <i class="fas fa-terminal"></i> ENFOQUE TÉCNICO</span>
+                        <h2 class="section-heading">Ingeniería orientada a la solidez, rendimiento y experiencia</h2>
                     </div>
 
-                    <div class="showcase-grid-layout">
-                        <!-- Columna Izquierda: Mockup de interfaz de software realista e interactivo -->
-                        <div class="showcase-visual-wrapper">
-                            <div class="mockup-window">
-                                <div class="mockup-window-header">
-                                    <div class="window-controls">
-                                        <span class="window-dot dot-close"></span>
-                                        <span class="window-dot dot-minimize"></span>
-                                        <span class="window-dot dot-expand"></span>
-                                    </div>
-                                    <div class="window-url-bar">
-                                        <i class="fas fa-shield-alt"></i>
-                                        <span>https://distributech-pro.app/dashboard</span>
-                                    </div>
-                                    <div class="window-env-badge">
-                                        <i class="fas fa-bolt"></i> Vite + React
-                                    </div>
-                                </div>
+                    <div class="profile-grid">
+                        <div class="profile-card glass-card tilt-card reveal-fade">
+                            <div class="profile-card-icon">
+                                <i class="fas fa-sitemap"></i>
+                            </div>
+                            <h3>Arquitectura Robusta</h3>
+                            <p>Modelado de datos optimizado en 3FN, esquemas dinámicos JSONB, políticas de seguridad RLS e interfaces reactivas modulares diseñadas para escalar.</p>
+                        </div>
 
-                                <div class="mockup-window-body">
-                                    <!-- Cabecera de la aplicación dentro del Mockup -->
-                                    <div class="mockup-app-header">
-                                        <div class="mockup-app-brand">
-                                            <div class="brand-icon"><i class="fas fa-boxes-stacked"></i></div>
-                                            <div>
-                                                <div class="brand-name">DistribuTech Pro</div>
-                                                <div class="brand-role">Sesión: Administrador / Comercial</div>
-                                            </div>
-                                        </div>
-                                        <div class="mockup-app-search">
-                                            <i class="fas fa-search"></i>
-                                            <span>Buscar en ferretería, fontanería, riego...</span>
-                                        </div>
-                                    </div>
+                        <div class="profile-card glass-card tilt-card reveal-fade">
+                            <div class="profile-card-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h3>Seguridad & Control Granular</h3>
+                            <p>Implementación rigurosa de control de acceso basado en roles (RBAC), autenticación robusta y cifrado de datos en capa de base de datos.</p>
+                        </div>
 
-                                    <!-- KPIs del Mockup -->
-                                    <div class="mockup-kpis">
-                                        <div class="kpi-card">
-                                            <div class="kpi-icon blue"><i class="fas fa-layer-group"></i></div>
-                                            <div class="kpi-data">
-                                                <span class="kpi-value">Catálogo 3FN</span>
-                                                <span class="kpi-label">Atributos JSONB</span>
-                                            </div>
-                                        </div>
-                                        <div class="kpi-card">
-                                            <div class="kpi-icon green"><i class="fas fa-hand-holding-dollar"></i></div>
-                                            <div class="kpi-data">
-                                                <span class="kpi-value">Cotizaciones</span>
-                                                <span class="kpi-label">Baremación en Vivo</span>
-                                            </div>
-                                        </div>
-                                        <div class="kpi-card">
-                                            <div class="kpi-icon purple"><i class="fas fa-user-lock"></i></div>
-                                            <div class="kpi-data">
-                                                <span class="kpi-value">RBAC + RLS</span>
-                                                <span class="kpi-label">Supabase Auth</span>
-                                            </div>
-                                        </div>
-                                    </div>
+                        <div class="profile-card glass-card tilt-card reveal-fade">
+                            <div class="profile-card-icon">
+                                <i class="fas fa-wand-magic-sparkles"></i>
+                            </div>
+                            <h3>Experiencia de Usuario Premium</h3>
+                            <p>Interfaces fluidas, intuitivas y ultra reactivas con micro-interacciones pulidas, diseño responsivo y optimización de rendimiento en cliente.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-                                    <!-- Fila de sub-tarjetas del Mockup -->
-                                    <div class="mockup-cards-row">
-                                        <!-- Panel 1: Flujo de Cotizaciones -->
-                                        <div class="mockup-subcard">
-                                            <div class="subcard-header">
-                                                <span><i class="fas fa-file-invoice"></i> Cotización Activa
-                                                    #COT-2025</span>
-                                                <span class="status-pill success">Aprobada</span>
-                                            </div>
-                                            <div class="subcard-content">
-                                                <div class="subcard-line">
-                                                    <span>Cliente:</span>
-                                                    <strong>Suministros Industriales S.L.</strong>
-                                                </div>
-                                                <div class="subcard-line">
-                                                    <span>Sector:</span>
-                                                    <span>Fontanería & Riego</span>
-                                                </div>
-                                                <div class="progress-track">
-                                                    <div class="progress-fill" style="width: 85%;"></div>
-                                                </div>
-                                                <div class="subcard-footer-info">
-                                                    <span>Margen: <strong class="text-highlight">24.5%</strong></span>
-                                                    <span class="subcard-price">14.850,00 €</span>
-                                                </div>
-                                            </div>
-                                        </div>
+            <!-- SECCIÓN PROYECTO DESTACADO: DISTRIBUTTECH PRO -->
+            <section class="project-section" id="proyecto">
+                <div class="section-container">
+                    <div class="section-header reveal-fade">
+                        <div class="spotlight-pill">
+                            <span class="pulse-beacon"></span>
+                            <span class="tag-mono-idx">02 //</span>
+                            <span>PROYECTO DESTACADO</span>
+                        </div>
+                        <h2 class="section-title">DistribuTech Pro</h2>
+                        <p class="section-subtitle">
+                            Plataforma integral SaaS B2B para la digitalización, presupuestación y gestión operativa de distribución mayorista multisectorial.
+                        </p>
+                    </div>
 
-                                        <!-- Panel 2: Esquema Técnico JSONB -->
-                                        <div class="mockup-subcard">
-                                            <div class="subcard-header">
-                                                <span><i class="fas fa-code"></i> Ficha Técnica JSONB</span>
-                                                <span class="status-pill dark">PostgreSQL</span>
-                                            </div>
-                                            <div class="subcard-code">
-                                                <span class="code-key">"sector"</span>: <span
-                                                    class="code-str">"Fontanería"</span>,
-                                                <span class="code-key">"diametro"</span>: <span class="code-str">"32mm
-                                                    PE100"</span>,
-                                                <span class="code-key">"presion_pn"</span>: <span
-                                                    class="code-num">16</span>,
-                                                <span class="code-key">"certificacion"</span>: <span
-                                                    class="code-str">"AENOR"</span>
-                                            </div>
-                                            <div class="subcard-tags">
-                                                <span class="sub-tag">Ferretería</span>
-                                                <span class="sub-tag">Fontanería</span>
-                                                <span class="sub-tag">Riego</span>
-                                                <span class="sub-tag">Industrial</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Pie del Mockup -->
-                                    <div class="mockup-bottom-bar">
-                                        <div class="tech-indicator">
-                                            <i class="fas fa-check-double"></i> Arquitectura Full Stack React +
-                                            TypeScript + Supabase + PostgreSQL
-                                        </div>
-                                        <div class="pdf-indicator">
-                                            <i class="fas fa-file-pdf"></i> Exportación jsPDF
-                                        </div>
-                                    </div>
-                                </div>
+                    <!-- Showcase Card Principal -->
+                    <div class="project-showcase glass-card tilt-card" id="project-card">
+                        <!-- Barra superior del Showcase -->
+                        <div class="showcase-header">
+                            <div class="showcase-badges-left">
+                                <span class="badge-project-type"><i class="fas fa-layer-group"></i> Plataforma SaaS B2B</span>
+                                <span class="badge-industry"><i class="fas fa-industry"></i> Distribución Industrial</span>
+                                <span class="badge-repo-status"><span class="repo-live-dot"></span> Repositorio Público</span>
+                            </div>
+                            <div class="showcase-header-right">
+                                <a href="https://github.com/robertorayo/DistribuTech-Pro" target="_blank" rel="noopener noreferrer" class="link-github-repo">
+                                    <i class="fab fa-github"></i>
+                                    <span>robertorayo/DistribuTech-Pro</span>
+                                    <i class="fas fa-arrow-up-right-from-square"></i>
+                                </a>
                             </div>
                         </div>
 
-                        <!-- Columna Derecha: Descripción, Pilares Técnicos y Botón de Acción -->
-                        <div class="showcase-info-wrapper">
-                            <div class="info-header">
-                                <h3 class="showcase-title">DistribuTech Pro</h3>
-                                <p class="showcase-tagline">Plataforma B2B de Gestión de Distribución Multisectorial</p>
+                        <div class="showcase-body">
+                            <!-- Columna 1: Captura Real de la Aplicación en Marco de Software -->
+                            <div class="showcase-visual-col">
+                                <div class="app-mockup-frame">
+                                    <!-- Window Header -->
+                                    <div class="mockup-chrome">
+                                        <div class="chrome-dots">
+                                            <span class="chrome-dot dot-red"></span>
+                                            <span class="chrome-dot dot-yellow"></span>
+                                            <span class="chrome-dot dot-green"></span>
+                                        </div>
+                                        <div class="chrome-address-bar">
+                                            <i class="fas fa-lock"></i>
+                                            <span>https://app.distributech-pro.internal/admin/dashboard</span>
+                                        </div>
+                                        <div class="chrome-badge">
+                                            <i class="fas fa-bolt"></i> React 18 + Vite
+                                        </div>
+                                    </div>
+
+                                    <!-- Contenedor de la Imagen Real del Dashboard -->
+                                    <div class="mockup-image-wrapper">
+                                        <img src="distributech-dashboard.png" alt="DistribuTech Pro - Centro de Mando Administrativo" class="mockup-screenshot-img">
+                                        <div class="mockup-image-glow-border"></div>
+                                    </div>
+
+                                    <!-- Mockup Footer -->
+                                    <div class="mockup-footer-bar">
+                                        <span><i class="fas fa-check-circle"></i> Centro de Mando Administrativo &bull; React + TypeScript + Supabase</span>
+                                    </div>
+                                </div>
                             </div>
 
-                            <p class="showcase-description">
-                                Solución SaaS integral desarrollada para digitalizar y centralizar el flujo completo de
-                                preventa y venta mayorista en sectores industriales de alta heterogeneidad (ferretería,
-                                fontanería, climatización, riego, baño e industrial). Elimina la dispersión de canales
-                                analógicos mediante una plataforma web reactiva, escalable y con estricto control de
-                                accesos.
+                            <!-- Columna 2: Detalles Técnicos, Pilares & Acciones -->
+                            <div class="showcase-info-col">
+                                <div class="project-headline">
+                                    <span class="category-tag">Arquitectura & Desarrollo</span>
+                                    <h3>Solución SaaS B2B de Alta Disponibilidad</h3>
+                                    <p class="project-lead">
+                                        Diseñada para centralizar y optimizar el flujo completo de preventa, negociación de tarifas y venta mayorista en sectores industriales de alta heterogeneidad (ferretería, climatización, fontanería, riego y material industrial).
+                                    </p>
+                                </div>
+
+                                <!-- Pilares de Ingeniería -->
+                                <div class="pillars-stack">
+                                    <div class="pillar-row">
+                                        <div class="pillar-bullet"><i class="fas fa-database"></i></div>
+                                        <div class="pillar-desc">
+                                            <h4>Catálogo Dinámico 3FN + JSONB</h4>
+                                            <p>Estructura relacional optimizada con atributos JSONB para catalogar especificaciones técnicas complejas sin requerir migraciones estructurales.</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="pillar-row">
+                                        <div class="pillar-bullet"><i class="fas fa-hand-holding-dollar"></i></div>
+                                        <div class="pillar-desc">
+                                            <h4>Baremación de Márgenes en Tiempo Real</h4>
+                                            <p>Flujo interactivo de presupuestación entre cliente y comercial con cálculo instantáneo de costes, márgenes comerciales y conversión a pedido.</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="pillar-row">
+                                        <div class="pillar-bullet"><i class="fas fa-shield-halved"></i></div>
+                                        <div class="pillar-desc">
+                                            <h4>Seguridad RBAC & Políticas RLS</h4>
+                                            <p>Aislamiento estricto de registros mediante Row Level Security en PostgreSQL y control granular de roles (Cliente, Comercial, Administrador).</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="pillar-row">
+                                        <div class="pillar-bullet"><i class="fas fa-chart-pie"></i></div>
+                                        <div class="pillar-desc">
+                                            <h4>Analítica Visual & Exportación Documental</h4>
+                                            <p>Dashboards con métricas mediante Recharts y motor cliente de generación de cotizaciones y albaranes oficiales en formato PDF con jsPDF.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Stack de Tecnologías Utilizadas -->
+                                <div class="tech-chips-group">
+                                    <span class="tech-chip"><i class="fab fa-react"></i> React 18</span>
+                                    <span class="tech-chip"><i class="fab fa-js"></i> TypeScript 5</span>
+                                    <span class="tech-chip"><i class="fas fa-bolt"></i> Vite</span>
+                                    <span class="tech-chip"><i class="fab fa-css3-alt"></i> Tailwind CSS</span>
+                                    <span class="tech-chip"><i class="fas fa-database"></i> Supabase</span>
+                                    <span class="tech-chip"><i class="fas fa-server"></i> PostgreSQL</span>
+                                    <span class="tech-chip"><i class="fas fa-cubes"></i> Zustand</span>
+                                    <span class="tech-chip"><i class="fas fa-chart-line"></i> Recharts</span>
+                                    <span class="tech-chip"><i class="fas fa-file-pdf"></i> jsPDF</span>
+                                </div>
+
+                                <!-- CTA Principal del Proyecto -->
+                                <div class="project-actions">
+                                    <a href="https://github.com/robertorayo/DistribuTech-Pro" target="_blank" rel="noopener noreferrer" class="btn-project-cta magnetic-btn">
+                                        <i class="fab fa-github"></i>
+                                        <span>Explorar Código en GitHub</span>
+                                        <i class="fas fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN HABILIDADES / STACK TÉCNICO -->
+            <section class="skills-section" id="habilidades">
+                <div class="section-container">
+                    <div class="section-header-compact reveal-fade">
+                        <span class="section-tag"><span class="tag-mono-idx">03 //</span> <i class="fas fa-cubes"></i> COMPETENCIAS & TECNOLOGÍAS</span>
+                        <h2 class="section-heading">Conjunto de herramientas y stack de desarrollo</h2>
+                    </div>
+
+                    <div class="skills-grid">
+                        <!-- Frontend -->
+                        <div class="skill-category-card glass-card tilt-card reveal-fade">
+                            <div class="category-header">
+                                <i class="fas fa-laptop-code"></i>
+                                <h3>Frontend Engineering</h3>
+                            </div>
+                            <ul class="skills-list">
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>React 18 / Next.js</span></li>
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>TypeScript</span></li>
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>HTML5 Semántico / Vanilla CSS</span></li>
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Tailwind CSS / CSS Modules</span></li>
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Zustand / Redux / Context API</span></li>
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Responsive & Adaptive UI/UX</span></li>
+                            </ul>
+                        </div>
+
+                        <!-- Backend & Datos -->
+                        <div class="skill-category-card glass-card tilt-card reveal-fade">
+                            <div class="category-header">
+                                <i class="fas fa-server"></i>
+                                <h3>Backend & Arquitectura de Datos</h3>
+                            </div>
+                            <ul class="skills-list">
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>PostgreSQL & Modelado 3FN</span></li>
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Supabase / BaaS Architecture</span></li>
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Row Level Security (RLS) & RBAC</span></li>
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>RESTful APIs & Integraciones</span></li>
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>JSONB & Atributos Dinámicos</span></li>
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Node.js / Express</span></li>
+                            </ul>
+                        </div>
+
+                        <!-- Herramientas & Buenas Prácticas -->
+                        <div class="skill-category-card glass-card tilt-card reveal-fade">
+                            <div class="category-header">
+                                <i class="fas fa-gears"></i>
+                                <h3>Herramientas & Prácticas</h3>
+                            </div>
+                            <ul class="skills-list">
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Git / GitHub Workflows</span></li>
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Vite / Build Optimization</span></li>
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Clean Code & Patrones SOLID</span></li>
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Recharts / Visualización de Datos</span></li>
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>jsPDF / Generación Documental</span></li>
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Testing & Optimización Web</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN CTA DE CONTACTO -->
+            <section class="contact-cta-section" id="contacto">
+                <div class="section-container">
+                    <div class="contact-banner glass-card reveal-fade">
+                        <div class="contact-banner-content">
+                            <span class="section-tag"><span class="tag-mono-idx">04 //</span> <i class="fas fa-comments"></i> COMUNICACIÓN DIRECTA</span>
+                            <h2 class="contact-title">¿Interesado en colaborar o conocer más detalles de mi trabajo?</h2>
+                            <p class="contact-text">
+                                Estoy disponible para nuevos retos profesionales, proyectos de desarrollo de software y consultas sobre arquitectura técnica.
                             </p>
 
-                            <!-- Pilares clave de arquitectura -->
-                            <div class="pillars-grid">
-                                <div class="pillar-card">
-                                    <div class="pillar-icon"><i class="fas fa-database"></i></div>
-                                    <div class="pillar-text">
-                                        <h4>Catálogo Dinámico Multisectorial</h4>
-                                        <p>Esquema relacional (3FN) con atributos JSONB para catalogar especificaciones
-                                            técnicas complejas sin modificar tablas físicas.</p>
-                                    </div>
+                            <div class="email-copy-box">
+                                <div class="email-display">
+                                    <i class="fas fa-envelope"></i>
+                                    <span id="contact-email">robertobamym@gmail.com</span>
                                 </div>
-
-                                <div class="pillar-card">
-                                    <div class="pillar-icon"><i class="fas fa-comments-dollar"></i></div>
-                                    <div class="pillar-text">
-                                        <h4>Negociación y Cotizaciones B2B</h4>
-                                        <p>Flujo interactivo Cliente–Comercial en tiempo real con baremación dinámica de
-                                            márgenes comerciales y conversión a pedido.</p>
-                                    </div>
-                                </div>
-
-                                <div class="pillar-card">
-                                    <div class="pillar-icon"><i class="fas fa-shield-halved"></i></div>
-                                    <div class="pillar-text">
-                                        <h4>Seguridad RBAC y Políticas RLS</h4>
-                                        <p>Control granular de accesos por roles (Cliente, Comercial, Administrador) y
-                                            aislamiento de datos a nivel de fila en Supabase.</p>
-                                    </div>
-                                </div>
-
-                                <div class="pillar-card">
-                                    <div class="pillar-icon"><i class="fas fa-chart-pie"></i></div>
-                                    <div class="pillar-text">
-                                        <h4>Métricas en Vivo & Generación PDF</h4>
-                                        <p>Dashboards con KPIs analíticos mediante Recharts y generación cliente de
-                                            cotizaciones y albaranes oficiales con jsPDF.</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Tecnologías utilizadas -->
-                            <div class="showcase-tech-stack">
-                                <span class="tech-pill"><i class="fab fa-react"></i> React 18</span>
-                                <span class="tech-pill"><i class="fab fa-js"></i> TypeScript 5</span>
-                                <span class="tech-pill"><i class="fas fa-bolt"></i> Vite</span>
-                                <span class="tech-pill"><i class="fab fa-css3-alt"></i> Tailwind CSS</span>
-                                <span class="tech-pill"><i class="fas fa-database"></i> Supabase / PostgreSQL</span>
-                                <span class="tech-pill"><i class="fas fa-cubes"></i> Zustand</span>
-                                <span class="tech-pill"><i class="fas fa-chart-line"></i> Recharts</span>
-                                <span class="tech-pill"><i class="fas fa-file-pdf"></i> jsPDF</span>
-                            </div>
-
-                            <!-- Botón de acción principal -->
-                            <div class="showcase-actions">
-                                <a href="https://github.com/robertorayo/DistribuTech-Pro" class="btn-showcase primary"
-                                    target="_blank" rel="noopener noreferrer">
-                                    <i class="fab fa-github"></i>
-                                    <span>Ver Repositorio en GitHub</span>
-                                    <i class="fas fa-external-link-alt"></i>
+                                <button class="btn-copy-email" id="btn-copy-email" title="Copiar correo electrónico">
+                                    <i class="fas fa-copy"></i>
+                                    <span id="copy-btn-text">Copiar Email</span>
+                                </button>
+                                <a href="mailto:robertobamym@gmail.com" class="btn-send-mail" title="Enviar correo">
+                                    <i class="fas fa-arrow-up-right-from-square"></i>
+                                    <span>Escribir Mensaje</span>
                                 </a>
                             </div>
                         </div>
                     </div>
-                </article>
+                </div>
             </section>
         </main>
 
-        <footer class="footer" id="contacto">
-            <div class="footer-content">
-                <div class="footer-main">
-                    <div class="footer-brand">
-                        <div class="footer-logo">
-                            <img src="logo-studios-bz.png" alt="STUDIOS BZ Logo">
+        <!-- FOOTER ELEGANTE Y COMPLETO -->
+        <footer class="footer">
+            <div class="footer-container">
+                <div class="footer-top">
+                    <!-- Columna 1: Identidad -->
+                    <div class="footer-col-identity">
+                        <div class="footer-brand">
+                            <span class="footer-monogram">RB</span>
+                            <h3 class="footer-name">Roberto Borrallo Álvarez</h3>
                         </div>
-                        <h3 class="footer-title">STUDIOS BZ</h3>
-                        <p class="footer-tagline">Transformando ideas en experiencias digitales</p>
+                        <p class="footer-bio">
+                            Ingeniero de software y desarrollador Full-Stack enfocado en la creación de aplicaciones web escalables, intuitivas y con estándares de código de alta calidad.
+                        </p>
                     </div>
 
-                    <div class="footer-social">
-                        <h4 class="social-title">Conéctate conmigo</h4>
-                        <div class="social-icons">
-                            <a href="https://github.com/robertorayo" class="social-icon" target="_blank"
-                                rel="noopener noreferrer" aria-label="GitHub">
-                                <i class="fab fa-github"></i>
-                            </a>
-                            <a href="#" class="social-icon" aria-label="LinkedIn">
-                                <i class="fab fa-linkedin-in"></i>
-                            </a>
-                            <a href="#" class="social-icon" aria-label="Twitter">
-                                <i class="fab fa-twitter"></i>
-                            </a>
-                        </div>
+                    <!-- Columna 2: Navegación Rápida -->
+                    <div class="footer-col-links">
+                        <h4 class="footer-heading">Navegación</h4>
+                        <ul class="footer-nav-list">
+                            <li><a href="#inicio"><i class="fas fa-chevron-right"></i> Inicio</a></li>
+                            <li><a href="#sobre-mi"><i class="fas fa-chevron-right"></i> Perfil & Enfoque</a></li>
+                            <li><a href="#proyecto"><i class="fas fa-chevron-right"></i> Proyecto Destacado</a></li>
+                            <li><a href="#habilidades"><i class="fas fa-chevron-right"></i> Stack Tecnológico</a></li>
+                        </ul>
                     </div>
 
-                    <div class="footer-contact">
-                        <h4 class="contact-title">Contacto</h4>
-                        <div class="contact-info">
-                            <p class="contact-item">
+                    <!-- Columna 3: Información de Contacto Directo -->
+                    <div class="footer-col-contact">
+                        <h4 class="footer-heading">Información de Contacto</h4>
+                        <ul class="footer-contact-list">
+                            <li>
+                                <i class="fas fa-user"></i>
+                                <span><strong>Nombre:</strong> Roberto Borrallo Álvarez</span>
+                            </li>
+                            <li>
                                 <i class="fas fa-envelope"></i>
-                                <span>studiosbzlosverdaderosmontajes@gmail.com</span>
-                            </p>
+                                <span><strong>Email:</strong> <a href="mailto:robertobamym@gmail.com" class="footer-mail-link">robertobamym@gmail.com</a></span>
+                            </li>
+                            <li>
+                                <i class="fas fa-location-dot"></i>
+                                <span><strong>Ubicación:</strong> España</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Columna 4: Enlaces y Redes -->
+                    <div class="footer-col-social">
+                        <h4 class="footer-heading">Presencia Digital</h4>
+                        <div class="footer-social-buttons">
+                            <a href="https://github.com/robertorayo" target="_blank" rel="noopener noreferrer" class="social-btn" title="GitHub - Roberto Borrallo">
+                                <i class="fab fa-github"></i>
+                                <span>GitHub</span>
+                            </a>
+                            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-btn" title="LinkedIn - Roberto Borrallo">
+                                <i class="fab fa-linkedin-in"></i>
+                                <span>LinkedIn</span>
+                            </a>
+                            <a href="mailto:robertobamym@gmail.com" class="social-btn" title="Email directo">
+                                <i class="fas fa-envelope"></i>
+                                <span>Email</span>
+                            </a>
                         </div>
                     </div>
                 </div>
 
                 <div class="footer-bottom">
-                    <p class="footer-copyright">
-                        © 2025 Studios BZ. Todos los derechos reservados.
-                    </p>
+                    <div class="footer-copyright">
+                        © 2026 Roberto Borrallo Álvarez. Todos los derechos reservados.
+                    </div>
+                    <div class="footer-signature">
+                        Diseñado con estética monocromática y alto rendimiento.
+                    </div>
                 </div>
             </div>
         </footer>
     </div>
 
-    <!-- Script del fondo dinámico interactivo y animaciones -->
+    <!-- Scripts de interactividad, canvas geométrico, animaciones de scroll y efectos de ratón -->
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // 1. Efecto spotlight que sigue al cursor
-            let targetX = window.innerWidth / 2;
-            let targetY = window.innerHeight / 2;
-
-            window.addEventListener('pointermove', function (e) {
-                targetX = e.clientX;
-                targetY = e.clientY;
-                document.documentElement.style.setProperty('--mouse-x', targetX + 'px');
-                document.documentElement.style.setProperty('--mouse-y', targetY + 'px');
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Barra de progreso en scroll
+            const scrollBar = document.getElementById('scroll-progress');
+            window.addEventListener('scroll', () => {
+                const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+                if (totalScroll > 0) {
+                    const progress = (window.scrollY / totalScroll) * 100;
+                    scrollBar.style.width = progress + '%';
+                }
             }, { passive: true });
 
-            // 2. Canvas interactivo de constelación / red de partículas dinámicas
+            // 2. Cursor Glow y Posicionamiento de luz de ratón
+            const cursorGlow = document.getElementById('cursor-glow');
+            let mouseX = window.innerWidth / 2;
+            let mouseY = window.innerHeight / 2;
+            let currentX = mouseX;
+            let currentY = mouseY;
+
+            window.addEventListener('pointermove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                document.documentElement.style.setProperty('--mouse-x', `${mouseX}px`);
+                document.documentElement.style.setProperty('--mouse-y', `${mouseY}px`);
+            }, { passive: true });
+
+            function renderCursor() {
+                // Suavizado Lerp
+                currentX += (mouseX - currentX) * 0.12;
+                currentY += (mouseY - currentY) * 0.12;
+                if (cursorGlow) {
+                    cursorGlow.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+                }
+                requestAnimationFrame(renderCursor);
+            }
+            renderCursor();
+
+            // 3. Toque 3D reactivo al ratón y scroll para las letras titulares
+            const heroTitle = document.getElementById('hero-title');
+            if (heroTitle) {
+                let targetRotX = 0;
+                let targetRotY = 0;
+                let curRotX = 0;
+                let curRotY = 0;
+
+                window.addEventListener('pointermove', (e) => {
+                    const rect = heroTitle.getBoundingClientRect();
+                    const centerX = rect.left + rect.width / 2;
+                    const centerY = rect.top + rect.height / 2;
+                    const deltaX = (e.clientX - centerX) / (window.innerWidth / 2);
+                    const deltaY = (e.clientY - centerY) / (window.innerHeight / 2);
+
+                    targetRotX = -deltaY * 2.5;
+                    targetRotY = deltaX * 2.5;
+                }, { passive: true });
+
+                function animateTitle3D() {
+                    curRotX += (targetRotX - curRotX) * 0.08;
+                    curRotY += (targetRotY - curRotY) * 0.08;
+                    
+                    const scrollY = window.scrollY;
+                    const parallaxY = scrollY * 0.08;
+                    
+                    heroTitle.style.transform = `perspective(800px) rotateX(${curRotX}deg) rotateY(${curRotY}deg) translateY(${parallaxY}px)`;
+                    
+                    // Sombras dinámicas reactivas que dan sensación tridimensional
+                    const shadowX = -curRotY * 1.8;
+                    const shadowY = curRotX * 1.8 + 15;
+                    heroTitle.style.textShadow = `${shadowX}px ${shadowY}px 35px rgba(255, 255, 255, 0.18), 0 25px 45px rgba(0, 0, 0, 0.8)`;
+
+                    requestAnimationFrame(animateTitle3D);
+                }
+                animateTitle3D();
+            }
+
+            // 4. Canvas interactivo: Fluid Plasma & Dendritic Lightning Tendrils (Blanco & Gris Alto Contraste)
             const canvas = document.getElementById('interactive-canvas');
             if (canvas) {
                 const ctx = canvas.getContext('2d');
-                let width = 0;
-                let height = 0;
-                let particles = [];
-                const particleCount = Math.min(Math.floor(window.innerWidth / 16), 80);
-                const connectionDistance = 140;
-                const mouseRadius = 190;
+                let width = (canvas.width = window.innerWidth);
+                let height = (canvas.height = window.innerHeight);
 
-                function resize() {
+                const resizeCanvas = () => {
                     width = canvas.width = window.innerWidth;
                     height = canvas.height = window.innerHeight;
-                }
-                resize();
-                window.addEventListener('resize', resize, { passive: true });
+                };
+                window.addEventListener('resize', resizeCanvas, { passive: true });
 
-                class Particle {
-                    constructor() {
-                        this.x = Math.random() * width;
-                        this.y = Math.random() * height;
-                        this.vx = (Math.random() - 0.5) * 0.75;
-                        this.vy = (Math.random() - 0.5) * 0.75;
-                        this.radius = Math.random() * 2 + 1;
-                        this.baseAlpha = Math.random() * 0.35 + 0.15;
+                // Sistema de tendrilos fractales y plasma reactivo
+                const tendrils = [];
+                const sparks = [];
+                const maxTendrils = 120;
+                const maxSparks = 90;
+
+                let lastX = width / 2;
+                let lastY = height * 0.35;
+                let mouseSpeed = 0;
+                let globalTime = 0;
+
+                class Tendril {
+                    constructor(x, y, vx, vy, branchLevel = 0, energy = 1.0) {
+                        this.x = x;
+                        this.y = y;
+                        this.vx = vx;
+                        this.vy = vy;
+                        this.branchLevel = branchLevel;
+                        this.energy = energy;
+                        this.points = [{ x, y, alpha: energy, width: (3.5 - branchLevel * 0.8) * energy }];
+                        this.maxPoints = Math.floor(22 + Math.random() * 20 - branchLevel * 4);
+                        this.life = 1.0;
+                        this.decay = 0.018 + Math.random() * 0.018 + branchLevel * 0.01;
+                        this.curlSeed = Math.random() * 100;
+                        this.branched = false;
                     }
 
-                    update() {
+                    update(time) {
+                        this.life -= this.decay;
+                        if (this.life <= 0) return false;
+
+                        // Curl noise y física de fluidos
+                        const noise = Math.sin(this.y * 0.007 + this.curlSeed + time * 1.5) *
+                                      Math.cos(this.x * 0.007 + this.curlSeed + time * 1.2);
+                        const angle = noise * 2.8;
+                        
+                        this.vx = this.vx * 0.94 + Math.cos(angle) * 0.45;
+                        this.vy = this.vy * 0.94 + Math.sin(angle) * 0.45;
+
                         this.x += this.vx;
                         this.y += this.vy;
 
-                        if (this.x < 0) this.x = width;
-                        else if (this.x > width) this.x = 0;
+                        const curWidth = Math.max(0.4, (3.2 - this.branchLevel * 0.7) * this.life * this.energy);
+                        this.points.unshift({
+                            x: this.x,
+                            y: this.y,
+                            alpha: this.life * this.energy,
+                            width: curWidth
+                        });
 
-                        if (this.y < 0) this.y = height;
-                        else if (this.y > height) this.y = 0;
-
-                        // Interacción suave con el puntero
-                        const dx = targetX - this.x;
-                        const dy = targetY - this.y;
-                        const dist = Math.sqrt(dx * dx + dy * dy);
-                        if (dist < mouseRadius) {
-                            const force = (mouseRadius - dist) / mouseRadius;
-                            this.x -= (dx / dist) * force * 1.6;
-                            this.y -= (dy / dist) * force * 1.6;
+                        if (this.points.length > this.maxPoints) {
+                            this.points.pop();
                         }
-                    }
 
-                    draw() {
-                        ctx.beginPath();
-                        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                        ctx.fillStyle = `rgba(30, 41, 59, ${this.baseAlpha})`;
-                        ctx.fill();
-                    }
-                }
-
-                for (let i = 0; i < particleCount; i++) {
-                    particles.push(new Particle());
-                }
-
-                function animate() {
-                    ctx.clearRect(0, 0, width, height);
-
-                    // Conexiones entre partículas cercanas
-                    for (let i = 0; i < particles.length; i++) {
-                        for (let j = i + 1; j < particles.length; j++) {
-                            const dx = particles[i].x - particles[j].x;
-                            const dy = particles[i].y - particles[j].y;
-                            const dist = Math.sqrt(dx * dx + dy * dy);
-
-                            if (dist < connectionDistance) {
-                                const alpha = (1 - dist / connectionDistance) * 0.18;
-                                ctx.beginPath();
-                                ctx.moveTo(particles[i].x, particles[i].y);
-                                ctx.lineTo(particles[j].x, particles[j].y);
-                                ctx.strokeStyle = `rgba(71, 85, 105, ${alpha})`;
-                                ctx.lineWidth = 0.8;
-                                ctx.stroke();
+                        // Ramificación fractal (como rayos y vetas orgánicas)
+                        if (!this.branched && this.branchLevel < 2 && this.points.length > 6 && Math.random() < 0.22) {
+                            this.branched = true;
+                            const branchAngle = Math.atan2(this.vy, this.vx) + (Math.random() - 0.5) * 1.2;
+                            const branchSpeed = Math.hypot(this.vx, this.vy) * 0.85;
+                            if (tendrils.length < maxTendrils) {
+                                tendrils.push(new Tendril(
+                                    this.x,
+                                    this.y,
+                                    Math.cos(branchAngle) * branchSpeed,
+                                    Math.sin(branchAngle) * branchSpeed,
+                                    this.branchLevel + 1,
+                                    this.energy * 0.8
+                                ));
                             }
                         }
-                    }
 
-                    // Conexión dinámica con el cursor
-                    for (let i = 0; i < particles.length; i++) {
-                        const dx = targetX - particles[i].x;
-                        const dy = targetY - particles[i].y;
-                        const dist = Math.sqrt(dx * dx + dy * dy);
-
-                        if (dist < mouseRadius) {
-                            const alpha = (1 - dist / mouseRadius) * 0.35;
-                            ctx.beginPath();
-                            ctx.moveTo(particles[i].x, particles[i].y);
-                            ctx.lineTo(targetX, targetY);
-                            ctx.strokeStyle = `rgba(15, 23, 42, ${alpha})`;
-                            ctx.lineWidth = 1;
-                            ctx.stroke();
+                        // Generación de micro-chispas de plasma
+                        if (Math.random() < 0.15 && sparks.length < maxSparks) {
+                            sparks.push(new Spark(this.x, this.y, this.vx * 0.5, this.vy * 0.5));
                         }
 
-                        particles[i].update();
-                        particles[i].draw();
+                        return true;
                     }
 
-                    requestAnimationFrame(animate);
+                    draw(ctx) {
+                        if (this.points.length < 2) return;
+
+                        // 1. Capa externa: Halo gris grafito profundo
+                        ctx.beginPath();
+                        ctx.moveTo(this.points[0].x, this.points[0].y);
+                        for (let i = 1; i < this.points.length; i++) {
+                            const p0 = this.points[i - 1];
+                            const p1 = this.points[i];
+                            const xc = (p0.x + p1.x) / 2;
+                            const yc = (p0.y + p1.y) / 2;
+                            ctx.quadraticCurveTo(p0.x, p0.y, xc, yc);
+                        }
+                        ctx.strokeStyle = `rgba(148, 163, 184, ${this.life * 0.25})`;
+                        ctx.lineWidth = Math.max(1, this.points[0].width * 2.8);
+                        ctx.lineCap = 'round';
+                        ctx.stroke();
+
+                        // 2. Capa media: Veta plateada brillante
+                        ctx.beginPath();
+                        ctx.moveTo(this.points[0].x, this.points[0].y);
+                        for (let i = 1; i < this.points.length; i++) {
+                            const p0 = this.points[i - 1];
+                            const p1 = this.points[i];
+                            const xc = (p0.x + p1.x) / 2;
+                            const yc = (p0.y + p1.y) / 2;
+                            ctx.quadraticCurveTo(p0.x, p0.y, xc, yc);
+                        }
+                        ctx.strokeStyle = `rgba(226, 232, 240, ${this.life * 0.65})`;
+                        ctx.lineWidth = Math.max(0.8, this.points[0].width * 1.4);
+                        ctx.stroke();
+
+                        // 3. Núcleo central: Blanco puro incandescente de alto contraste
+                        ctx.beginPath();
+                        ctx.moveTo(this.points[0].x, this.points[0].y);
+                        for (let i = 1; i < this.points.length; i++) {
+                            const p0 = this.points[i - 1];
+                            const p1 = this.points[i];
+                            const xc = (p0.x + p1.x) / 2;
+                            const yc = (p0.y + p1.y) / 2;
+                            ctx.quadraticCurveTo(p0.x, p0.y, xc, yc);
+                        }
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${this.life * 0.95})`;
+                        ctx.lineWidth = Math.max(0.5, this.points[0].width * 0.6);
+                        ctx.stroke();
+                    }
                 }
 
-                animate();
+                class Spark {
+                    constructor(x, y, vx, vy) {
+                        this.x = x;
+                        this.y = y;
+                        this.vx = (Math.random() - 0.5) * 1.8 + vx * 0.4;
+                        this.vy = (Math.random() - 0.5) * 1.8 + vy * 0.4;
+                        this.size = Math.random() * 2 + 0.8;
+                        this.life = 1.0;
+                        this.decay = 0.025 + Math.random() * 0.03;
+                    }
+
+                    update() {
+                        this.life -= this.decay;
+                        this.x += this.vx;
+                        this.y += this.vy;
+                        this.vx *= 0.96;
+                        this.vy *= 0.96;
+                        return this.life > 0;
+                    }
+
+                    draw(ctx) {
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.size * this.life, 0, Math.PI * 2);
+                        ctx.fillStyle = `rgba(255, 255, 255, ${this.life * 0.9})`;
+                        ctx.shadowColor = '#ffffff';
+                        ctx.shadowBlur = 8;
+                        ctx.fill();
+                        ctx.shadowBlur = 0;
+                    }
+                }
+
+                // Generador de estelas orgánicas al mover el puntero
+                const emitFluid = (x, y, dx, dy, isHeroFocus = false) => {
+                    const speed = Math.hypot(dx, dy);
+                    const count = isHeroFocus ? Math.min(6, Math.floor(speed * 0.3) + 2) : Math.min(3, Math.floor(speed * 0.15) + 1);
+                    const energy = isHeroFocus ? 1.25 : 0.95;
+
+                    for (let i = 0; i < count; i++) {
+                        if (tendrils.length >= maxTendrils) break;
+                        const spreadAngle = (Math.random() - 0.5) * (isHeroFocus ? 1.8 : 1.2);
+                        const baseAngle = Math.atan2(dy, dx) + spreadAngle;
+                        const tendrilSpeed = (Math.random() * 3 + 2.5) * (isHeroFocus ? 1.3 : 1.0);
+                        
+                        tendrils.push(new Tendril(
+                            x + (Math.random() - 0.5) * 12,
+                            y + (Math.random() - 0.5) * 12,
+                            Math.cos(baseAngle) * tendrilSpeed,
+                            Math.sin(baseAngle) * tendrilSpeed,
+                            0,
+                            energy
+                        ));
+                    }
+                };
+
+                // Detección de foco en la sección del nombre
+                const heroTitleEl = document.getElementById('hero-title');
+
+                window.addEventListener('pointermove', (e) => {
+                    const dx = e.clientX - lastX;
+                    const dy = e.clientY - lastY;
+                    mouseSpeed = Math.hypot(dx, dy);
+
+                    let isNearTitle = false;
+                    if (heroTitleEl) {
+                        const r = heroTitleEl.getBoundingClientRect();
+                        const distToCenter = Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2));
+                        if (distToCenter < 280) {
+                            isNearTitle = true;
+                        }
+                    }
+
+                    if (mouseSpeed > 1.2) {
+                        emitFluid(e.clientX, e.clientY, dx, dy, isNearTitle);
+                    }
+
+                    lastX = e.clientX;
+                    lastY = e.clientY;
+                }, { passive: true });
+
+                // Pulso ambiental orgánico automático (mantiene el fondo sutilmente vivo)
+                let lastAmbientPulse = 0;
+                const triggerAmbientHeroPulse = () => {
+                    if (heroTitleEl && tendrils.length < 35) {
+                        const r = heroTitleEl.getBoundingClientRect();
+                        const originX = r.left + Math.random() * r.width;
+                        const originY = r.top + Math.random() * r.height;
+                        const angle = Math.random() * Math.PI * 2;
+                        tendrils.push(new Tendril(
+                            originX,
+                            originY,
+                            Math.cos(angle) * (Math.random() * 2 + 1.5),
+                            Math.sin(angle) * (Math.random() * 2 + 1.5),
+                            0,
+                            0.75
+                        ));
+                    }
+                };
+
+                // Bucle de renderizado fluido
+                function renderFluidSimulation() {
+                    globalTime += 0.016;
+
+                    // Persistencia y disolución suave tipo humo/plasma
+                    ctx.fillStyle = 'rgba(8, 8, 8, 0.22)';
+                    ctx.fillRect(0, 0, width, height);
+
+                    ctx.globalCompositeOperation = 'screen';
+
+                    // Pulso ambiental ocasional cerca del nombre
+                    if (globalTime - lastAmbientPulse > 1.8) {
+                        triggerAmbientHeroPulse();
+                        lastAmbientPulse = globalTime;
+                    }
+
+                    // Actualizar y dibujar tendrilos
+                    for (let i = tendrils.length - 1; i >= 0; i--) {
+                        const t = tendrils[i];
+                        if (t.update(globalTime)) {
+                            t.draw(ctx);
+                        } else {
+                            tendrils.splice(i, 1);
+                        }
+                    }
+
+                    // Actualizar y dibujar micro-chispas incandescentes
+                    for (let i = sparks.length - 1; i >= 0; i--) {
+                        const s = sparks[i];
+                        if (s.update()) {
+                            s.draw(ctx);
+                        } else {
+                            sparks.splice(i, 1);
+                        }
+                    }
+
+                    ctx.globalCompositeOperation = 'source-over';
+                    requestAnimationFrame(renderFluidSimulation);
+                }
+
+                renderFluidSimulation();
+            }
+
+            // 5. Efecto 3D Tilt SUAVE y CALIBRADO en tarjetas al mover el ratón
+            const tiltCards = document.querySelectorAll('.tilt-card');
+            tiltCards.forEach(card => {
+                let cardRotX = 0;
+                let cardRotY = 0;
+
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    // Ángulo muy suave (máx ~0.8 grados) para evitar movimientos excesivos
+                    cardRotX = ((y - centerY) / centerY) * -0.8;
+                    cardRotY = ((x - centerX) / centerX) * 0.8;
+
+                    card.style.transform = `perspective(1000px) rotateX(${cardRotX}deg) rotateY(${cardRotY}deg) translateY(-3px)`;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)';
+                });
+            });
+
+            // 6. Botones magnéticos (Magnetic Effect suave)
+            const magneticBtns = document.querySelectorAll('.magnetic-btn');
+            magneticBtns.forEach(btn => {
+                btn.addEventListener('mousemove', (e) => {
+                    const rect = btn.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    btn.style.transform = `translate(${x * 0.05}px, ${y * 0.05}px)`;
+                });
+                btn.addEventListener('mouseleave', () => {
+                    btn.style.transform = 'translate(0px, 0px)';
+                });
+            });
+
+            // 7. Botón de Copiar Email
+            const copyBtn = document.getElementById('btn-copy-email');
+            const copyText = document.getElementById('copy-btn-text');
+            const emailToCopy = 'robertobamym@gmail.com';
+
+            if (copyBtn) {
+                copyBtn.addEventListener('click', () => {
+                    navigator.clipboard.writeText(emailToCopy).then(() => {
+                        copyBtn.classList.add('copied');
+                        copyText.textContent = '¡Copiado!';
+                        setTimeout(() => {
+                            copyBtn.classList.remove('copied');
+                            copyText.textContent = 'Copiar Email';
+                        }, 2500);
+                    }).catch(() => {
+                        copyText.textContent = 'robertobamym@gmail.com';
+                    });
+                });
+            }
+
+            // 8. Animaciones de revelación al hacer scroll (Intersection Observer)
+            const revealElements = document.querySelectorAll('.reveal-fade');
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -40px 0px'
+            });
+
+            revealElements.forEach(el => revealObserver.observe(el));
+
+            // 9. Enlace activo en el menú de navegación al hacer scroll
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                const scrollPos = window.scrollY + 200;
+
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.offsetHeight;
+                    if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.add('active');
+                    }
+                });
+            }, { passive: true });
+
+            // 10. Reloj en tiempo real estilo Awwwards (Hora local Madrid / Europa)
+            const clockEl = document.getElementById('clock-display');
+            if (clockEl) {
+                const updateClock = () => {
+                    const now = new Date();
+                    const timeStr = now.toLocaleTimeString('es-ES', { 
+                        timeZone: 'Europe/Madrid', 
+                        hour: '2-digit', 
+                        minute: '2-digit', 
+                        second: '2-digit' 
+                    });
+                    clockEl.textContent = `${timeStr} CET`;
+                };
+                updateClock();
+                setInterval(updateClock, 1000);
+            }
+
+            // 11. Cinta Ticker Marquee con parada suave (Lerp)
+            const marqueeTrack = document.querySelector('.marquee-track');
+            const marqueeWrapper = document.querySelector('.marquee-strip-wrapper');
+            if (marqueeTrack && marqueeWrapper) {
+                let currentScroll = 0;
+                let marqueeSpeed = 1;
+                let targetSpeed = 1;
+                
+                marqueeWrapper.addEventListener('mouseenter', () => targetSpeed = 0);
+                marqueeWrapper.addEventListener('mouseleave', () => targetSpeed = 1);
+
+                function animateMarquee() {
+                    marqueeSpeed += (targetSpeed - marqueeSpeed) * 0.05; // Lerp suave
+                    
+                    const halfWidth = marqueeTrack.clientWidth / 2;
+                    currentScroll -= marqueeSpeed * 1.2; // píxeles por frame
+                    
+                    if (currentScroll <= -halfWidth) {
+                        currentScroll += halfWidth;
+                    }
+                    
+                    marqueeTrack.style.transform = `translate3d(${currentScroll}px, 0, 0)`;
+                    requestAnimationFrame(animateMarquee);
+                }
+                
+                marqueeTrack.style.animation = 'none'; // Anulamos la animación CSS abrupta
+                requestAnimationFrame(animateMarquee);
             }
         });
     </script>
