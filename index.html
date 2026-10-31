@@ -886,11 +886,12 @@
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('is-visible');
+                        revealObserver.unobserve(entry.target); // Solo una vez
                     }
                 });
             }, {
-                threshold: 0.1,
-                rootMargin: '0px 0px -40px 0px'
+                threshold: 0.08,
+                rootMargin: '0px 0px -50px 0px'
             });
 
             revealElements.forEach(el => revealObserver.observe(el));
@@ -938,30 +939,22 @@
 
             // 11. Cinta Ticker Marquee con parada suave (Lerp)
             const marqueeTrack = document.querySelector('.marquee-track');
-            const marqueeWrapper = document.querySelector('.marquee-strip-wrapper');
-            if (marqueeTrack && marqueeWrapper) {
+            if (marqueeTrack) {
                 let currentScroll = 0;
-                let marqueeSpeed = 1;
-                let targetSpeed = 1;
-                
-                marqueeWrapper.addEventListener('mouseenter', () => targetSpeed = 0);
-                marqueeWrapper.addEventListener('mouseleave', () => targetSpeed = 1);
 
                 function animateMarquee() {
-                    marqueeSpeed += (targetSpeed - marqueeSpeed) * 0.05; // Lerp suave
-                    
                     const halfWidth = marqueeTrack.clientWidth / 2;
-                    currentScroll -= marqueeSpeed * 1.2; // píxeles por frame
-                    
+                    currentScroll -= 1.2; // velocidad constante, sin pausa en hover
+
                     if (currentScroll <= -halfWidth) {
                         currentScroll += halfWidth;
                     }
-                    
+
                     marqueeTrack.style.transform = `translate3d(${currentScroll}px, 0, 0)`;
                     requestAnimationFrame(animateMarquee);
                 }
-                
-                marqueeTrack.style.animation = 'none'; // Anulamos la animación CSS abrupta
+
+                marqueeTrack.style.animation = 'none';
                 requestAnimationFrame(animateMarquee);
             }
         });
