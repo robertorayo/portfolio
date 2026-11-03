@@ -12,7 +12,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=7">
+    <link rel="stylesheet" href="styles.css?v=8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- GreenSock Animation Platform (GSAP) Core -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -31,6 +31,36 @@
     </div>
 
     <div class="page-wrapper">
+        <!-- Línea de Trayectoria y Odisea de Scroll estilo Trek Cards -->
+        <svg class="trek-trail-svg" id="trek-trail-svg" aria-hidden="true">
+            <defs>
+                <radialGradient id="trekAuraGradient" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#ffffff" stop-opacity="1" />
+                    <stop offset="25%" stop-color="#f1f5f9" stop-opacity="0.8" />
+                    <stop offset="55%" stop-color="#94a3b8" stop-opacity="0.25" />
+                    <stop offset="100%" stop-color="#64748b" stop-opacity="0" />
+                </radialGradient>
+                <filter id="trekGlowFilter" x="-20%" y="-20%" width="140%" height="140%">
+                    <feGaussianBlur stdDeviation="3" result="blur1" />
+                    <feGaussianBlur stdDeviation="6" result="blur2" />
+                    <feMerge>
+                        <feMergeNode in="blur2" />
+                        <feMergeNode in="blur1" />
+                        <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                </filter>
+            </defs>
+            <path id="trek-path-guide" class="trek-path-guide" />
+            <path id="trek-path-glow" class="trek-path-glow" filter="url(#trekGlowFilter)" />
+            <path id="trek-path-core" class="trek-path-core" />
+            <g id="trek-nodes-group"></g>
+            <g id="trek-comet-head" class="trek-comet-head">
+                <circle cx="0" cy="0" r="18" fill="url(#trekAuraGradient)" class="trek-aura-pulse" />
+                <circle cx="0" cy="0" r="7" stroke="rgba(255, 255, 255, 0.85)" stroke-width="1.5" fill="none" />
+                <circle cx="0" cy="0" r="3.5" fill="#ffffff" />
+            </g>
+        </svg>
+
         <!-- Navegación Flotante Glassmorphism -->
         <header class="navbar-wrapper">
             <nav class="navbar glass-card">
@@ -803,6 +833,197 @@
                 fsb.addEventListener('pointerleave', showScrollbar);
 
                 updateScrollbar();
+            }
+
+            // 2. Trek Scroll Journey Trail Engine (Línea de Odisea y Cometa de Scroll estilo Trek Cards)
+            const trailSvg = document.getElementById('trek-trail-svg');
+            const pathGuide = document.getElementById('trek-path-guide');
+            const pathGlow = document.getElementById('trek-path-glow');
+            const pathCore = document.getElementById('trek-path-core');
+            const nodesGroup = document.getElementById('trek-nodes-group');
+            const cometHead = document.getElementById('trek-comet-head');
+
+            if (trailSvg && pathCore && pathGuide && pathGlow && cometHead) {
+                let totalLength = 0;
+                let stations = [];
+                let isBuilding = false;
+
+                function buildTrail() {
+                    if (isBuilding) return;
+                    isBuilding = true;
+
+                    const width = window.innerWidth;
+                    const isMobile = width <= 800;
+
+                    const heroActions = document.querySelector('.hero-actions');
+                    const sec1Header = document.querySelector('#sobre-mi .section-tag');
+                    const sec1Cards = document.querySelector('.values-grid');
+                    const sec2Header = document.querySelector('#proyecto .section-header');
+                    const sec2Card1 = document.getElementById('project-card');
+                    const sec2Card2 = document.getElementById('project-shenron');
+                    const sec3Header = document.querySelector('#habilidades .section-header-compact');
+                    const sec3Grid = document.querySelector('.skills-grid');
+                    const sec4Footer = document.getElementById('contacto');
+
+                    // Puntos ancla del recorrido
+                    const ptHero = {
+                        x: width * 0.5,
+                        y: heroActions ? heroActions.offsetTop + 120 : 500
+                    };
+
+                    // Estación 1: Perfil / Enfoque Técnico
+                    const ptSec1 = sec1Header ? {
+                        x: isMobile ? 32 : Math.max(50, sec1Header.getBoundingClientRect().left + window.scrollX - 28),
+                        y: sec1Header.getBoundingClientRect().top + window.scrollY + 14,
+                        isStation: true
+                    } : { x: width * 0.18, y: 1100, isStation: true };
+
+                    // Curva S entre tarjetas de sobre-mi
+                    const ptMid1 = {
+                        x: isMobile ? 32 : Math.min(width - 70, width * 0.88),
+                        y: sec1Cards ? sec1Cards.offsetTop + sec1Cards.offsetHeight * 0.5 : 1500
+                    };
+
+                    // Estación 2: Proyectos Destacados (Cabecera)
+                    const ptSec2 = sec2Header ? {
+                        x: isMobile ? 32 : Math.max(50, sec2Header.getBoundingClientRect().left + window.scrollX - 28),
+                        y: sec2Header.getBoundingClientRect().top + window.scrollY + 20,
+                        isStation: true
+                    } : { x: width * 0.16, y: 2000, isStation: true };
+
+                    // Curva S atravesando entre DistribuTech y Shenron
+                    const ptMid2 = {
+                        x: isMobile ? 32 : Math.min(width - 70, width * 0.92),
+                        y: sec2Card2 ? (sec2Card1 ? sec2Card1.offsetTop + sec2Card1.offsetHeight + 60 : sec2Card2.offsetTop - 80) : 2600
+                    };
+
+                    // Estación 3: Stack de Tecnologías
+                    const ptSec3 = sec3Header ? {
+                        x: isMobile ? 32 : Math.max(50, sec3Header.getBoundingClientRect().left + window.scrollX - 28),
+                        y: sec3Header.getBoundingClientRect().top + window.scrollY + 16,
+                        isStation: true
+                    } : { x: width * 0.18, y: 3400, isStation: true };
+
+                    // Curva S atravesando el grid de tecnologías
+                    const ptMid3 = {
+                        x: isMobile ? 32 : Math.min(width - 70, width * 0.86),
+                        y: sec3Grid ? sec3Grid.offsetTop + sec3Grid.offsetHeight * 0.6 : 3900
+                    };
+
+                    // Estación 4: Contacto / Footer
+                    const ptSec4 = sec4Footer ? {
+                        x: isMobile ? 32 : Math.max(50, width * 0.22),
+                        y: sec4Footer.offsetTop + 100,
+                        isStation: true
+                    } : { x: width * 0.22, y: 4400, isStation: true };
+
+                    // Fin del recorrido
+                    const ptEnd = {
+                        x: width * 0.5,
+                        y: document.documentElement.scrollHeight - 60
+                    };
+
+                    const routePoints = [ptHero, ptSec1, ptMid1, ptSec2, ptMid2, ptSec3, ptMid3, ptSec4, ptEnd];
+
+                    // Construcción matemática del path mediante curvas Bezier cúbicas continuas
+                    let d = `M ${routePoints[0].x} ${routePoints[0].y}`;
+                    for (let i = 0; i < routePoints.length - 1; i++) {
+                        const p0 = routePoints[i];
+                        const p1 = routePoints[i + 1];
+                        const dy = p1.y - p0.y;
+                        const cp1x = p0.x;
+                        const cp1y = p0.y + dy * 0.5;
+                        const cp2x = p1.x;
+                        const cp2y = p0.y + dy * 0.5;
+                        d += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p1.x} ${p1.y}`;
+                    }
+
+                    pathGuide.setAttribute('d', d);
+                    pathGlow.setAttribute('d', d);
+                    pathCore.setAttribute('d', d);
+
+                    totalLength = pathCore.getTotalLength();
+                    pathCore.style.strokeDasharray = `${totalLength} ${totalLength}`;
+                    pathGlow.style.strokeDasharray = `${totalLength} ${totalLength}`;
+
+                    // Creación y registro de nodos / estaciones
+                    nodesGroup.innerHTML = '';
+                    stations = [];
+
+                    routePoints.filter(p => p.isStation).forEach((p) => {
+                        let lo = 0, hi = totalLength;
+                        while (hi - lo > 1) {
+                            const mid = (lo + hi) * 0.5;
+                            if (pathCore.getPointAtLength(mid).y < p.y) lo = mid;
+                            else hi = mid;
+                        }
+                        const dist = lo;
+
+                        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                        circle.setAttribute('cx', p.x);
+                        circle.setAttribute('cy', p.y);
+                        circle.setAttribute('r', '7');
+                        circle.setAttribute('class', 'trek-node');
+                        nodesGroup.appendChild(circle);
+
+                        stations.push({ el: circle, dist, y: p.y });
+                    });
+
+                    isBuilding = false;
+                }
+
+                function updateTrail() {
+                    if (!totalLength) return;
+
+                    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+                    if (maxScroll <= 0) return;
+
+                    const currentScroll = window.scrollY;
+                    const travelY = currentScroll < 40 
+                        ? pathCore.getPointAtLength(0).y 
+                        : currentScroll + window.innerHeight * 0.55;
+
+                    let lo = 0, hi = totalLength;
+                    while (hi - lo > 1) {
+                        const mid = (lo + hi) * 0.5;
+                        if (pathCore.getPointAtLength(mid).y < travelY) lo = mid;
+                        else hi = mid;
+                    }
+
+                    let curDist = lo;
+                    if (currentScroll >= maxScroll - 8) curDist = totalLength;
+
+                    const offset = totalLength - curDist;
+                    pathCore.style.strokeDashoffset = `${offset}`;
+                    pathGlow.style.strokeDashoffset = `${offset}`;
+
+                    const headPt = pathCore.getPointAtLength(curDist);
+                    cometHead.setAttribute('transform', `translate(${headPt.x}, ${headPt.y})`);
+
+                    stations.forEach(st => {
+                        if (curDist >= st.dist - 8) {
+                            st.el.classList.add('is-reached');
+                        } else {
+                            st.el.classList.remove('is-reached');
+                        }
+                    });
+                }
+
+                setTimeout(() => {
+                    buildTrail();
+                    updateTrail();
+                }, 100);
+
+                window.addEventListener('load', () => {
+                    buildTrail();
+                    updateTrail();
+                });
+
+                window.addEventListener('scroll', updateTrail, { passive: true });
+                window.addEventListener('resize', () => {
+                    buildTrail();
+                    updateTrail();
+                }, { passive: true });
             }
 
             // 3. Toque 3D sutil y elegante en el titular "Roberto Borrallo Álvarez"

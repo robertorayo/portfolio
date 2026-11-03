@@ -251,6 +251,83 @@ button {
     flex-direction: column;
 }
 
+/* ==========================================================================
+   LÍNEA DE TRAYECTORIA EN SCROLL (ESTILO TREK.CARDS)
+   ========================================================================== */
+.trek-trail-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1; /* Por detrás de las tarjetas pero visible en toda la navegación */
+    overflow: visible;
+}
+
+/* Trazo guía discontinuo del camino por recorrer (faint road) */
+.trek-path-guide {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.12);
+    stroke-width: 2px;
+    stroke-dasharray: 5 9;
+    stroke-linecap: round;
+}
+
+/* Capa de resplandor difuminado de la línea recorrida */
+.trek-path-glow {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.5);
+    stroke-width: 5px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* Núcleo blanco nítido y brillante de la línea */
+.trek-path-core {
+    fill: none;
+    stroke: #ffffff;
+    stroke-width: 2.2px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* Estaciones / Checkpoints a lo largo del recorrido */
+.trek-node {
+    fill: #060608;
+    stroke: rgba(255, 255, 255, 0.28);
+    stroke-width: 2px;
+    transition: fill 0.35s ease, stroke 0.35s ease, filter 0.35s ease;
+}
+
+.trek-node.is-reached {
+    fill: #ffffff;
+    stroke: rgba(255, 255, 255, 0.95);
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.95));
+}
+
+/* Cometa / Núcleo viajero con aura expansiva */
+.trek-comet-head {
+    will-change: transform;
+    pointer-events: none;
+}
+
+.trek-aura-pulse {
+    animation: trekAuraBreath 2s infinite ease-in-out;
+    transform-origin: 0 0;
+}
+
+@keyframes trekAuraBreath {
+    0%, 100% {
+        transform: scale(0.88);
+        opacity: 0.75;
+    }
+    50% {
+        transform: scale(1.3);
+        opacity: 1;
+    }
+}
+
 .main-content {
     flex: 1;
     display: flex;
