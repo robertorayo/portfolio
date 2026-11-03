@@ -12,7 +12,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=8">
+    <link rel="stylesheet" href="styles.css?v=9">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- GreenSock Animation Platform (GSAP) Core -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -50,11 +50,34 @@
                     </feMerge>
                 </filter>
             </defs>
-            <path id="trek-path-guide" class="trek-path-guide" />
-            <path id="trek-path-glow" class="trek-path-glow" filter="url(#trekGlowFilter)" />
-            <path id="trek-path-core" class="trek-path-core" />
+            <!-- 1. Guías en trazo discontinuo (faint future paths) -->
+            <path id="trek-guide-before" class="trek-path-guide" />
+            <path id="trek-guide-card-l" class="trek-path-guide" />
+            <path id="trek-guide-card-r" class="trek-path-guide" />
+            <path id="trek-guide-after" class="trek-path-guide" />
+
+            <!-- 2. Capas de resplandor difuminado de la estela recorrida -->
+            <path id="trek-glow-before" class="trek-path-glow" filter="url(#trekGlowFilter)" />
+            <path id="trek-glow-card-l" class="trek-path-glow" filter="url(#trekGlowFilter)" />
+            <path id="trek-glow-card-r" class="trek-path-glow" filter="url(#trekGlowFilter)" />
+            <path id="trek-glow-after" class="trek-path-glow" filter="url(#trekGlowFilter)" />
+
+            <!-- 3. Núcleo blanco nítido y brillante -->
+            <path id="trek-core-before" class="trek-path-core" />
+            <path id="trek-core-card-l" class="trek-path-core" />
+            <path id="trek-core-card-r" class="trek-path-core" />
+            <path id="trek-core-after" class="trek-path-core" />
+
+            <!-- 4. Contenedor de estaciones / checkpoints -->
             <g id="trek-nodes-group"></g>
-            <g id="trek-comet-head" class="trek-comet-head">
+
+            <!-- 5. Cometa viajero principal y segundo cometa para la división de bordes en tarjeta -->
+            <g id="trek-comet-head-1" class="trek-comet-head">
+                <circle cx="0" cy="0" r="18" fill="url(#trekAuraGradient)" class="trek-aura-pulse" />
+                <circle cx="0" cy="0" r="7" stroke="rgba(255, 255, 255, 0.85)" stroke-width="1.5" fill="none" />
+                <circle cx="0" cy="0" r="3.5" fill="#ffffff" />
+            </g>
+            <g id="trek-comet-head-2" class="trek-comet-head" style="display: none;">
                 <circle cx="0" cy="0" r="18" fill="url(#trekAuraGradient)" class="trek-aura-pulse" />
                 <circle cx="0" cy="0" r="7" stroke="rgba(255, 255, 255, 0.85)" stroke-width="1.5" fill="none" />
                 <circle cx="0" cy="0" r="3.5" fill="#ffffff" />
@@ -835,18 +858,71 @@
                 updateScrollbar();
             }
 
-            // 2. Trek Scroll Journey Trail Engine (Línea de Odisea y Cometa de Scroll estilo Trek Cards)
+            // 2. Trek Scroll Journey Trail Engine con División de Bordes e Iluminación de Secciones
             const trailSvg = document.getElementById('trek-trail-svg');
-            const pathGuide = document.getElementById('trek-path-guide');
-            const pathGlow = document.getElementById('trek-path-glow');
-            const pathCore = document.getElementById('trek-path-core');
-            const nodesGroup = document.getElementById('trek-nodes-group');
-            const cometHead = document.getElementById('trek-comet-head');
+            const pathGuideBefore = document.getElementById('trek-guide-before');
+            const pathGuideCardL = document.getElementById('trek-guide-card-l');
+            const pathGuideCardR = document.getElementById('trek-guide-card-r');
+            const pathGuideAfter = document.getElementById('trek-guide-after');
 
-            if (trailSvg && pathCore && pathGuide && pathGlow && cometHead) {
-                let totalLength = 0;
+            const pathGlowBefore = document.getElementById('trek-glow-before');
+            const pathGlowCardL = document.getElementById('trek-glow-card-l');
+            const pathGlowCardR = document.getElementById('trek-glow-card-r');
+            const pathGlowAfter = document.getElementById('trek-glow-after');
+
+            const pathCoreBefore = document.getElementById('trek-core-before');
+            const pathCoreCardL = document.getElementById('trek-core-card-l');
+            const pathCoreCardR = document.getElementById('trek-core-card-r');
+            const pathCoreAfter = document.getElementById('trek-core-after');
+
+            const cometHead1 = document.getElementById('trek-comet-head-1');
+            const cometHead2 = document.getElementById('trek-comet-head-2');
+            const nodesGroup = document.getElementById('trek-nodes-group');
+
+            if (trailSvg && pathCoreBefore && pathCoreCardL && pathCoreCardR && pathCoreAfter && cometHead1) {
+                let lenBefore = 0, lenCardL = 0, lenCardR = 0, lenAfter = 0;
+                let cardTop = 0, cardBottom = 0;
                 let stations = [];
                 let isBuilding = false;
+
+                const sectionTargets = [
+                    {
+                        sec: document.getElementById('sobre-mi'),
+                        pill: document.querySelector('#sobre-mi .section-tag'),
+                        title: document.querySelector('#sobre-mi .section-heading')
+                    },
+                    {
+                        sec: document.getElementById('proyecto'),
+                        pill: document.querySelector('#proyecto .spotlight-pill'),
+                        title: document.querySelector('#proyecto .section-title')
+                    },
+                    {
+                        sec: document.getElementById('habilidades'),
+                        pill: document.querySelector('#habilidades .section-tag'),
+                        title: document.querySelector('#habilidades .section-heading')
+                    },
+                    {
+                        sec: document.getElementById('contacto'),
+                        pill: document.querySelector('#contacto .section-tag'),
+                        title: document.querySelector('#contacto .contact-title')
+                    }
+                ];
+
+                function makeCurve(pts) {
+                    if (!pts || pts.length < 2) return '';
+                    let d = `M ${pts[0].x} ${pts[0].y}`;
+                    for (let i = 0; i < pts.length - 1; i++) {
+                        const p0 = pts[i];
+                        const p1 = pts[i + 1];
+                        const dy = p1.y - p0.y;
+                        const cp1x = p0.x;
+                        const cp1y = p0.y + dy * 0.5;
+                        const cp2x = p1.x;
+                        const cp2y = p0.y + dy * 0.5;
+                        d += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p1.x} ${p1.y}`;
+                    }
+                    return d;
+                }
 
                 function buildTrail() {
                     if (isBuilding) return;
@@ -857,151 +933,248 @@
 
                     const heroActions = document.querySelector('.hero-actions');
                     const sec1Header = document.querySelector('#sobre-mi .section-tag');
-                    const sec1Cards = document.querySelector('.values-grid');
+                    const sec1Cards = document.querySelector('.profile-grid');
                     const sec2Header = document.querySelector('#proyecto .section-header');
-                    const sec2Card1 = document.getElementById('project-card');
+                    const projectCard = document.getElementById('project-card');
                     const sec2Card2 = document.getElementById('project-shenron');
                     const sec3Header = document.querySelector('#habilidades .section-header-compact');
                     const sec3Grid = document.querySelector('.skills-grid');
                     const sec4Footer = document.getElementById('contacto');
 
-                    // Puntos ancla del recorrido
-                    const ptHero = {
-                        x: width * 0.5,
-                        y: heroActions ? heroActions.offsetTop + 120 : 500
-                    };
+                    // Medir geometría de la tarjeta principal (DistribuTech Pro)
+                    if (projectCard) {
+                        const rc = projectCard.getBoundingClientRect();
+                        const L = rc.left + window.scrollX;
+                        const R = rc.right + window.scrollX;
+                        cardTop = rc.top + window.scrollY;
+                        cardBottom = rc.bottom + window.scrollY;
+                        const CX = (L + R) * 0.5;
+                        const rad = Math.min(24, (R - L) * 0.15);
 
-                    // Estación 1: Perfil / Enfoque Técnico
-                    const ptSec1 = sec1Header ? {
-                        x: isMobile ? 32 : Math.max(50, sec1Header.getBoundingClientRect().left + window.scrollX - 28),
-                        y: sec1Header.getBoundingClientRect().top + window.scrollY + 14,
-                        isStation: true
-                    } : { x: width * 0.18, y: 1100, isStation: true };
+                        // Camino 1: Antes de la tarjeta
+                        const ptHero = {
+                            x: width * 0.5,
+                            y: heroActions ? heroActions.offsetTop + 120 : 500
+                        };
+                        const ptSec1 = sec1Header ? {
+                            x: isMobile ? 32 : Math.max(50, sec1Header.getBoundingClientRect().left + window.scrollX - 28),
+                            y: sec1Header.getBoundingClientRect().top + window.scrollY + 14,
+                            isStation: true
+                        } : { x: width * 0.18, y: 1100, isStation: true };
 
-                    // Curva S entre tarjetas de sobre-mi
-                    const ptMid1 = {
-                        x: isMobile ? 32 : Math.min(width - 70, width * 0.88),
-                        y: sec1Cards ? sec1Cards.offsetTop + sec1Cards.offsetHeight * 0.5 : 1500
-                    };
+                        const ptMid1 = {
+                            x: isMobile ? 32 : Math.min(width - 70, width * 0.88),
+                            y: sec1Cards ? sec1Cards.offsetTop + sec1Cards.offsetHeight * 0.5 : 1500
+                        };
 
-                    // Estación 2: Proyectos Destacados (Cabecera)
-                    const ptSec2 = sec2Header ? {
-                        x: isMobile ? 32 : Math.max(50, sec2Header.getBoundingClientRect().left + window.scrollX - 28),
-                        y: sec2Header.getBoundingClientRect().top + window.scrollY + 20,
-                        isStation: true
-                    } : { x: width * 0.16, y: 2000, isStation: true };
+                        const ptSec2 = sec2Header ? {
+                            x: isMobile ? 32 : Math.max(50, sec2Header.getBoundingClientRect().left + window.scrollX - 28),
+                            y: sec2Header.getBoundingClientRect().top + window.scrollY + 20,
+                            isStation: true
+                        } : { x: width * 0.16, y: 2000, isStation: true };
 
-                    // Curva S atravesando entre DistribuTech y Shenron
-                    const ptMid2 = {
-                        x: isMobile ? 32 : Math.min(width - 70, width * 0.92),
-                        y: sec2Card2 ? (sec2Card1 ? sec2Card1.offsetTop + sec2Card1.offsetHeight + 60 : sec2Card2.offsetTop - 80) : 2600
-                    };
+                        const ptCardTop = { x: CX, y: cardTop };
 
-                    // Estación 3: Stack de Tecnologías
-                    const ptSec3 = sec3Header ? {
-                        x: isMobile ? 32 : Math.max(50, sec3Header.getBoundingClientRect().left + window.scrollX - 28),
-                        y: sec3Header.getBoundingClientRect().top + window.scrollY + 16,
-                        isStation: true
-                    } : { x: width * 0.18, y: 3400, isStation: true };
+                        const ptsBefore = [ptHero, ptSec1, ptMid1, ptSec2, ptCardTop];
+                        const dBefore = makeCurve(ptsBefore);
 
-                    // Curva S atravesando el grid de tecnologías
-                    const ptMid3 = {
-                        x: isMobile ? 32 : Math.min(width - 70, width * 0.86),
-                        y: sec3Grid ? sec3Grid.offsetTop + sec3Grid.offsetHeight * 0.6 : 3900
-                    };
+                        pathGuideBefore.setAttribute('d', dBefore);
+                        pathGlowBefore.setAttribute('d', dBefore);
+                        pathCoreBefore.setAttribute('d', dBefore);
 
-                    // Estación 4: Contacto / Footer
-                    const ptSec4 = sec4Footer ? {
-                        x: isMobile ? 32 : Math.max(50, width * 0.22),
-                        y: sec4Footer.offsetTop + 100,
-                        isStation: true
-                    } : { x: width * 0.22, y: 4400, isStation: true };
+                        lenBefore = pathCoreBefore.getTotalLength();
+                        pathCoreBefore.style.strokeDasharray = `${lenBefore} ${lenBefore}`;
+                        pathGlowBefore.style.strokeDasharray = `${lenBefore} ${lenBefore}`;
 
-                    // Fin del recorrido
-                    const ptEnd = {
-                        x: width * 0.5,
-                        y: document.documentElement.scrollHeight - 60
-                    };
+                        // Camino 2: División por los bordes de la tarjeta (Izquierda y Derecha)
+                        const dCardL = `M ${CX} ${cardTop} H ${L + rad} A ${rad} ${rad} 0 0 0 ${L} ${cardTop + rad} V ${cardBottom - rad} A ${rad} ${rad} 0 0 0 ${L + rad} ${cardBottom} H ${CX}`;
+                        const dCardR = `M ${CX} ${cardTop} H ${R - rad} A ${rad} ${rad} 0 0 1 ${R} ${cardTop + rad} V ${cardBottom - rad} A ${rad} ${rad} 0 0 1 ${R - rad} ${cardBottom} H ${CX}`;
 
-                    const routePoints = [ptHero, ptSec1, ptMid1, ptSec2, ptMid2, ptSec3, ptMid3, ptSec4, ptEnd];
+                        pathGuideCardL.setAttribute('d', dCardL);
+                        pathGlowCardL.setAttribute('d', dCardL);
+                        pathCoreCardL.setAttribute('d', dCardL);
 
-                    // Construcción matemática del path mediante curvas Bezier cúbicas continuas
-                    let d = `M ${routePoints[0].x} ${routePoints[0].y}`;
-                    for (let i = 0; i < routePoints.length - 1; i++) {
-                        const p0 = routePoints[i];
-                        const p1 = routePoints[i + 1];
-                        const dy = p1.y - p0.y;
-                        const cp1x = p0.x;
-                        const cp1y = p0.y + dy * 0.5;
-                        const cp2x = p1.x;
-                        const cp2y = p0.y + dy * 0.5;
-                        d += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p1.x} ${p1.y}`;
+                        pathGuideCardR.setAttribute('d', dCardR);
+                        pathGlowCardR.setAttribute('d', dCardR);
+                        pathCoreCardR.setAttribute('d', dCardR);
+
+                        lenCardL = pathCoreCardL.getTotalLength();
+                        lenCardR = pathCoreCardR.getTotalLength();
+
+                        pathCoreCardL.style.strokeDasharray = `${lenCardL} ${lenCardL}`;
+                        pathGlowCardL.style.strokeDasharray = `${lenCardL} ${lenCardL}`;
+
+                        pathCoreCardR.style.strokeDasharray = `${lenCardR} ${lenCardR}`;
+                        pathGlowCardR.style.strokeDasharray = `${lenCardR} ${lenCardR}`;
+
+                        // Camino 3: Después de reunirse al final de la tarjeta
+                        const ptCardBot = { x: CX, y: cardBottom };
+
+                        const ptMid2 = {
+                            x: isMobile ? 32 : Math.min(width - 70, width * 0.90),
+                            y: sec2Card2 ? sec2Card2.offsetTop + sec2Card2.offsetHeight * 0.5 : cardBottom + 400
+                        };
+
+                        const ptSec3 = sec3Header ? {
+                            x: isMobile ? 32 : Math.max(50, sec3Header.getBoundingClientRect().left + window.scrollX - 28),
+                            y: sec3Header.getBoundingClientRect().top + window.scrollY + 16,
+                            isStation: true
+                        } : { x: width * 0.18, y: 3500, isStation: true };
+
+                        const ptMid3 = {
+                            x: isMobile ? 32 : Math.min(width - 70, width * 0.86),
+                            y: sec3Grid ? sec3Grid.offsetTop + sec3Grid.offsetHeight * 0.6 : 4000
+                        };
+
+                        const ptSec4 = sec4Footer ? {
+                            x: isMobile ? 32 : Math.max(50, width * 0.22),
+                            y: sec4Footer.offsetTop + 80,
+                            isStation: true
+                        } : { x: width * 0.22, y: 4500, isStation: true };
+
+                        const ptEnd = {
+                            x: width * 0.5,
+                            y: document.documentElement.scrollHeight - 60
+                        };
+
+                        const ptsAfter = [ptCardBot, ptMid2, ptSec3, ptMid3, ptSec4, ptEnd];
+                        const dAfter = makeCurve(ptsAfter);
+
+                        pathGuideAfter.setAttribute('d', dAfter);
+                        pathGlowAfter.setAttribute('d', dAfter);
+                        pathCoreAfter.setAttribute('d', dAfter);
+
+                        lenAfter = pathCoreAfter.getTotalLength();
+                        pathCoreAfter.style.strokeDasharray = `${lenAfter} ${lenAfter}`;
+                        pathGlowAfter.style.strokeDasharray = `${lenAfter} ${lenAfter}`;
+
+                        // Registro de estaciones / checkpoints
+                        nodesGroup.innerHTML = '';
+                        stations = [];
+
+                        const allStationPoints = [ptSec1, ptSec2, ptSec3, ptSec4];
+                        allStationPoints.forEach((p) => {
+                            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                            circle.setAttribute('cx', p.x);
+                            circle.setAttribute('cy', p.y);
+                            circle.setAttribute('r', '7');
+                            circle.setAttribute('class', 'trek-node');
+                            nodesGroup.appendChild(circle);
+
+                            stations.push({ el: circle, y: p.y });
+                        });
                     }
-
-                    pathGuide.setAttribute('d', d);
-                    pathGlow.setAttribute('d', d);
-                    pathCore.setAttribute('d', d);
-
-                    totalLength = pathCore.getTotalLength();
-                    pathCore.style.strokeDasharray = `${totalLength} ${totalLength}`;
-                    pathGlow.style.strokeDasharray = `${totalLength} ${totalLength}`;
-
-                    // Creación y registro de nodos / estaciones
-                    nodesGroup.innerHTML = '';
-                    stations = [];
-
-                    routePoints.filter(p => p.isStation).forEach((p) => {
-                        let lo = 0, hi = totalLength;
-                        while (hi - lo > 1) {
-                            const mid = (lo + hi) * 0.5;
-                            if (pathCore.getPointAtLength(mid).y < p.y) lo = mid;
-                            else hi = mid;
-                        }
-                        const dist = lo;
-
-                        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-                        circle.setAttribute('cx', p.x);
-                        circle.setAttribute('cy', p.y);
-                        circle.setAttribute('r', '7');
-                        circle.setAttribute('class', 'trek-node');
-                        nodesGroup.appendChild(circle);
-
-                        stations.push({ el: circle, dist, y: p.y });
-                    });
 
                     isBuilding = false;
                 }
 
                 function updateTrail() {
-                    if (!totalLength) return;
+                    if (!lenBefore || !lenCardL || !lenAfter) return;
 
                     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
                     if (maxScroll <= 0) return;
 
                     const currentScroll = window.scrollY;
                     const travelY = currentScroll < 40 
-                        ? pathCore.getPointAtLength(0).y 
+                        ? pathCoreBefore.getPointAtLength(0).y 
                         : currentScroll + window.innerHeight * 0.55;
 
-                    let lo = 0, hi = totalLength;
-                    while (hi - lo > 1) {
-                        const mid = (lo + hi) * 0.5;
-                        if (pathCore.getPointAtLength(mid).y < travelY) lo = mid;
-                        else hi = mid;
+                    // 1. Iluminación reactiva de cabeceras de sección estilo Trek Cards (Chapter Glow)
+                    sectionTargets.forEach(target => {
+                        if (!target.sec || !target.pill) return;
+                        const sTop = target.sec.offsetTop - 150;
+                        const sBot = target.sec.offsetTop + target.sec.offsetHeight - 50;
+                        if (travelY >= sTop && travelY <= sBot) {
+                            target.pill.classList.add('is-active-section');
+                            if (target.title) target.title.classList.add('is-active-title');
+                        } else {
+                            target.pill.classList.remove('is-active-section');
+                            if (target.title) target.title.classList.remove('is-active-title');
+                        }
+                    });
+
+                    // 2. Comportamiento cinemático de la estela y división por los bordes de la tarjeta
+                    if (travelY <= cardTop) {
+                        // Antes de llegar a la tarjeta
+                        cometHead2.style.display = 'none';
+
+                        let lo = 0, hi = lenBefore;
+                        while (hi - lo > 1) {
+                            const mid = (lo + hi) * 0.5;
+                            if (pathCoreBefore.getPointAtLength(mid).y < travelY) lo = mid;
+                            else hi = mid;
+                        }
+                        const distB = lo;
+                        const offsetB = lenBefore - distB;
+                        pathCoreBefore.style.strokeDashoffset = `${offsetB}`;
+                        pathGlowBefore.style.strokeDashoffset = `${offsetB}`;
+
+                        pathCoreCardL.style.strokeDashoffset = `${lenCardL}`;
+                        pathGlowCardL.style.strokeDashoffset = `${lenCardL}`;
+                        pathCoreCardR.style.strokeDashoffset = `${lenCardR}`;
+                        pathGlowCardR.style.strokeDashoffset = `${lenCardR}`;
+
+                        pathCoreAfter.style.strokeDashoffset = `${lenAfter}`;
+                        pathGlowAfter.style.strokeDashoffset = `${lenAfter}`;
+
+                        const pt = pathCoreBefore.getPointAtLength(distB);
+                        cometHead1.setAttribute('transform', `translate(${pt.x}, ${pt.y})`);
+
+                    } else if (travelY > cardTop && travelY <= cardBottom) {
+                        // ¡EN LA TARJETA! El haz se divide simétricamente por los bordes izquierdo y derecho
+                        pathCoreBefore.style.strokeDashoffset = '0';
+                        pathGlowBefore.style.strokeDashoffset = '0';
+
+                        pathCoreAfter.style.strokeDashoffset = `${lenAfter}`;
+                        pathGlowAfter.style.strokeDashoffset = `${lenAfter}`;
+
+                        const cardTravelRatio = Math.min(1, Math.max(0, (travelY - cardTop) / (cardBottom - cardTop)));
+                        const distCard = cardTravelRatio * lenCardL;
+
+                        pathCoreCardL.style.strokeDashoffset = `${lenCardL - distCard}`;
+                        pathGlowCardL.style.strokeDashoffset = `${lenCardL - distCard}`;
+                        pathCoreCardR.style.strokeDashoffset = `${lenCardR - distCard}`;
+                        pathGlowCardR.style.strokeDashoffset = `${lenCardR - distCard}`;
+
+                        // Dos cometas activos recorriendo simultáneamente el contorno
+                        cometHead2.style.display = '';
+                        const ptL = pathCoreCardL.getPointAtLength(distCard);
+                        const ptR = pathCoreCardR.getPointAtLength(distCard);
+                        cometHead1.setAttribute('transform', `translate(${ptL.x}, ${ptL.y})`);
+                        cometHead2.setAttribute('transform', `translate(${ptR.x}, ${ptR.y})`);
+
+                    } else {
+                        // Después de la tarjeta: Se reúnen en el centro inferior y continúan el camino
+                        cometHead2.style.display = 'none';
+
+                        pathCoreBefore.style.strokeDashoffset = '0';
+                        pathGlowBefore.style.strokeDashoffset = '0';
+
+                        pathCoreCardL.style.strokeDashoffset = '0';
+                        pathGlowCardL.style.strokeDashoffset = '0';
+                        pathCoreCardR.style.strokeDashoffset = '0';
+                        pathGlowCardR.style.strokeDashoffset = '0';
+
+                        let lo = 0, hi = lenAfter;
+                        while (hi - lo > 1) {
+                            const mid = (lo + hi) * 0.5;
+                            if (pathCoreAfter.getPointAtLength(mid).y < travelY) lo = mid;
+                            else hi = mid;
+                        }
+                        let distA = lo;
+                        if (currentScroll >= maxScroll - 8) distA = lenAfter;
+
+                        const offsetA = lenAfter - distA;
+                        pathCoreAfter.style.strokeDashoffset = `${offsetA}`;
+                        pathGlowAfter.style.strokeDashoffset = `${offsetA}`;
+
+                        const pt = pathCoreAfter.getPointAtLength(distA);
+                        cometHead1.setAttribute('transform', `translate(${pt.x}, ${pt.y})`);
                     }
 
-                    let curDist = lo;
-                    if (currentScroll >= maxScroll - 8) curDist = totalLength;
-
-                    const offset = totalLength - curDist;
-                    pathCore.style.strokeDashoffset = `${offset}`;
-                    pathGlow.style.strokeDashoffset = `${offset}`;
-
-                    const headPt = pathCore.getPointAtLength(curDist);
-                    cometHead.setAttribute('transform', `translate(${headPt.x}, ${headPt.y})`);
-
+                    // 3. Activar estaciones / checkpoints
                     stations.forEach(st => {
-                        if (curDist >= st.dist - 8) {
+                        if (travelY >= st.y - 12) {
                             st.el.classList.add('is-reached');
                         } else {
                             st.el.classList.remove('is-reached');

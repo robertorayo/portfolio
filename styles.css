@@ -261,7 +261,7 @@ button {
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 1; /* Por detrás de las tarjetas pero visible en toda la navegación */
+    z-index: 1; /* Estrictamente por detrás de las tarjetas y textos */
     overflow: visible;
 }
 
@@ -295,9 +295,9 @@ button {
 /* Estaciones / Checkpoints a lo largo del recorrido */
 .trek-node {
     fill: #060608;
-    stroke: rgba(255, 255, 255, 0.28);
+    stroke: rgba(255, 255, 255, 0.3);
     stroke-width: 2px;
-    transition: fill 0.35s ease, stroke 0.35s ease, filter 0.35s ease;
+    transition: fill 0.35s ease, stroke 0.35s ease, filter 0.35s ease, transform 0.35s ease;
 }
 
 .trek-node.is-reached {
@@ -328,11 +328,56 @@ button {
     }
 }
 
+/* ==========================================================================
+   ILUMINACIÓN DE SECCIÓN EN SCROLL (ESTILO TREK.CARDS)
+   ========================================================================== */
+.spotlight-pill,
+.section-tag {
+    transition: background 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.spotlight-pill.is-active-section,
+.section-tag.is-active-section {
+    background: #ffffff !important;
+    color: #060608 !important;
+    border-color: #ffffff !important;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.95), 0 0 50px rgba(255, 255, 255, 0.45) !important;
+    transform: scale(1.05);
+}
+
+.spotlight-pill.is-active-section span,
+.spotlight-pill.is-active-section i,
+.spotlight-pill.is-active-section .tag-mono-idx,
+.section-tag.is-active-section span,
+.section-tag.is-active-section i,
+.section-tag.is-active-section .tag-mono-idx {
+    color: #060608 !important;
+    font-weight: 800 !important;
+}
+
+.spotlight-pill.is-active-section .pulse-beacon {
+    background: #060608 !important;
+    box-shadow: 0 0 8px #060608 !important;
+}
+
+.section-title.is-active-title,
+.section-heading.is-active-title,
+.contact-title.is-active-title {
+    text-shadow: 0 0 35px rgba(255, 255, 255, 0.75), 0 0 70px rgba(255, 255, 255, 0.35);
+    transition: text-shadow 0.4s ease;
+}
+
 .main-content {
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 6rem;
+    position: relative;
+    z-index: 2;
 }
 
 .section-container {
@@ -342,15 +387,22 @@ button {
     width: 100%;
 }
 
+.section-header,
+.section-header-compact {
+    position: relative;
+    z-index: 3;
+}
+
 .glass-card {
-    background: var(--bg-card);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: rgba(12, 15, 21, 0.96) !important;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
     border: 1px solid var(--border-card);
     border-radius: 20px;
     box-shadow: var(--shadow-glass);
     transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
     position: relative;
+    z-index: 3;
     overflow: hidden;
 }
 
