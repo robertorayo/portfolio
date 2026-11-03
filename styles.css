@@ -116,7 +116,7 @@ button {
 }
 
 /* ==========================================================================
-   CURSOR GLOW & EFECTO DE RATÓN
+   CURSOR GLOW & GSAP FOLLOWER MINIMALISTA (ESTILO GSAP.COM)
    ========================================================================== */
 .cursor-glow {
     position: fixed;
@@ -124,12 +124,60 @@ button {
     left: -250px;
     width: 500px;
     height: 500px;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 45%, transparent 70%);
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.015) 45%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
     z-index: 1;
     mix-blend-mode: screen;
     will-change: transform;
+}
+
+/* Micro-punto central de precisión */
+.cursor-dot {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 6px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
+    margin: -3px 0 0 -3px;
+    will-change: transform, opacity;
+}
+
+/* Anillo seguidor elástico con distorsión por velocidad GSAP */
+.cursor-follower {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 36px;
+    height: 36px;
+    border: 1.5px solid rgba(255, 255, 255, 0.38);
+    background: rgba(255, 255, 255, 0.025);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    margin: -18px 0 0 -18px;
+    will-change: transform, border-color, background-color;
+    transition: border-color 0.25s ease, background-color 0.25s ease;
+}
+
+/* Estado de interacción al pasar por enlaces, botones o tarjetas */
+.cursor-follower.is-hovered {
+    border-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.09);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+}
+
+@media (pointer: coarse), (hover: none) {
+    .cursor-dot,
+    .cursor-follower {
+        display: none !important;
+    }
 }
 
 /* ==========================================================================
@@ -1107,6 +1155,31 @@ button {
     transform: translateY(-2px);
     box-shadow: 0 8px 30px rgba(255, 255, 255, 0.35);
     background: #f1f5f9;
+}
+
+.btn-project-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.85rem 1.65rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.06);
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.95rem;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    transition: all var(--transition-smooth);
+}
+
+.btn-project-secondary:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.4);
+    color: #ffffff;
+}
+
+.project-showcase + .project-showcase {
+    margin-top: 3.5rem;
 }
 
 /* ==========================================================================
