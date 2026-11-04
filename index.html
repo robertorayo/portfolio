@@ -3,26 +3,36 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roberto Borrallo Álvarez | Software Engineer & Full-Stack Developer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Roberto Borrallo Álvarez | Software Engineer & AI-Native Developer</title>
     <meta name="description"
-        content="Portfolio profesional de Roberto Borrallo Álvarez. Especialista en ingeniería de software, arquitectura full-stack, React, TypeScript, PostgreSQL y soluciones SaaS empresariales.">
+        content="Portfolio de Roberto Borrallo Álvarez. Ingeniería de software full-stack aumentada con IA: React, TypeScript, PostgreSQL, Supabase, agentes y MCP.">
+    <meta name="theme-color" content="#06070a">
+    <meta property="og:title" content="Roberto Borrallo Álvarez | Software Engineer & AI-Native Developer">
+    <meta property="og:description"
+        content="Ingeniería web aumentada con IA. SaaS B2B, experiencias inmersivas y desarrollo con agentes.">
+    <meta property="og:type" content="website">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=10">
+    <link rel="stylesheet" href="styles.css?v=20">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- GreenSock Animation Platform (GSAP) Core -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+    <script src="js/hero.js?v=20" defer></script>
+    <script src="js/trail.js?v=20" defer></script>
+    <script src="js/main.js?v=20" defer></script>
 </head>
 
 <body>
-    <!-- Línea flotante de scroll minimalista (estilo trek.cards) -->
+    <a class="skip-link" href="#sobre-mi">Saltar al contenido</a>
+
+    <!-- Barra de scroll flotante -->
     <div class="fsb" id="fsb" aria-hidden="true"><i class="fsb__thumb" id="fsb-thumb"></i></div>
 
-    <!-- Fondo interactivo con orbes monocromáticos y canvas geométrico -->
+    <!-- Fondo ambiental -->
     <div class="dynamic-background-container" aria-hidden="true">
         <div class="ambient-glow glow-mono-1"></div>
         <div class="ambient-glow glow-mono-2"></div>
@@ -31,7 +41,7 @@
     </div>
 
     <div class="page-wrapper">
-        <!-- Línea de Trayectoria y Odisea de Scroll estilo Trek Cards -->
+        <!-- Línea de trayectoria (se genera con js/trail.js) -->
         <svg class="trek-trail-svg" id="trek-trail-svg" aria-hidden="true">
             <defs>
                 <radialGradient id="trekAuraGradient" cx="50%" cy="50%" r="50%">
@@ -49,23 +59,18 @@
                         <feMergeNode in="SourceGraphic" />
                     </feMerge>
                 </filter>
-                <!-- Máscara: atenúa el haz cuando pasa por detrás de texto -->
-                <mask id="trekTextMask" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">
+                <mask id="trekTextMask" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="0" y="0"
+                    width="100" height="100">
                     <rect id="trek-mask-base" x="0" y="0" width="100" height="100" fill="#ffffff" />
                     <g id="trek-mask-outer"></g>
                     <g id="trek-mask-inner"></g>
                 </mask>
             </defs>
             <g id="trek-layer" mask="url(#trekTextMask)">
-                <!-- 1. Guías discontinuas · 2. Resplandor · 3. Núcleo (generados por JS) -->
                 <g id="trek-guides"></g>
                 <g id="trek-glows"></g>
                 <g id="trek-cores"></g>
-
-                <!-- 4. Estaciones / checkpoints -->
                 <g id="trek-nodes-group"></g>
-
-                <!-- 5. Cometa principal y segundo cometa para la división por los bordes de cada tarjeta -->
                 <g id="trek-comet-head-1" class="trek-comet-head">
                     <circle cx="0" cy="0" r="18" fill="url(#trekAuraGradient)" class="trek-aura-pulse" />
                     <circle cx="0" cy="0" r="7" stroke="rgba(255, 255, 255, 0.85)" stroke-width="1.5" fill="none" />
@@ -79,18 +84,18 @@
             </g>
         </svg>
 
-        <!-- Navegación Flotante Glassmorphism -->
+        <!-- Navegación -->
         <header class="navbar-wrapper">
-            <nav class="navbar glass-card">
-                <a href="#inicio" class="nav-brand">
+            <nav class="navbar glass-card" aria-label="Principal">
+                <a href="#inicio" class="nav-brand" aria-label="Inicio">
                     <span class="brand-monogram">RB</span>
                     <span class="brand-text">Roberto Borrallo</span>
                 </a>
 
                 <ul class="nav-menu" id="nav-menu">
-                    <li><a href="#inicio" class="nav-link active"><i class="fas fa-home"></i> <span>Inicio</span></a>
+                    <li><a href="#inicio" class="nav-link active"><i class="fas fa-house"></i> <span>Inicio</span></a>
                     </li>
-                    <li><a href="#sobre-mi" class="nav-link"><i class="fas fa-user"></i> <span>Perfil</span></a></li>
+                    <li><a href="#sobre-mi" class="nav-link"><i class="fas fa-user"></i> <span>Método</span></a></li>
                     <li><a href="#proyecto" class="nav-link"><i class="fas fa-layer-group"></i>
                             <span>Proyectos</span></a></li>
                     <li><a href="#habilidades" class="nav-link"><i class="fas fa-code"></i> <span>Stack</span></a></li>
@@ -100,12 +105,8 @@
 
                 <div class="nav-actions">
                     <a href="https://github.com/robertorayo" target="_blank" rel="noopener noreferrer"
-                        class="nav-icon-btn" title="GitHub">
+                        class="nav-icon-btn" title="GitHub" aria-label="GitHub">
                         <i class="fab fa-github"></i>
-                    </a>
-                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="nav-icon-btn"
-                        title="LinkedIn">
-                        <i class="fab fa-linkedin-in"></i>
                     </a>
                     <a href="#contacto" class="btn-primary-sm">
                         <span>Hablemos</span>
@@ -116,152 +117,165 @@
         </header>
 
         <main class="main-content">
-            <!-- SECCIÓN HERO -->
-            <section class="hero-section" id="inicio">
-                <div class="hero-content">
-                    <div class="hero-badge reveal-fade">
-                        <span class="status-dot"></span>
-                        <span class="badge-text">DISPONIBLE PARA PROYECTOS</span>
-                        <span class="badge-separator">|</span>
-                        <span class="badge-time" id="local-time"><i class="far fa-clock"></i> MADRID <span
-                                id="clock-display">--:--:--</span></span>
+            <!-- ============ HERO · CARRUSEL 3D DE CAPACIDADES ============ -->
+            <section class="hero-section" id="inicio" aria-label="Presentación">
+                <div class="hero-stage" id="hero-stage">
+                    <canvas id="hero-canvas" aria-hidden="true"></canvas>
+                    <div class="tile-tag" id="tile-tag" aria-hidden="true">
+                        <b id="tile-tag-num">01</b><span id="tile-tag-name">FRONTEND</span>
                     </div>
-
-                    <!-- Titular con efecto 3D Reactivo al ratón y scroll -->
-                    <div class="hero-title-container">
-                        <h1 class="hero-title reveal-fade" id="hero-title">
-                            Roberto Borrallo Álvarez
-                        </h1>
-                    </div>
-
-                    <p class="hero-description reveal-fade">
-                        Especializado en el diseño y desarrollo de arquitecturas web modernas, sistemas SaaS escalables
-                        y soluciones empresariales de alto rendimiento con <strong>React</strong>,
-                        <strong>TypeScript</strong>, <strong>Supabase</strong> y <strong>PostgreSQL</strong>.
-                    </p>
-
-                    <div class="hero-stats-row reveal-fade">
-                        <div class="hero-stat-item">
-                            <span class="stat-number">Full-Stack</span>
-                            <span class="stat-label">Arquitectura Web & Cloud</span>
-                        </div>
-                        <div class="stat-divider"></div>
-                        <div class="hero-stat-item">
-                            <span class="stat-number">Type-Safe</span>
-                            <span class="stat-label">TypeScript & Clean Code</span>
-                        </div>
-                        <div class="stat-divider"></div>
-                        <div class="hero-stat-item">
-                            <span class="stat-number">B2B SaaS</span>
-                            <span class="stat-label">Sistemas de Alta Disponibilidad</span>
-                        </div>
-                    </div>
-
-                    <div class="hero-cta-group reveal-fade">
-                        <a href="#proyecto" class="btn-hero-primary magnetic-btn">
-                            <i class="fas fa-cube"></i>
-                            <span>Explorar Proyecto Destacado</span>
-                            <i class="fas fa-arrow-down arrow-animated"></i>
-                        </a>
-                        <a href="https://github.com/robertorayo" target="_blank" rel="noopener noreferrer"
-                            class="btn-hero-secondary magnetic-btn">
-                            <i class="fab fa-github"></i>
-                            <span>GitHub Profile</span>
-                            <i class="fas fa-external-link-alt"></i>
-                        </a>
-                        <a href="mailto:robertobamym@gmail.com" class="btn-hero-secondary magnetic-btn">
-                            <i class="fas fa-paper-plane"></i>
-                            <span>Contactar</span>
-                        </a>
+                    <div class="stage-hint" id="stage-hint" aria-hidden="true">
+                        <i class="fas fa-hand-pointer"></i> Arrastra o usa las flechas
                     </div>
                 </div>
 
+                <div class="hero-bottom">
+                    <div class="hero-copy">
+                        <div class="hero-badge reveal-fade">
+                            <span class="status-dot"></span>
+                            <span class="badge-text">DISPONIBLE PARA PROYECTOS</span>
+                            <span class="badge-separator">|</span>
+                            <span class="badge-time"><i class="far fa-clock"></i> MADRID <span
+                                    id="clock-display">--:--:--</span></span>
+                        </div>
+                        <p class="hero-eyebrow reveal-fade">Roberto Borrallo Álvarez · Software Engineer</p>
+                        <h1 class="hero-title reveal-fade" id="hero-title">
+                            Ingeniería web,<br><em>aumentada</em> con IA.
+                        </h1>
+                        <p class="hero-description reveal-fade">
+                            Diseño y construyo plataformas SaaS, experiencias web inmersivas y flujos de desarrollo con
+                            agentes. De la base de datos al último píxel.
+                        </p>
+                    </div>
 
+                    <div class="hero-side reveal-fade">
+                        <div class="cap-panel" id="cap-panel" aria-live="polite">
+                            <div class="cap-panel__top">
+                                <span class="cap-panel__num" id="cap-num">01</span>
+                                <span class="cap-panel__kicker" id="cap-kicker">CAPACIDAD</span>
+                            </div>
+                            <h2 class="cap-panel__title" id="cap-title">Interfaces rápidas y accesibles</h2>
+                            <p class="cap-panel__desc" id="cap-desc"></p>
+                            <div class="cap-panel__chips" id="cap-chips"></div>
+                        </div>
+
+                        <div class="cap-controls">
+                            <button class="cap-arrow" id="cap-prev" aria-label="Capacidad anterior"><i
+                                    class="fas fa-arrow-left"></i></button>
+                            <div class="cap-dots" id="cap-dots" role="tablist" aria-label="Capacidades"></div>
+                            <button class="cap-arrow" id="cap-next" aria-label="Capacidad siguiente"><i
+                                    class="fas fa-arrow-right"></i></button>
+                        </div>
+
+                        <div class="hero-cta-group">
+                            <a href="#proyecto" class="btn-hero-primary magnetic-btn">
+                                <span>Ver proyectos</span>
+                                <i class="fas fa-arrow-down"></i>
+                            </a>
+                            <a href="https://github.com/robertorayo" target="_blank" rel="noopener noreferrer"
+                                class="btn-hero-secondary magnetic-btn">
+                                <i class="fab fa-github"></i>
+                                <span>GitHub</span>
+                            </a>
+                            <a href="mailto:robertobamym@gmail.com" class="btn-hero-secondary magnetic-btn">
+                                <i class="fas fa-paper-plane"></i>
+                                <span>Contactar</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chapter-badge" aria-hidden="true"><b>00</b><span>CAPÍTULO<br>BIENVENIDA</span></div>
             </section>
 
-            <!-- CINTA TICKER / MARQUEE MINIMALISTA (AWWWARDS REFERENCE) -->
+            <!-- Cinta -->
             <div class="marquee-strip-wrapper reveal-fade" aria-hidden="true">
                 <div class="marquee-track">
                     <div class="marquee-group">
-                        <span>FULL-STACK ARCHITECTURE</span>
-                        <span class="marquee-sep">&bull;</span>
-                        <span>TYPESCRIPT</span>
-                        <span class="marquee-sep">&bull;</span>
-                        <span>REACT 18</span>
-                        <span class="marquee-sep">&bull;</span>
-                        <span>POSTGRESQL &amp; SUPABASE</span>
-                        <span class="marquee-sep">&bull;</span>
-                        <span>SCALABLE SAAS</span>
-                        <span class="marquee-sep">&bull;</span>
-                        <span>CLEAN CODE</span>
-                        <span class="marquee-sep">&bull;</span>
-                        <span>SYSTEM DESIGN</span>
-                        <span class="marquee-sep">&bull;</span>
-                        <span>UI/UX PRECISION</span>
-                        <span class="marquee-sep">&bull;</span>
+                        <span>FULL-STACK</span><span class="marquee-sep">&bull;</span>
+                        <span>TYPESCRIPT</span><span class="marquee-sep">&bull;</span>
+                        <span>AGENTES DE IA</span><span class="marquee-sep">&bull;</span>
+                        <span>MCP</span><span class="marquee-sep">&bull;</span>
+                        <span>REACT</span><span class="marquee-sep">&bull;</span>
+                        <span>POSTGRESQL &amp; SUPABASE</span><span class="marquee-sep">&bull;</span>
+                        <span>WEBGL</span><span class="marquee-sep">&bull;</span>
+                        <span>SaaS B2B</span><span class="marquee-sep">&bull;</span>
                     </div>
                     <div class="marquee-group" aria-hidden="true">
-                        <span>FULL-STACK ARCHITECTURE</span>
-                        <span class="marquee-sep">&bull;</span>
-                        <span>TYPESCRIPT</span>
-                        <span class="marquee-sep">&bull;</span>
-                        <span>REACT 18</span>
-                        <span class="marquee-sep">&bull;</span>
-                        <span>POSTGRESQL &amp; SUPABASE</span>
-                        <span class="marquee-sep">&bull;</span>
-                        <span>SCALABLE SAAS</span>
-                        <span class="marquee-sep">&bull;</span>
-                        <span>CLEAN CODE</span>
-                        <span class="marquee-sep">&bull;</span>
-                        <span>SYSTEM DESIGN</span>
-                        <span class="marquee-sep">&bull;</span>
-                        <span>UI/UX PRECISION</span>
-                        <span class="marquee-sep">&bull;</span>
+                        <span>FULL-STACK</span><span class="marquee-sep">&bull;</span>
+                        <span>TYPESCRIPT</span><span class="marquee-sep">&bull;</span>
+                        <span>AGENTES DE IA</span><span class="marquee-sep">&bull;</span>
+                        <span>MCP</span><span class="marquee-sep">&bull;</span>
+                        <span>REACT</span><span class="marquee-sep">&bull;</span>
+                        <span>POSTGRESQL &amp; SUPABASE</span><span class="marquee-sep">&bull;</span>
+                        <span>WEBGL</span><span class="marquee-sep">&bull;</span>
+                        <span>SaaS B2B</span><span class="marquee-sep">&bull;</span>
                     </div>
                 </div>
             </div>
 
-            <!-- SECCIÓN SOBRE MÍ / FILOSOFÍA DE INGENIERÍA -->
+            <!-- ============ MÉTODO ============ -->
             <section class="profile-section" id="sobre-mi">
                 <div class="section-container">
                     <div class="section-header-compact reveal-fade">
                         <span class="section-tag"><span class="tag-mono-idx">01 //</span> <i
-                                class="fas fa-terminal"></i> ENFOQUE TÉCNICO</span>
-                        <h2 class="section-heading">Ingeniería orientada a la solidez, rendimiento y experiencia</h2>
+                                class="fas fa-terminal"></i> MÉTODO DE TRABAJO</span>
+                        <h2 class="section-heading">Ingeniería sólida, acelerada con agentes de IA</h2>
+                        <p class="section-lead">Uso la IA como un compañero de equipo: ella propone y ejecuta, yo
+                            decido, reviso y respondo del resultado.</p>
                     </div>
 
                     <div class="profile-grid">
                         <div class="profile-card glass-card tilt-card reveal-fade">
-                            <div class="profile-card-icon">
-                                <i class="fas fa-sitemap"></i>
-                            </div>
-                            <h3>Arquitectura Robusta</h3>
-                            <p>Modelado de datos optimizado en 3FN, esquemas dinámicos JSONB, políticas de seguridad RLS
-                                e interfaces reactivas modulares diseñadas para escalar.</p>
+                            <div class="profile-card-icon"><i class="fas fa-sitemap"></i></div>
+                            <h3>Arquitectura primero</h3>
+                            <p>Modelo los datos en 3FN, uso JSONB donde el dominio es dinámico y diseño interfaces
+                                modulares pensadas para crecer sin deuda.</p>
                         </div>
 
                         <div class="profile-card glass-card tilt-card reveal-fade">
-                            <div class="profile-card-icon">
-                                <i class="fas fa-shield-alt"></i>
-                            </div>
-                            <h3>Seguridad & Control Granular</h3>
-                            <p>Implementación rigurosa de control de acceso basado en roles (RBAC), autenticación
-                                robusta y cifrado de datos en capa de base de datos.</p>
+                            <div class="profile-card-icon"><i class="fas fa-robot"></i></div>
+                            <h3>Desarrollo con agentes</h3>
+                            <p>Trabajo con Claude Code y servidores MCP conectados a GitHub, Supabase y Vercel para
+                                planificar, implementar y verificar en bucle.</p>
                         </div>
 
                         <div class="profile-card glass-card tilt-card reveal-fade">
-                            <div class="profile-card-icon">
-                                <i class="fas fa-wand-magic-sparkles"></i>
+                            <div class="profile-card-icon"><i class="fas fa-shield-halved"></i></div>
+                            <h3>Seguridad por diseño</h3>
+                            <p>RBAC, políticas RLS en PostgreSQL y revisión humana de cada cambio. La velocidad de la
+                                IA no sustituye al criterio.</p>
+                        </div>
+                    </div>
+
+                    <!-- Terminal ilustrativa del flujo con agentes -->
+                    <div class="workflow-block reveal-fade">
+                        <div class="workflow-text">
+                            <span class="workflow-kicker">FLUJO · PLANIFICAR → EJECUTAR → VERIFICAR</span>
+                            <h3>Un bucle corto entre la idea y el código revisado</h3>
+                            <ul class="workflow-steps">
+                                <li><b>01</b><span>Contexto: el agente lee el repositorio y el esquema real mediante
+                                        MCP.</span></li>
+                                <li><b>02</b><span>Plan: propone cambios pequeños y revisables antes de
+                                        tocar nada.</span></li>
+                                <li><b>03</b><span>Verificación: compila, prueba en el navegador y revisa el diff antes
+                                        de publicar.</span></li>
+                            </ul>
+                        </div>
+                        <div class="terminal glass-card" id="terminal" role="img"
+                            aria-label="Ejemplo ilustrativo de una sesión con un agente de IA">
+                            <div class="terminal-bar">
+                                <span class="chrome-dot dot-red"></span><span class="chrome-dot dot-yellow"></span><span
+                                    class="chrome-dot dot-green"></span>
+                                <span class="terminal-title">agente — sesión de ejemplo</span>
                             </div>
-                            <h3>Experiencia de Usuario Premium</h3>
-                            <p>Interfaces fluidas, intuitivas y ultra reactivas con micro-interacciones pulidas, diseño
-                                responsivo y optimización de rendimiento en cliente.</p>
+                            <pre class="terminal-body" id="terminal-body" aria-hidden="true"></pre>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- SECCIÓN PROYECTOS DESTACADOS: DISTRIBUTECH PRO & SHENRON -->
+            <!-- ============ PROYECTOS ============ -->
             <section class="project-section" id="proyecto">
                 <div class="section-container">
                     <div class="section-header reveal-fade">
@@ -270,40 +284,35 @@
                             <span class="tag-mono-idx">02 //</span>
                             <span>PROYECTOS DESTACADOS</span>
                         </div>
-                        <h2 class="section-title">Proyectos Seleccionados</h2>
+                        <h2 class="section-title">Proyectos seleccionados</h2>
                         <p class="section-subtitle">
-                            Ingeniería de software, plataformas SaaS y experiencias web inmersivas de alto impacto
-                            visual y rendimiento optimizado.
+                            Una plataforma SaaS de producción y una experiencia web inmersiva: dos extremos del mismo
+                            oficio.
                         </p>
                     </div>
 
-                    <!-- Showcase Card Principal: DistribuTech Pro -->
-                    <div class="project-showcase glass-card tilt-card reveal-fade" id="project-card">
-                        <!-- Barra superior del Showcase -->
+                    <!-- DistribuTech Pro -->
+                    <article class="project-showcase glass-card tilt-card reveal-fade" id="project-card">
                         <div class="showcase-header">
                             <div class="showcase-badges-left">
                                 <span class="badge-project-type"><i class="fas fa-layer-group"></i> Plataforma SaaS
                                     B2B</span>
                                 <span class="badge-industry"><i class="fas fa-industry"></i> Distribución
-                                    Industrial</span>
+                                    industrial</span>
                                 <span class="badge-repo-status"><span class="repo-live-dot"></span> Repositorio
-                                    Público</span>
+                                    público</span>
                             </div>
-                            <div class="showcase-header-right">
-                                <a href="https://github.com/robertorayo/DistribuTech-Pro" target="_blank"
-                                    rel="noopener noreferrer" class="link-github-repo">
-                                    <i class="fab fa-github"></i>
-                                    <span>robertorayo/DistribuTech-Pro</span>
-                                    <i class="fas fa-arrow-up-right-from-square"></i>
-                                </a>
-                            </div>
+                            <a href="https://github.com/robertorayo/DistribuTech-Pro" target="_blank"
+                                rel="noopener noreferrer" class="link-github-repo">
+                                <i class="fab fa-github"></i>
+                                <span>robertorayo/DistribuTech-Pro</span>
+                                <i class="fas fa-arrow-up-right-from-square"></i>
+                            </a>
                         </div>
 
                         <div class="showcase-body">
-                            <!-- Columna 1: Captura Real de la Aplicación en Marco de Software -->
                             <div class="showcase-visual-col">
                                 <div class="app-mockup-frame">
-                                    <!-- Window Header -->
                                     <div class="mockup-chrome">
                                         <div class="chrome-dots">
                                             <span class="chrome-dot dot-red"></span>
@@ -312,89 +321,74 @@
                                         </div>
                                         <div class="chrome-address-bar">
                                             <i class="fas fa-lock"></i>
-                                            <span>https://app.distributech-pro.internal/admin/dashboard</span>
+                                            <span>distributech-pro / admin / dashboard</span>
                                         </div>
-                                        <div class="chrome-badge">
-                                            <i class="fas fa-bolt"></i> React 18 + Vite
-                                        </div>
+                                        <div class="chrome-badge"><i class="fas fa-bolt"></i> React + Vite</div>
                                     </div>
-
-                                    <!-- Contenedor de la Imagen Real del Dashboard -->
                                     <div class="mockup-image-wrapper">
-                                        <img src="distributech-dashboard.png"
-                                            alt="DistribuTech Pro - Centro de Mando Administrativo"
+                                        <img src="distributech-dashboard.png" loading="lazy"
+                                            alt="DistribuTech Pro: centro de mando administrativo"
                                             class="mockup-screenshot-img">
                                         <div class="mockup-image-glow-border"></div>
                                     </div>
-
-                                    <!-- Mockup Footer -->
                                     <div class="mockup-footer-bar">
-                                        <span><i class="fas fa-check-circle"></i> Centro de Mando Administrativo &bull;
-                                            React + TypeScript + Supabase</span>
+                                        <span><i class="fas fa-check-circle"></i> Centro de mando · React + TypeScript +
+                                            Supabase</span>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Columna 2: Detalles Técnicos, Pilares & Acciones -->
                             <div class="showcase-info-col">
                                 <div class="project-headline">
-                                    <span class="category-tag">Arquitectura & Desarrollo</span>
-                                    <h3>Solución SaaS B2B de Alta Disponibilidad</h3>
+                                    <span class="category-tag">Arquitectura &amp; desarrollo</span>
+                                    <h3>SaaS B2B de preventa y venta mayorista</h3>
                                     <p class="project-lead">
-                                        Diseñada para centralizar y optimizar el flujo completo de preventa, negociación
-                                        de tarifas y venta mayorista en sectores industriales de alta heterogeneidad
-                                        (ferretería, climatización, fontanería, riego y material industrial).
+                                        Centraliza el flujo completo de preventa, negociación de tarifas y venta
+                                        mayorista en sectores de alta heterogeneidad: ferretería, climatización,
+                                        fontanería, riego y material industrial.
                                     </p>
                                 </div>
 
-                                <!-- Pilares de Ingeniería -->
                                 <div class="pillars-stack">
                                     <div class="pillar-row">
                                         <div class="pillar-bullet"><i class="fas fa-database"></i></div>
                                         <div class="pillar-desc">
-                                            <h4>Catálogo Dinámico 3FN + JSONB</h4>
-                                            <p>Estructura relacional optimizada con atributos JSONB para catalogar
-                                                especificaciones técnicas complejas sin requerir migraciones
-                                                estructurales.</p>
+                                            <h4>Catálogo dinámico 3FN + JSONB</h4>
+                                            <p>Esquema relacional con atributos JSONB para especificaciones técnicas
+                                                complejas, sin migraciones estructurales.</p>
                                         </div>
                                     </div>
-
                                     <div class="pillar-row">
                                         <div class="pillar-bullet"><i class="fas fa-hand-holding-dollar"></i></div>
                                         <div class="pillar-desc">
-                                            <h4>Baremación de Márgenes en Tiempo Real</h4>
-                                            <p>Flujo interactivo de presupuestación entre cliente y comercial con
-                                                cálculo instantáneo de costes, márgenes comerciales y conversión a
-                                                pedido.</p>
+                                            <h4>Márgenes en tiempo real</h4>
+                                            <p>Presupuestación interactiva entre cliente y comercial con cálculo
+                                                instantáneo de costes y conversión a pedido.</p>
                                         </div>
                                     </div>
-
                                     <div class="pillar-row">
                                         <div class="pillar-bullet"><i class="fas fa-shield-halved"></i></div>
                                         <div class="pillar-desc">
-                                            <h4>Seguridad RBAC & Políticas RLS</h4>
-                                            <p>Aislamiento estricto de registros mediante Row Level Security en
-                                                PostgreSQL y control granular de roles (Cliente, Comercial,
-                                                Administrador).</p>
+                                            <h4>RBAC y políticas RLS</h4>
+                                            <p>Aislamiento de registros con Row Level Security y roles de Cliente,
+                                                Comercial y Administrador.</p>
                                         </div>
                                     </div>
-
                                     <div class="pillar-row">
                                         <div class="pillar-bullet"><i class="fas fa-chart-pie"></i></div>
                                         <div class="pillar-desc">
-                                            <h4>Analítica Visual & Exportación Documental</h4>
-                                            <p>Dashboards con métricas mediante Recharts y motor cliente de generación
-                                                de cotizaciones y albaranes oficiales en formato PDF con jsPDF.</p>
+                                            <h4>Analítica y documentos PDF</h4>
+                                            <p>Dashboards con Recharts y generación de cotizaciones y albaranes en PDF
+                                                con jsPDF.</p>
                                         </div>
                                     </div>
                                 </div>
 
-                                <!-- Stack de Tecnologías Utilizadas -->
                                 <div class="tech-chips-group">
                                     <span class="tech-chip"><i class="fab fa-react"></i> React 18</span>
-                                    <span class="tech-chip"><i class="fab fa-js"></i> TypeScript 5</span>
+                                    <span class="tech-chip"><i class="fab fa-js"></i> TypeScript</span>
                                     <span class="tech-chip"><i class="fas fa-bolt"></i> Vite</span>
-                                    <span class="tech-chip"><i class="fab fa-css3-alt"></i> Tailwind CSS</span>
+                                    <span class="tech-chip"><i class="fab fa-css3-alt"></i> Tailwind</span>
                                     <span class="tech-chip"><i class="fas fa-database"></i> Supabase</span>
                                     <span class="tech-chip"><i class="fas fa-server"></i> PostgreSQL</span>
                                     <span class="tech-chip"><i class="fas fa-cubes"></i> Zustand</span>
@@ -402,44 +396,38 @@
                                     <span class="tech-chip"><i class="fas fa-file-pdf"></i> jsPDF</span>
                                 </div>
 
-                                <!-- CTA Principal del Proyecto -->
                                 <div class="project-actions">
                                     <a href="https://github.com/robertorayo/DistribuTech-Pro" target="_blank"
                                         rel="noopener noreferrer" class="btn-project-cta magnetic-btn">
                                         <i class="fab fa-github"></i>
-                                        <span>Explorar Código en GitHub</span>
+                                        <span>Explorar código</span>
                                         <i class="fas fa-arrow-right"></i>
                                     </a>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </article>
 
-                    <!-- Showcase Card 2: Shenron Website (Creative Dev & Web Inmersiva) -->
-                    <div class="project-showcase glass-card tilt-card reveal-fade" id="project-shenron">
-                        <!-- Barra superior del Showcase -->
+                    <!-- Shenron -->
+                    <article class="project-showcase glass-card tilt-card reveal-fade" id="project-shenron">
                         <div class="showcase-header">
                             <div class="showcase-badges-left">
-                                <span class="badge-project-type"><i class="fas fa-cube"></i> Creative Development</span>
-                                <span class="badge-industry"><i class="fas fa-dragon"></i> Experiencia Inmersiva</span>
+                                <span class="badge-project-type"><i class="fas fa-cube"></i> Creative development</span>
+                                <span class="badge-industry"><i class="fas fa-dragon"></i> Experiencia inmersiva</span>
                                 <span class="badge-repo-status"><span class="repo-live-dot"></span> Repositorio
-                                    Público</span>
+                                    público</span>
                             </div>
-                            <div class="showcase-header-right">
-                                <a href="https://github.com/robertorayo/shenronwebsite" target="_blank"
-                                    rel="noopener noreferrer" class="link-github-repo">
-                                    <i class="fab fa-github"></i>
-                                    <span>robertorayo/shenronwebsite</span>
-                                    <i class="fas fa-arrow-up-right-from-square"></i>
-                                </a>
-                            </div>
+                            <a href="https://github.com/robertorayo/shenronwebsite" target="_blank"
+                                rel="noopener noreferrer" class="link-github-repo">
+                                <i class="fab fa-github"></i>
+                                <span>robertorayo/shenronwebsite</span>
+                                <i class="fas fa-arrow-up-right-from-square"></i>
+                            </a>
                         </div>
 
                         <div class="showcase-body">
-                            <!-- Columna 1: Captura Real de la Aplicación en Marco de Software -->
                             <div class="showcase-visual-col">
                                 <div class="app-mockup-frame">
-                                    <!-- Window Header -->
                                     <div class="mockup-chrome">
                                         <div class="chrome-dots">
                                             <span class="chrome-dot dot-red"></span>
@@ -448,203 +436,182 @@
                                         </div>
                                         <div class="chrome-address-bar">
                                             <i class="fas fa-lock"></i>
-                                            <span>https://shenronwebsite.vercel.app/</span>
+                                            <span>shenronwebsite.vercel.app</span>
                                         </div>
-                                        <div class="chrome-badge">
-                                            <i class="fas fa-bolt"></i> Next.js + Vercel
-                                        </div>
+                                        <div class="chrome-badge"><i class="fas fa-bolt"></i> JS + Canvas</div>
                                     </div>
-
-                                    <!-- Contenedor de la Imagen Real de Shenron -->
                                     <div class="mockup-image-wrapper">
-                                        <img src="shenron-preview.jpg" alt="Shenron - Experiencia Web Inmersiva"
-                                            class="mockup-screenshot-img">
+                                        <img src="shenron-preview.jpg" loading="lazy"
+                                            alt="Shenron: experiencia web inmersiva" class="mockup-screenshot-img">
                                         <div class="mockup-image-glow-border"></div>
                                     </div>
-
-                                    <!-- Mockup Footer -->
                                     <div class="mockup-footer-bar">
-                                        <span><i class="fas fa-check-circle"></i> Producción en Vercel &bull; Next.js +
-                                            CSS Moderno + Animaciones Cinemáticas</span>
+                                        <span><i class="fas fa-check-circle"></i> En producción en Vercel · HTML, CSS y
+                                            JavaScript</span>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Columna 2: Detalles Técnicos, Pilares & Acciones -->
                             <div class="showcase-info-col">
                                 <div class="project-headline">
-                                    <span class="category-tag">Creative Development & UI/UX</span>
-                                    <h3>Shenron: El Guardián del Deseo</h3>
+                                    <span class="category-tag">Creative development &amp; UI/UX</span>
+                                    <h3>Shenron: el guardián del deseo</h3>
                                     <p class="project-lead">
-                                        Experiencia web inmersiva de alto impacto visual y narrativa interactiva
-                                        envolvente inspirada en el mítico dragón Shenron. Diseñada con
-                                        micro-interacciones fluidas, transiciones de scroll orgánicas y fidelidad
-                                        cinematográfica en modo oscuro.
+                                        Narrativa interactiva guiada por el scroll: una secuencia cinematográfica de
+                                        239 fotogramas, partículas y un oráculo con el que el visitante puede
+                                        conversar, en un modo oscuro de acabado editorial.
                                     </p>
                                 </div>
 
-                                <!-- Pilares de Ingeniería -->
                                 <div class="pillars-stack">
+                                    <div class="pillar-row">
+                                        <div class="pillar-bullet"><i class="fas fa-film"></i></div>
+                                        <div class="pillar-desc">
+                                            <h4>Secuencia de fotogramas en canvas</h4>
+                                            <p>239 imágenes dibujadas según el scroll, con carga progresiva y vídeo de
+                                                respaldo para que la página nunca espere.</p>
+                                        </div>
+                                    </div>
                                     <div class="pillar-row">
                                         <div class="pillar-bullet"><i class="fas fa-wand-magic-sparkles"></i></div>
                                         <div class="pillar-desc">
-                                            <h4>Atmósfera Cinemática & Narrativa Visual</h4>
-                                            <p>Composición editorial de alto contraste con gradientes sutiles,
-                                                tipografías expresivas y tratamiento estético vanguardista para una
-                                                inmersión completa.</p>
+                                            <h4>Atmósfera y narrativa visual</h4>
+                                            <p>Paleta esmeralda, grano de película, tipografía expresiva y almas
+                                                flotantes reactivas al puntero.</p>
                                         </div>
                                     </div>
-
                                     <div class="pillar-row">
-                                        <div class="pillar-bullet"><i class="fas fa-wave-square"></i></div>
+                                        <div class="pillar-bullet"><i class="fas fa-comments"></i></div>
                                         <div class="pillar-desc">
-                                            <h4>Transiciones Fluidas & Scroll Dinámico</h4>
-                                            <p>Efectos de revelación escalonados, animaciones reactivas al
-                                                desplazamiento y transiciones sin fricción optimizadas para 60fps
-                                                constantes.</p>
+                                            <h4>Oráculo interactivo</h4>
+                                            <p>Un formulario de invocación que responde con la voz del dragón, con
+                                                regiones accesibles y estados de carga.</p>
                                         </div>
                                     </div>
-
-                                    <div class="pillar-row">
-                                        <div class="pillar-bullet"><i class="fas fa-mobile-screen"></i></div>
-                                        <div class="pillar-desc">
-                                            <h4>Arquitectura Responsiva & Componentes Modulares</h4>
-                                            <p>Estructura adaptativa ultra-optimizada para dispositivos móviles, tablets
-                                                y monitores de alta resolución con carga diferida de assets multimedia.
-                                            </p>
-                                        </div>
-                                    </div>
-
                                     <div class="pillar-row">
                                         <div class="pillar-bullet"><i class="fas fa-cloud-arrow-up"></i></div>
                                         <div class="pillar-desc">
-                                            <h4>Despliegue Continuo en Vercel Edge</h4>
-                                            <p>Pipeline de integración y entrega continua (CI/CD) conectado a GitHub con
-                                                distribución global de baja latencia mediante Vercel Edge Network.</p>
+                                            <h4>Despliegue continuo</h4>
+                                            <p>Integración con GitHub y distribución global de baja latencia en
+                                                Vercel.</p>
                                         </div>
                                     </div>
                                 </div>
 
-                                <!-- Stack de Tecnologías Utilizadas -->
                                 <div class="tech-chips-group">
-                                    <span class="tech-chip"><i class="fab fa-react"></i> React / Next.js</span>
-                                    <span class="tech-chip"><i class="fab fa-js"></i> TypeScript</span>
-                                    <span class="tech-chip"><i class="fab fa-css3-alt"></i> Tailwind CSS</span>
-                                    <span class="tech-chip"><i class="fas fa-film"></i> Cinemática Web</span>
-                                    <span class="tech-chip"><i class="fas fa-cubes"></i> UI Modular</span>
+                                    <span class="tech-chip"><i class="fab fa-html5"></i> HTML5</span>
+                                    <span class="tech-chip"><i class="fab fa-css3-alt"></i> CSS moderno</span>
+                                    <span class="tech-chip"><i class="fab fa-js"></i> JavaScript</span>
+                                    <span class="tech-chip"><i class="fas fa-film"></i> Canvas 2D</span>
+                                    <span class="tech-chip"><i class="fas fa-wave-square"></i> Scroll-driven</span>
                                     <span class="tech-chip"><i class="fas fa-server"></i> Vercel</span>
                                 </div>
 
-                                <!-- CTAs del Proyecto: GitHub + Demo en vivo -->
-                                <div class="project-actions" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                <div class="project-actions">
                                     <a href="https://github.com/robertorayo/shenronwebsite" target="_blank"
                                         rel="noopener noreferrer" class="btn-project-cta magnetic-btn">
                                         <i class="fab fa-github"></i>
-                                        <span>Explorar Código en GitHub</span>
+                                        <span>Explorar código</span>
                                         <i class="fas fa-arrow-right"></i>
                                     </a>
                                     <a href="https://shenronwebsite.vercel.app/" target="_blank"
                                         rel="noopener noreferrer" class="btn-project-secondary magnetic-btn">
                                         <i class="fas fa-arrow-up-right-from-square"></i>
-                                        <span>Visitar Web en Vivo</span>
+                                        <span>Ver web en vivo</span>
                                     </a>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </article>
                 </div>
             </section>
 
-            <!-- SECCIÓN HABILIDADES / STACK TÉCNICO -->
+            <!-- ============ STACK ============ -->
             <section class="skills-section" id="habilidades">
                 <div class="section-container">
                     <div class="section-header-compact reveal-fade">
                         <span class="section-tag"><span class="tag-mono-idx">03 //</span> <i class="fas fa-cubes"></i>
-                            COMPETENCIAS & TECNOLOGÍAS</span>
-                        <h2 class="section-heading">Conjunto de herramientas y stack de desarrollo</h2>
+                            COMPETENCIAS &amp; TECNOLOGÍAS</span>
+                        <h2 class="section-heading">Un stack moderno, de la interfaz al agente</h2>
                     </div>
 
                     <div class="skills-grid">
-                        <!-- Frontend -->
                         <div class="skill-category-card glass-card tilt-card reveal-fade">
                             <div class="category-header">
                                 <i class="fas fa-laptop-code"></i>
-                                <h3>Frontend Engineering</h3>
+                                <h3>Frontend &amp; experiencia</h3>
                             </div>
                             <ul class="skills-list">
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>React 18 / Next.js</span>
-                                </li>
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>TypeScript</span></li>
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>HTML5 Semántico / Vanilla
-                                        CSS</span></li>
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Tailwind CSS / CSS
-                                        Modules</span></li>
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Zustand / Redux / Context
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>React 18 /
+                                        TypeScript</span></li>
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>HTML5 semántico y CSS
+                                        moderno</span></li>
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Tailwind CSS</span></li>
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Zustand / Context
                                         API</span></li>
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Responsive & Adaptive
-                                        UI/UX</span></li>
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Three.js y animación
+                                        con GSAP</span></li>
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Diseño responsive y
+                                        accesible</span></li>
                             </ul>
                         </div>
 
-                        <!-- Backend & Datos -->
                         <div class="skill-category-card glass-card tilt-card reveal-fade">
                             <div class="category-header">
                                 <i class="fas fa-server"></i>
-                                <h3>Backend & Arquitectura de Datos</h3>
+                                <h3>Backend &amp; datos</h3>
                             </div>
                             <ul class="skills-list">
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>PostgreSQL & Modelado
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>PostgreSQL y modelado
                                         3FN</span></li>
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Supabase / BaaS
-                                        Architecture</span></li>
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Row Level Security (RLS)
-                                        & RBAC</span></li>
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>RESTful APIs &
-                                        Integraciones</span></li>
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>JSONB & Atributos
-                                        Dinámicos</span></li>
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Node.js / Express</span>
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Supabase (BaaS)</span>
                                 </li>
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Row Level Security y
+                                        RBAC</span></li>
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>JSONB y atributos
+                                        dinámicos</span></li>
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>APIs REST /
+                                        Node.js</span></li>
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Git, GitHub y CI/CD en
+                                        Vercel</span></li>
                             </ul>
                         </div>
 
-                        <!-- Herramientas & Buenas Prácticas -->
                         <div class="skill-category-card glass-card tilt-card reveal-fade">
                             <div class="category-header">
-                                <i class="fas fa-gears"></i>
-                                <h3>Herramientas & Prácticas</h3>
+                                <i class="fas fa-wand-magic-sparkles"></i>
+                                <h3>IA &amp; agentes</h3>
                             </div>
                             <ul class="skills-list">
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Git / GitHub
-                                        Workflows</span></li>
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Vite / Build
-                                        Optimization</span></li>
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Clean Code & Patrones
-                                        SOLID</span></li>
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Recharts / Visualización
-                                        de Datos</span></li>
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>jsPDF / Generación
-                                        Documental</span></li>
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Testing & Optimización
-                                        Web</span></li>
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Claude Code y
+                                        desarrollo agéntico</span></li>
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Servidores MCP
+                                        (GitHub, Supabase, Vercel)</span></li>
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Ingeniería de prompts y
+                                        contexto</span></li>
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Integración de APIs de
+                                        LLM en producto</span></li>
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Revisión y verificación
+                                        de código generado</span></li>
+                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Automatización de
+                                        flujos de desarrollo</span></li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- SECCIÓN CTA DE CONTACTO -->
+            <!-- ============ CONTACTO ============ -->
             <section class="contact-cta-section" id="contacto">
                 <div class="section-container">
                     <div class="contact-banner glass-card reveal-fade">
                         <div class="contact-banner-content">
                             <span class="section-tag"><span class="tag-mono-idx">04 //</span> <i
                                     class="fas fa-comments"></i> COMUNICACIÓN DIRECTA</span>
-                            <h2 class="contact-title">¿Interesado en colaborar o conocer más detalles de mi trabajo?
-                            </h2>
+                            <h2 class="contact-title">¿Construimos algo que merezca la pena?</h2>
                             <p class="contact-text">
-                                Estoy disponible para nuevos retos profesionales, proyectos de desarrollo de software y
-                                consultas sobre arquitectura técnica.
+                                Estoy disponible para nuevos retos, proyectos de software y consultas sobre
+                                arquitectura o desarrollo con IA. Escríbeme y respondo en cuanto pueda.
                             </p>
 
                             <div class="email-copy-box">
@@ -654,11 +621,11 @@
                                 </div>
                                 <button class="btn-copy-email" id="btn-copy-email" title="Copiar correo electrónico">
                                     <i class="fas fa-copy"></i>
-                                    <span id="copy-btn-text">Copiar Email</span>
+                                    <span id="copy-btn-text">Copiar email</span>
                                 </button>
                                 <a href="mailto:robertobamym@gmail.com" class="btn-send-mail" title="Enviar correo">
                                     <i class="fas fa-arrow-up-right-from-square"></i>
-                                    <span>Escribir Mensaje</span>
+                                    <span>Escribir mensaje</span>
                                 </a>
                             </div>
                         </div>
@@ -667,713 +634,61 @@
             </section>
         </main>
 
-        <!-- FOOTER ELEGANTE Y COMPLETO -->
         <footer class="footer">
             <div class="footer-container">
                 <div class="footer-top">
-                    <!-- Columna 1: Identidad -->
                     <div class="footer-col-identity">
                         <div class="footer-brand">
                             <span class="footer-monogram">RB</span>
                             <h3 class="footer-name">Roberto Borrallo Álvarez</h3>
                         </div>
                         <p class="footer-bio">
-                            Ingeniero de software y desarrollador Full-Stack enfocado en la creación de aplicaciones web
-                            escalables, intuitivas y con estándares de código de alta calidad.
+                            Ingeniero de software full-stack. Construyo productos web escalables, cuidados y
+                            acelerados con IA.
                         </p>
                     </div>
 
-                    <!-- Columna 2: Navegación Rápida -->
                     <div class="footer-col-links">
                         <h4 class="footer-heading">Navegación</h4>
                         <ul class="footer-nav-list">
                             <li><a href="#inicio"><i class="fas fa-chevron-right"></i> Inicio</a></li>
-                            <li><a href="#sobre-mi"><i class="fas fa-chevron-right"></i> Perfil & Enfoque</a></li>
-                            <li><a href="#proyecto"><i class="fas fa-chevron-right"></i> Proyectos Seleccionados</a>
-                            </li>
-                            <li><a href="#habilidades"><i class="fas fa-chevron-right"></i> Stack Tecnológico</a></li>
+                            <li><a href="#sobre-mi"><i class="fas fa-chevron-right"></i> Método</a></li>
+                            <li><a href="#proyecto"><i class="fas fa-chevron-right"></i> Proyectos</a></li>
+                            <li><a href="#habilidades"><i class="fas fa-chevron-right"></i> Stack</a></li>
                         </ul>
                     </div>
 
-                    <!-- Columna 3: Información de Contacto Directo -->
                     <div class="footer-col-contact">
-                        <h4 class="footer-heading">Información de Contacto</h4>
+                        <h4 class="footer-heading">Contacto</h4>
                         <ul class="footer-contact-list">
-                            <li>
-                                <i class="fas fa-user"></i>
-                                <span><strong>Nombre:</strong> Roberto Borrallo Álvarez</span>
-                            </li>
-                            <li>
-                                <i class="fas fa-envelope"></i>
-                                <span><strong>Email:</strong> <a href="mailto:robertobamym@gmail.com"
-                                        class="footer-mail-link">robertobamym@gmail.com</a></span>
-                            </li>
-                            <li>
-                                <i class="fas fa-location-dot"></i>
-                                <span><strong>Ubicación:</strong> España</span>
-                            </li>
+                            <li><i class="fas fa-envelope"></i>
+                                <span><a href="mailto:robertobamym@gmail.com"
+                                        class="footer-mail-link">robertobamym@gmail.com</a></span></li>
+                            <li><i class="fas fa-location-dot"></i> <span>España · CET</span></li>
                         </ul>
                     </div>
 
-                    <!-- Columna 4: Enlaces y Redes -->
                     <div class="footer-col-social">
-                        <h4 class="footer-heading">Presencia Digital</h4>
+                        <h4 class="footer-heading">Presencia digital</h4>
                         <div class="footer-social-buttons">
                             <a href="https://github.com/robertorayo" target="_blank" rel="noopener noreferrer"
-                                class="social-btn" title="GitHub - Roberto Borrallo">
-                                <i class="fab fa-github"></i>
-                                <span>GitHub</span>
+                                class="social-btn">
+                                <i class="fab fa-github"></i><span>GitHub</span>
                             </a>
-                            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-btn"
-                                title="LinkedIn - Roberto Borrallo">
-                                <i class="fab fa-linkedin-in"></i>
-                                <span>LinkedIn</span>
-                            </a>
-                            <a href="mailto:robertobamym@gmail.com" class="social-btn" title="Email directo">
-                                <i class="fas fa-envelope"></i>
-                                <span>Email</span>
+                            <a href="mailto:robertobamym@gmail.com" class="social-btn">
+                                <i class="fas fa-envelope"></i><span>Email</span>
                             </a>
                         </div>
                     </div>
                 </div>
 
                 <div class="footer-bottom">
-                    <div class="footer-copyright">
-                        © 2026 Roberto Borrallo Álvarez. Todos los derechos reservados.
-                    </div>
-                    <div class="footer-signature">
-                        Diseñado con estética monocromática y alto rendimiento.
-                    </div>
+                    <div class="footer-copyright">© 2026 Roberto Borrallo Álvarez. Todos los derechos reservados.</div>
+                    <div class="footer-signature">Diseñado en blanco y negro · Three.js · Hecho a mano con IA</div>
                 </div>
             </div>
         </footer>
     </div>
-
-    <!-- Scripts de interactividad, canvas geométrico, animaciones de scroll y efectos de ratón -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // 1. Línea de Scroll Flotante Interactiva (Estilo trek.cards)
-            const fsb = document.getElementById('fsb');
-            const fsbThumb = document.getElementById('fsb-thumb');
-
-            if (fsb && fsbThumb && matchMedia('(hover: hover) and (pointer: fine)').matches) {
-                const doc = document.documentElement;
-                const PAD = 4;
-                let hideTimer = 0;
-                let raf = 0;
-                let drag = null;
-
-                const getGeo = () => {
-                    const vh = window.innerHeight;
-                    const totalHeight = doc.scrollHeight;
-                    const thumbHeight = Math.max(38, (vh * vh) / totalHeight);
-                    return {
-                        vh,
-                        totalHeight,
-                        maxScroll: totalHeight - vh,
-                        thumbHeight,
-                        runway: vh - thumbHeight - PAD * 2
-                    };
-                };
-
-                const updateScrollbar = () => {
-                    raf = 0;
-                    const g = getGeo();
-                    fsb.classList.toggle('is-none', g.maxScroll <= 4);
-                    if (g.maxScroll <= 4) return;
-                    fsbThumb.style.height = `${g.thumbHeight}px`;
-                    const currentTop = PAD + (window.scrollY / g.maxScroll) * g.runway;
-                    fsbThumb.style.transform = `translateY(${currentTop}px)`;
-                };
-
-                const requestUpdate = () => {
-                    if (!raf) raf = requestAnimationFrame(updateScrollbar);
-                };
-
-                const showScrollbar = () => {
-                    fsb.classList.add('is-on');
-                    clearTimeout(hideTimer);
-                    hideTimer = setTimeout(() => {
-                        if (!drag && !fsb.matches(':hover')) {
-                            fsb.classList.remove('is-on');
-                        }
-                    }, 850);
-                };
-
-                window.addEventListener('scroll', () => {
-                    requestUpdate();
-                    showScrollbar();
-                }, { passive: true });
-
-                window.addEventListener('resize', requestUpdate, { passive: true });
-                new ResizeObserver(requestUpdate).observe(document.body);
-
-                // Arrastre interactivo de la línea de scroll
-                fsbThumb.addEventListener('pointerdown', (e) => {
-                    if (e.button !== 0) return;
-                    e.preventDefault();
-                    e.stopPropagation();
-                    fsbThumb.setPointerCapture(e.pointerId);
-                    drag = { startY: e.clientY, startScroll: window.scrollY };
-                    fsb.classList.add('is-drag', 'is-on');
-                });
-
-                fsbThumb.addEventListener('pointermove', (e) => {
-                    if (!drag) return;
-                    const g = getGeo();
-                    const deltaY = e.clientY - drag.startY;
-                    const newScroll = drag.startScroll + deltaY * (g.maxScroll / g.runway);
-                    window.scrollTo(0, newScroll);
-                });
-
-                const endDrag = () => {
-                    if (!drag) return;
-                    drag = null;
-                    fsb.classList.remove('is-drag');
-                    showScrollbar();
-                };
-
-                fsbThumb.addEventListener('pointerup', endDrag);
-                fsbThumb.addEventListener('pointercancel', endDrag);
-
-                // Clic directo en el riel de scroll para saltar
-                fsb.addEventListener('pointerdown', (e) => {
-                    if (e.target !== fsb || e.button !== 0) return;
-                    const rect = fsbThumb.getBoundingClientRect();
-                    const direction = e.clientY < rect.top ? -1 : 1;
-                    window.scrollBy({ top: direction * window.innerHeight * 0.85, behavior: 'smooth' });
-                });
-
-                fsb.addEventListener('pointerenter', () => {
-                    fsb.classList.add('is-on');
-                    clearTimeout(hideTimer);
-                });
-                fsb.addEventListener('pointerleave', showScrollbar);
-
-                updateScrollbar();
-            }
-
-            // 2. Trek Scroll Journey Trail Engine
-            //    - Curvas entre estaciones (cabeceras de sección)
-            //    - División por los bordes de CADA tarjeta que atraviesa el haz
-            //    - Máscara SVG que atenúa el haz cuando pasa por detrás de texto
-            const trailSvg = document.getElementById('trek-trail-svg');
-            const guidesG = document.getElementById('trek-guides');
-            const glowsG = document.getElementById('trek-glows');
-            const coresG = document.getElementById('trek-cores');
-            const nodesGroup = document.getElementById('trek-nodes-group');
-            const cometHead1 = document.getElementById('trek-comet-head-1');
-            const cometHead2 = document.getElementById('trek-comet-head-2');
-            const textMask = document.getElementById('trekTextMask');
-            const maskBase = document.getElementById('trek-mask-base');
-            const maskOuterG = document.getElementById('trek-mask-outer');
-            const maskInnerG = document.getElementById('trek-mask-inner');
-
-            if (trailSvg && guidesG && glowsG && coresG && cometHead1 && cometHead2) {
-                const SVGNS = 'http://www.w3.org/2000/svg';
-                const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
-                let segments = [];
-                let stations = [];
-                let startY = 0, endY = 0, finaleY = Infinity;
-
-                const sectionDefs = [
-                    { pill: '#sobre-mi .section-tag', title: '#sobre-mi .section-heading' },
-                    { pill: '#proyecto .spotlight-pill', title: '#proyecto .section-title' },
-                    { pill: '#habilidades .section-tag', title: '#habilidades .section-heading' },
-                    { pill: '#contacto .section-tag', title: '#contacto .contact-title' }
-                ].map(d => ({ pill: document.querySelector(d.pill), title: document.querySelector(d.title) }));
-
-                // Rectángulo en coordenadas de documento
-                const absRect = (el) => {
-                    const r = el.getBoundingClientRect();
-                    return { L: r.left + window.scrollX, R: r.right + window.scrollX, T: r.top + window.scrollY, B: r.bottom + window.scrollY };
-                };
-
-                function makeCurve(pts) {
-                    let d = `M ${pts[0].x} ${pts[0].y}`;
-                    for (let i = 0; i < pts.length - 1; i++) {
-                        const p0 = pts[i], p1 = pts[i + 1];
-                        const my = p0.y + (p1.y - p0.y) * 0.5;
-                        d += ` C ${p0.x} ${my}, ${p1.x} ${my}, ${p1.x} ${p1.y}`;
-                    }
-                    return d;
-                }
-
-                function setProgress(track, dist) {
-                    const off = dist <= 0 ? track.len + 2 : Math.max(0, track.len - dist);
-                    track.core.style.strokeDashoffset = off;
-                    track.glow.style.strokeDashoffset = off;
-                }
-
-                function makeTrack(d) {
-                    const mk = (cls, parent, glow) => {
-                        const p = document.createElementNS(SVGNS, 'path');
-                        p.setAttribute('class', cls);
-                        p.setAttribute('d', d);
-                        if (glow) p.setAttribute('filter', 'url(#trekGlowFilter)');
-                        parent.appendChild(p);
-                        return p;
-                    };
-                    mk('trek-path-guide', guidesG);
-                    const glow = mk('trek-path-glow', glowsG, true);
-                    const core = mk('trek-path-core', coresG);
-                    const len = core.getTotalLength();
-                    [glow, core].forEach(p => { p.style.strokeDasharray = `${len} ${len + 4}`; });
-                    const track = { core, glow, len };
-                    setProgress(track, 0);
-                    return track;
-                }
-
-                // Una tarjeta por fila del grid (la del lado indicado): en escritorio 1, en móvil todas
-                function pickCards(grid, side) {
-                    if (!grid) return [];
-                    const rows = new Map();
-                    Array.from(grid.children).forEach(el => {
-                        const r = absRect(el);
-                        const key = Math.round(r.T / 10);
-                        const cur = rows.get(key);
-                        if (!cur || (side === 'right' ? r.R > cur.r.R : r.L < cur.r.L)) rows.set(key, { el, r });
-                    });
-                    return Array.from(rows.values()).sort((a, b) => a.r.T - b.r.T).map(v => ({ kind: 'card', el: v.el }));
-                }
-
-                function stationPoint(sectionIdx, isMobile) {
-                    const pill = sectionDefs[sectionIdx].pill;
-                    if (!pill) return null;
-                    const r = absRect(pill);
-                    return {
-                        kind: 'pt',
-                        x: isMobile ? 14 : Math.max(40, r.L - 28),
-                        y: (r.T + r.B) / 2,
-                        station: sectionIdx
-                    };
-                }
-
-                // Atenúa el haz bajo cualquier texto que no esté dentro de una tarjeta opaca
-                function buildMask(W, H) {
-                    if (!textMask || !maskBase) return;
-                    [textMask, maskBase].forEach(n => { n.setAttribute('width', W); n.setAttribute('height', H); });
-                    maskOuterG.innerHTML = '';
-                    maskInnerG.innerHTML = '';
-                    const rects = [];
-                    const root = document.querySelector('.main-content');
-                    if (root) {
-                        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
-                            acceptNode: (n) => {
-                                if (!n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
-                                const p = n.parentElement;
-                                if (!p || p.closest('.glass-card, .marquee-strip-wrapper')) return NodeFilter.FILTER_REJECT;
-                                return NodeFilter.FILTER_ACCEPT;
-                            }
-                        });
-                        const range = document.createRange();
-                        while (walker.nextNode()) {
-                            range.selectNodeContents(walker.currentNode);
-                            for (const r of range.getClientRects()) {
-                                if (r.width < 1 || r.height < 1) continue;
-                                rects.push({ x: r.left + window.scrollX, y: r.top + window.scrollY, w: r.width, h: r.height });
-                            }
-                        }
-                        // Pastillas e insignias completas (incluyen iconos) y la cinta marquee
-                        root.querySelectorAll('.section-tag, .spotlight-pill, .hero-badge, .marquee-strip-wrapper').forEach(el => {
-                            if (el.closest('.glass-card')) return;
-                            const r = absRect(el);
-                            rects.push({ x: r.L, y: r.T, w: r.R - r.L, h: r.B - r.T });
-                        });
-                    }
-                    const addRect = (g, r, pad, rx, fill) => {
-                        const n = document.createElementNS(SVGNS, 'rect');
-                        n.setAttribute('x', r.x - pad);
-                        n.setAttribute('y', r.y - pad);
-                        n.setAttribute('width', r.w + pad * 2);
-                        n.setAttribute('height', r.h + pad * 2);
-                        n.setAttribute('rx', rx);
-                        n.setAttribute('fill', fill);
-                        g.appendChild(n);
-                    };
-                    // Borde suave (~60%) y núcleo (~15%) para un fundido sin filtros costosos
-                    rects.forEach(r => addRect(maskOuterG, r, 16, 18, '#9a9a9a'));
-                    rects.forEach(r => addRect(maskInnerG, r, 5, 8, '#262626'));
-                }
-
-                function buildTrail() {
-                    // Medir sin las transformaciones de reveal / tilt / GSAP (causaban el descuadre)
-                    document.documentElement.classList.add('trek-measuring');
-
-                    const width = document.documentElement.clientWidth;
-                    const isMobile = width <= 800;
-                    const docH = document.documentElement.scrollHeight;
-
-                    guidesG.innerHTML = '';
-                    glowsG.innerHTML = '';
-                    coresG.innerHTML = '';
-                    nodesGroup.innerHTML = '';
-                    segments = [];
-                    stations = [];
-                    finaleY = Infinity;
-
-                    const heroCta = document.querySelector('.hero-cta-group');
-                    const footer = document.querySelector('.footer');
-                    const contactBanner = document.querySelector('.contact-banner');
-                    const startPt = { kind: 'pt', x: width * 0.5, y: heroCta ? absRect(heroCta).B + 50 : 500 };
-                    const endPt = { kind: 'pt', x: width * 0.5, y: footer ? absRect(footer).T - 36 : docH - 60 };
-
-                    const waypoints = [
-                        startPt,
-                        stationPoint(0, isMobile),
-                        ...pickCards(document.querySelector('.profile-grid'), 'right'),
-                        stationPoint(1, isMobile),
-                        ...['project-card', 'project-shenron']
-                            .map(id => document.getElementById(id)).filter(Boolean)
-                            .map(el => ({ kind: 'card', el })),
-                        stationPoint(2, isMobile),
-                        ...pickCards(document.querySelector('.skills-grid'), 'right'),
-                        contactBanner ? { kind: 'card', el: contactBanner, station: 3 } : null,
-                        endPt
-                    ].filter(Boolean);
-
-                    const addStation = (x, y, idx) => {
-                        const c = document.createElementNS(SVGNS, 'circle');
-                        c.setAttribute('cx', x);
-                        c.setAttribute('cy', y);
-                        c.setAttribute('r', '7');
-                        c.setAttribute('class', 'trek-node');
-                        nodesGroup.appendChild(c);
-                        stations.push({ el: c, y, idx });
-                    };
-
-                    let pts = [];
-                    const flushCurve = () => {
-                        if (pts.length >= 2) {
-                            segments.push({ type: 'curve', track: makeTrack(makeCurve(pts)), y0: pts[0].y, y1: pts[pts.length - 1].y });
-                        }
-                        pts = [];
-                    };
-                    const pushPt = (p) => {
-                        const last = pts[pts.length - 1];
-                        if (last && p.y <= last.y + 8) return false; // mantener el recorrido monótono en Y
-                        pts.push(p);
-                        return true;
-                    };
-
-                    waypoints.forEach(wp => {
-                        if (wp.kind === 'pt') {
-                            if (pushPt(wp) && wp.station !== undefined) addStation(wp.x, wp.y, wp.station);
-                            return;
-                        }
-                        // Tarjeta: el haz entra por el centro superior y se divide por ambos bordes
-                        const r = absRect(wp.el);
-                        const o = 1.5; // ligeramente por fuera del borde para que el núcleo se vea
-                        const L = r.L - o, R = r.R + o, T = r.T - o, B = r.B + o;
-                        const CX = (L + R) / 2;
-                        const cssRad = parseFloat(getComputedStyle(wp.el).borderTopLeftRadius) || 20;
-                        const rad = Math.max(1, Math.min(cssRad + o, (R - L) / 2 - 1, (B - T) / 2 - 1));
-
-                        pushPt({ x: CX, y: T });
-                        flushCurve();
-                        const dL = `M ${CX} ${T} H ${L + rad} A ${rad} ${rad} 0 0 0 ${L} ${T + rad} V ${B - rad} A ${rad} ${rad} 0 0 0 ${L + rad} ${B} H ${CX}`;
-                        const dR = `M ${CX} ${T} H ${R - rad} A ${rad} ${rad} 0 0 1 ${R} ${T + rad} V ${B - rad} A ${rad} ${rad} 0 0 1 ${R - rad} ${B} H ${CX}`;
-                        segments.push({ type: 'split', L: makeTrack(dL), R: makeTrack(dR), y0: T, y1: B });
-                        if (wp.station !== undefined) {
-                            addStation(CX, T, wp.station);
-                            if (wp.station === 3) finaleY = T;
-                        }
-                        pts = [{ x: CX, y: B }];
-                    });
-                    flushCurve();
-
-                    startY = segments.length ? segments[0].y0 : 0;
-                    endY = segments.length ? segments[segments.length - 1].y1 : docH;
-
-                    const wrapper = document.querySelector('.page-wrapper');
-                    buildMask(width, wrapper ? wrapper.scrollHeight : docH);
-
-                    document.documentElement.classList.remove('trek-measuring');
-                }
-
-                // Posición objetivo del haz: 55% del viewport, acelerando al final para llegar justo al último punto
-                function getTravelY() {
-                    const vh = window.innerHeight;
-                    const s = window.scrollY;
-                    const maxScroll = Math.max(1, document.documentElement.scrollHeight - vh);
-                    let t = s + vh * 0.55;
-                    const ramp = clamp((s - (maxScroll - vh)) / vh, 0, 1);
-                    t += ramp * (endY - (maxScroll + vh * 0.55));
-                    return Math.max(startY, t);
-                }
-
-                function distAtY(track, y) {
-                    let lo = 0, hi = track.len;
-                    while (hi - lo > 0.75) {
-                        const mid = (lo + hi) * 0.5;
-                        if (track.core.getPointAtLength(mid).y < y) lo = mid; else hi = mid;
-                    }
-                    return lo;
-                }
-
-                function updateTrail() {
-                    if (!segments.length) return;
-                    const t = getTravelY();
-                    let headL = null, headR = null;
-
-                    segments.forEach(seg => {
-                        const before = t <= seg.y0;
-                        const after = t >= seg.y1;
-                        if (seg.type === 'curve') {
-                            const dist = before ? 0 : after ? seg.track.len : distAtY(seg.track, t);
-                            setProgress(seg.track, dist);
-                            if (!before) {
-                                headL = seg.track.core.getPointAtLength(dist);
-                                headR = null;
-                            }
-                        } else {
-                            const ratio = before ? 0 : after ? 1 : (t - seg.y0) / (seg.y1 - seg.y0);
-                            const dL = ratio * seg.L.len, dR = ratio * seg.R.len;
-                            setProgress(seg.L, dL);
-                            setProgress(seg.R, dR);
-                            if (!before) {
-                                headL = seg.L.core.getPointAtLength(dL);
-                                headR = after ? null : seg.R.core.getPointAtLength(dR);
-                            }
-                        }
-                    });
-
-                    if (!headL) {
-                        const first = segments[0];
-                        headL = (first.type === 'curve' ? first.track : first.L).core.getPointAtLength(0);
-                    }
-                    const cometY = headL.y;
-                    cometHead1.setAttribute('transform', `translate(${headL.x}, ${headL.y})`);
-                    if (headR) {
-                        cometHead2.style.display = '';
-                        cometHead2.setAttribute('transform', `translate(${headR.x}, ${headR.y})`);
-                    } else {
-                        cometHead2.style.display = 'none';
-                    }
-
-                    // Estaciones alcanzadas y sección activa: solo cuando el cometa llega a la altura del título
-                    let activeIdx = -1;
-                    stations.forEach(st => {
-                        const reached = cometY >= st.y - 2;
-                        st.el.classList.toggle('is-reached', reached);
-                        if (reached) activeIdx = st.idx;
-                    });
-                    sectionDefs.forEach((s, i) => {
-                        const on = i === activeIdx;
-                        if (s.pill) s.pill.classList.toggle('is-active-section', on);
-                        if (s.title) s.title.classList.toggle('is-active-title', on);
-                    });
-
-                    // Final: el haz llega detrás de la tarjeta de contacto → se ilumina y el resto se atenúa
-                    document.body.classList.toggle('trek-finale', cometY >= finaleY - 2);
-                }
-
-                let rebuildRaf = 0;
-                const rebuild = () => {
-                    if (rebuildRaf) return;
-                    rebuildRaf = requestAnimationFrame(() => {
-                        rebuildRaf = 0;
-                        buildTrail();
-                        updateTrail();
-                    });
-                };
-
-                buildTrail();
-                updateTrail();
-                window.addEventListener('load', rebuild);
-                if (document.fonts && document.fonts.ready) document.fonts.ready.then(rebuild);
-                window.addEventListener('resize', rebuild, { passive: true });
-                new ResizeObserver(rebuild).observe(document.body);
-                window.addEventListener('scroll', updateTrail, { passive: true });
-            }
-
-            // 3. Toque 3D sutil y elegante en el titular "Roberto Borrallo Álvarez"
-            const heroTitle = document.getElementById('hero-title');
-            if (heroTitle) {
-                window.addEventListener('pointermove', (e) => {
-                    const rect = heroTitle.getBoundingClientRect();
-                    const centerX = rect.left + rect.width / 2;
-                    const centerY = rect.top + rect.height / 2;
-                    const deltaX = (e.clientX - centerX) / (window.innerWidth / 2);
-                    const deltaY = (e.clientY - centerY) / (window.innerHeight / 2);
-
-                    const targetRotX = -deltaY * 2.2;
-                    const targetRotY = deltaX * 2.2;
-
-                    gsap.to(heroTitle, {
-                        rotationX: targetRotX,
-                        rotationY: targetRotY,
-                        duration: 0.5,
-                        ease: "power1.out",
-                        overwrite: "auto"
-                    });
-
-                    const shadowX = -targetRotY * 1.5;
-                    const shadowY = targetRotX * 1.5 + 14;
-                    heroTitle.style.textShadow = `${shadowX}px ${shadowY}px 32px rgba(255, 255, 255, 0.16), 0 20px 40px rgba(0, 0, 0, 0.75)`;
-                }, { passive: true });
-            }
-
-            // 4. GSAP 3D Tilt suave y equilibrado en tarjetas
-            const tiltCards = document.querySelectorAll('.tilt-card');
-            tiltCards.forEach(card => {
-                card.addEventListener('mousemove', (e) => {
-                    const rect = card.getBoundingClientRect();
-                    const x = e.clientX - rect.left - rect.width / 2;
-                    const y = e.clientY - rect.top - rect.height / 2;
-                    const rotX = (y / (rect.height / 2)) * -2.2;
-                    const rotY = (x / (rect.width / 2)) * 2.2;
-
-                    gsap.to(card, {
-                        rotationX: rotX,
-                        rotationY: rotY,
-                        y: -3,
-                        transformPerspective: 1000,
-                        duration: 0.4,
-                        ease: "power1.out",
-                        overwrite: "auto"
-                    });
-                });
-
-                card.addEventListener('mouseleave', () => {
-                    gsap.to(card, {
-                        rotationX: 0,
-                        rotationY: 0,
-                        y: 0,
-                        duration: 0.6,
-                        ease: "power2.out",
-                        overwrite: "auto"
-                    });
-                });
-            });
-
-            // 5. Botones Magnéticos con retroalimentación elástica GSAP
-            const magneticBtns = document.querySelectorAll('.magnetic-btn');
-            magneticBtns.forEach(btn => {
-                btn.addEventListener('mousemove', (e) => {
-                    const rect = btn.getBoundingClientRect();
-                    const x = (e.clientX - rect.left - rect.width / 2) * 0.28;
-                    const y = (e.clientY - rect.top - rect.height / 2) * 0.28;
-
-                    gsap.to(btn, {
-                        x: x,
-                        y: y,
-                        duration: 0.3,
-                        ease: "power2.out",
-                        overwrite: "auto"
-                    });
-                });
-
-                btn.addEventListener('mouseleave', () => {
-                    gsap.to(btn, {
-                        x: 0,
-                        y: 0,
-                        duration: 0.7,
-                        ease: "elastic.out(1.1, 0.38)",
-                        overwrite: "auto"
-                    });
-                });
-            });
-
-            // 7. Botón de Copiar Email
-            const copyBtn = document.getElementById('btn-copy-email');
-            const copyText = document.getElementById('copy-btn-text');
-            const emailToCopy = 'robertobamym@gmail.com';
-
-            if (copyBtn) {
-                copyBtn.addEventListener('click', () => {
-                    navigator.clipboard.writeText(emailToCopy).then(() => {
-                        copyBtn.classList.add('copied');
-                        copyText.textContent = '¡Copiado!';
-                        setTimeout(() => {
-                            copyBtn.classList.remove('copied');
-                            copyText.textContent = 'Copiar Email';
-                        }, 2500);
-                    }).catch(() => {
-                        copyText.textContent = 'robertobamym@gmail.com';
-                    });
-                });
-            }
-
-            // 8. Animaciones de revelación al hacer scroll (Intersection Observer)
-            const revealElements = document.querySelectorAll('.reveal-fade');
-            const revealObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                        revealObserver.unobserve(entry.target); // Solo una vez
-                    }
-                });
-            }, {
-                threshold: 0.08,
-                rootMargin: '0px 0px -50px 0px'
-            });
-
-            revealElements.forEach(el => revealObserver.observe(el));
-
-            // 9. Enlace activo en el menú de navegación al hacer scroll
-            const sections = document.querySelectorAll('section[id]');
-            const navLinks = document.querySelectorAll('.nav-link');
-
-            window.addEventListener('scroll', () => {
-                let current = '';
-                const scrollPos = window.scrollY + 200;
-
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    const sectionHeight = section.offsetHeight;
-                    if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
-                        current = section.getAttribute('id');
-                    }
-                });
-
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href') === `#${current}`) {
-                        link.classList.add('active');
-                    }
-                });
-            }, { passive: true });
-
-            // 10. Reloj en tiempo real estilo Awwwards (Hora local Madrid / Europa)
-            const clockEl = document.getElementById('clock-display');
-            if (clockEl) {
-                const updateClock = () => {
-                    const now = new Date();
-                    const timeStr = now.toLocaleTimeString('es-ES', {
-                        timeZone: 'Europe/Madrid',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        second: '2-digit'
-                    });
-                    clockEl.textContent = `${timeStr} CET`;
-                };
-                updateClock();
-                setInterval(updateClock, 1000);
-            }
-
-            // 11. Cinta Ticker Marquee con parada suave (Lerp)
-            const marqueeTrack = document.querySelector('.marquee-track');
-            if (marqueeTrack) {
-                let currentScroll = 0;
-
-                function animateMarquee() {
-                    const halfWidth = marqueeTrack.clientWidth / 2;
-                    currentScroll -= 1.2; // velocidad constante, sin pausa en hover
-
-                    if (currentScroll <= -halfWidth) {
-                        currentScroll += halfWidth;
-                    }
-
-                    marqueeTrack.style.transform = `translate3d(${currentScroll}px, 0, 0)`;
-                    requestAnimationFrame(animateMarquee);
-                }
-
-                marqueeTrack.style.animation = 'none';
-                requestAnimationFrame(animateMarquee);
-            }
-        });
-    </script>
 </body>
 
 </html>
