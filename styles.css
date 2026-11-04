@@ -317,6 +317,63 @@ button {
     transform-origin: 0 0;
 }
 
+/* Medición de la trayectoria sin transformaciones (reveal, tilt, GSAP) */
+.trek-measuring .reveal-fade,
+.trek-measuring .reveal-fade--slow,
+.trek-measuring .tilt-card,
+.trek-measuring .hero-title,
+.trek-measuring .magnetic-btn {
+    transform: none !important;
+    transition: none !important;
+}
+
+/* ==========================================================================
+   FINAL DEL RECORRIDO: TARJETA DE CONTACTO ILUMINADA
+   ========================================================================== */
+.main-content > section,
+.main-content > .marquee-strip-wrapper.is-visible {
+    transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), filter 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+body.trek-finale .main-content > section:not(#contacto),
+body.trek-finale .main-content > .marquee-strip-wrapper.is-visible {
+    opacity: 0.3;
+    filter: saturate(0.6);
+}
+
+.contact-banner {
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.8s ease, box-shadow 0.8s ease;
+}
+
+.contact-banner::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(120% 85% at 50% 0%, rgba(255, 255, 255, 0.09), transparent 62%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.8s ease;
+}
+
+.contact-banner-content {
+    position: relative;
+    z-index: 1;
+}
+
+body.trek-finale .contact-banner {
+    border-color: rgba(255, 255, 255, 0.55);
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.12),
+        0 0 60px rgba(255, 255, 255, 0.2),
+        0 0 140px rgba(255, 255, 255, 0.1),
+        var(--shadow-elevated);
+}
+
+body.trek-finale .contact-banner::after {
+    opacity: 1;
+}
+
 @keyframes trekAuraBreath {
     0%, 100% {
         transform: scale(0.88);
@@ -1283,8 +1340,15 @@ button {
     color: #ffffff;
 }
 
+/* Más aire entre proyectos para que se aprecie el haz que bordea cada tarjeta */
 .project-showcase + .project-showcase {
-    margin-top: 3.5rem;
+    margin-top: 9rem;
+}
+
+@media (max-width: 800px) {
+    .project-showcase + .project-showcase {
+        margin-top: 6rem;
+    }
 }
 
 /* ==========================================================================

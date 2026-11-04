@@ -12,7 +12,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=9">
+    <link rel="stylesheet" href="styles.css?v=10">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- GreenSock Animation Platform (GSAP) Core -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -49,38 +49,33 @@
                         <feMergeNode in="SourceGraphic" />
                     </feMerge>
                 </filter>
+                <!-- Máscara: atenúa el haz cuando pasa por detrás de texto -->
+                <mask id="trekTextMask" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">
+                    <rect id="trek-mask-base" x="0" y="0" width="100" height="100" fill="#ffffff" />
+                    <g id="trek-mask-outer"></g>
+                    <g id="trek-mask-inner"></g>
+                </mask>
             </defs>
-            <!-- 1. Guías en trazo discontinuo (faint future paths) -->
-            <path id="trek-guide-before" class="trek-path-guide" />
-            <path id="trek-guide-card-l" class="trek-path-guide" />
-            <path id="trek-guide-card-r" class="trek-path-guide" />
-            <path id="trek-guide-after" class="trek-path-guide" />
+            <g id="trek-layer" mask="url(#trekTextMask)">
+                <!-- 1. Guías discontinuas · 2. Resplandor · 3. Núcleo (generados por JS) -->
+                <g id="trek-guides"></g>
+                <g id="trek-glows"></g>
+                <g id="trek-cores"></g>
 
-            <!-- 2. Capas de resplandor difuminado de la estela recorrida -->
-            <path id="trek-glow-before" class="trek-path-glow" filter="url(#trekGlowFilter)" />
-            <path id="trek-glow-card-l" class="trek-path-glow" filter="url(#trekGlowFilter)" />
-            <path id="trek-glow-card-r" class="trek-path-glow" filter="url(#trekGlowFilter)" />
-            <path id="trek-glow-after" class="trek-path-glow" filter="url(#trekGlowFilter)" />
+                <!-- 4. Estaciones / checkpoints -->
+                <g id="trek-nodes-group"></g>
 
-            <!-- 3. Núcleo blanco nítido y brillante -->
-            <path id="trek-core-before" class="trek-path-core" />
-            <path id="trek-core-card-l" class="trek-path-core" />
-            <path id="trek-core-card-r" class="trek-path-core" />
-            <path id="trek-core-after" class="trek-path-core" />
-
-            <!-- 4. Contenedor de estaciones / checkpoints -->
-            <g id="trek-nodes-group"></g>
-
-            <!-- 5. Cometa viajero principal y segundo cometa para la división de bordes en tarjeta -->
-            <g id="trek-comet-head-1" class="trek-comet-head">
-                <circle cx="0" cy="0" r="18" fill="url(#trekAuraGradient)" class="trek-aura-pulse" />
-                <circle cx="0" cy="0" r="7" stroke="rgba(255, 255, 255, 0.85)" stroke-width="1.5" fill="none" />
-                <circle cx="0" cy="0" r="3.5" fill="#ffffff" />
-            </g>
-            <g id="trek-comet-head-2" class="trek-comet-head" style="display: none;">
-                <circle cx="0" cy="0" r="18" fill="url(#trekAuraGradient)" class="trek-aura-pulse" />
-                <circle cx="0" cy="0" r="7" stroke="rgba(255, 255, 255, 0.85)" stroke-width="1.5" fill="none" />
-                <circle cx="0" cy="0" r="3.5" fill="#ffffff" />
+                <!-- 5. Cometa principal y segundo cometa para la división por los bordes de cada tarjeta -->
+                <g id="trek-comet-head-1" class="trek-comet-head">
+                    <circle cx="0" cy="0" r="18" fill="url(#trekAuraGradient)" class="trek-aura-pulse" />
+                    <circle cx="0" cy="0" r="7" stroke="rgba(255, 255, 255, 0.85)" stroke-width="1.5" fill="none" />
+                    <circle cx="0" cy="0" r="3.5" fill="#ffffff" />
+                </g>
+                <g id="trek-comet-head-2" class="trek-comet-head" style="display: none;">
+                    <circle cx="0" cy="0" r="18" fill="url(#trekAuraGradient)" class="trek-aura-pulse" />
+                    <circle cx="0" cy="0" r="7" stroke="rgba(255, 255, 255, 0.85)" stroke-width="1.5" fill="none" />
+                    <circle cx="0" cy="0" r="3.5" fill="#ffffff" />
+                </g>
             </g>
         </svg>
 
@@ -858,345 +853,338 @@
                 updateScrollbar();
             }
 
-            // 2. Trek Scroll Journey Trail Engine con División de Bordes e Iluminación de Secciones
+            // 2. Trek Scroll Journey Trail Engine
+            //    - Curvas entre estaciones (cabeceras de sección)
+            //    - División por los bordes de CADA tarjeta que atraviesa el haz
+            //    - Máscara SVG que atenúa el haz cuando pasa por detrás de texto
             const trailSvg = document.getElementById('trek-trail-svg');
-            const pathGuideBefore = document.getElementById('trek-guide-before');
-            const pathGuideCardL = document.getElementById('trek-guide-card-l');
-            const pathGuideCardR = document.getElementById('trek-guide-card-r');
-            const pathGuideAfter = document.getElementById('trek-guide-after');
-
-            const pathGlowBefore = document.getElementById('trek-glow-before');
-            const pathGlowCardL = document.getElementById('trek-glow-card-l');
-            const pathGlowCardR = document.getElementById('trek-glow-card-r');
-            const pathGlowAfter = document.getElementById('trek-glow-after');
-
-            const pathCoreBefore = document.getElementById('trek-core-before');
-            const pathCoreCardL = document.getElementById('trek-core-card-l');
-            const pathCoreCardR = document.getElementById('trek-core-card-r');
-            const pathCoreAfter = document.getElementById('trek-core-after');
-
+            const guidesG = document.getElementById('trek-guides');
+            const glowsG = document.getElementById('trek-glows');
+            const coresG = document.getElementById('trek-cores');
+            const nodesGroup = document.getElementById('trek-nodes-group');
             const cometHead1 = document.getElementById('trek-comet-head-1');
             const cometHead2 = document.getElementById('trek-comet-head-2');
-            const nodesGroup = document.getElementById('trek-nodes-group');
+            const textMask = document.getElementById('trekTextMask');
+            const maskBase = document.getElementById('trek-mask-base');
+            const maskOuterG = document.getElementById('trek-mask-outer');
+            const maskInnerG = document.getElementById('trek-mask-inner');
 
-            if (trailSvg && pathCoreBefore && pathCoreCardL && pathCoreCardR && pathCoreAfter && cometHead1) {
-                let lenBefore = 0, lenCardL = 0, lenCardR = 0, lenAfter = 0;
-                let cardTop = 0, cardBottom = 0;
+            if (trailSvg && guidesG && glowsG && coresG && cometHead1 && cometHead2) {
+                const SVGNS = 'http://www.w3.org/2000/svg';
+                const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+                let segments = [];
                 let stations = [];
-                let isBuilding = false;
+                let startY = 0, endY = 0, finaleY = Infinity;
 
-                const sectionTargets = [
-                    {
-                        sec: document.getElementById('sobre-mi'),
-                        pill: document.querySelector('#sobre-mi .section-tag'),
-                        title: document.querySelector('#sobre-mi .section-heading')
-                    },
-                    {
-                        sec: document.getElementById('proyecto'),
-                        pill: document.querySelector('#proyecto .spotlight-pill'),
-                        title: document.querySelector('#proyecto .section-title')
-                    },
-                    {
-                        sec: document.getElementById('habilidades'),
-                        pill: document.querySelector('#habilidades .section-tag'),
-                        title: document.querySelector('#habilidades .section-heading')
-                    },
-                    {
-                        sec: document.getElementById('contacto'),
-                        pill: document.querySelector('#contacto .section-tag'),
-                        title: document.querySelector('#contacto .contact-title')
-                    }
-                ];
+                const sectionDefs = [
+                    { pill: '#sobre-mi .section-tag', title: '#sobre-mi .section-heading' },
+                    { pill: '#proyecto .spotlight-pill', title: '#proyecto .section-title' },
+                    { pill: '#habilidades .section-tag', title: '#habilidades .section-heading' },
+                    { pill: '#contacto .section-tag', title: '#contacto .contact-title' }
+                ].map(d => ({ pill: document.querySelector(d.pill), title: document.querySelector(d.title) }));
+
+                // Rectángulo en coordenadas de documento
+                const absRect = (el) => {
+                    const r = el.getBoundingClientRect();
+                    return { L: r.left + window.scrollX, R: r.right + window.scrollX, T: r.top + window.scrollY, B: r.bottom + window.scrollY };
+                };
 
                 function makeCurve(pts) {
-                    if (!pts || pts.length < 2) return '';
                     let d = `M ${pts[0].x} ${pts[0].y}`;
                     for (let i = 0; i < pts.length - 1; i++) {
-                        const p0 = pts[i];
-                        const p1 = pts[i + 1];
-                        const dy = p1.y - p0.y;
-                        const cp1x = p0.x;
-                        const cp1y = p0.y + dy * 0.5;
-                        const cp2x = p1.x;
-                        const cp2y = p0.y + dy * 0.5;
-                        d += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p1.x} ${p1.y}`;
+                        const p0 = pts[i], p1 = pts[i + 1];
+                        const my = p0.y + (p1.y - p0.y) * 0.5;
+                        d += ` C ${p0.x} ${my}, ${p1.x} ${my}, ${p1.x} ${p1.y}`;
                     }
                     return d;
                 }
 
-                function buildTrail() {
-                    if (isBuilding) return;
-                    isBuilding = true;
+                function setProgress(track, dist) {
+                    const off = dist <= 0 ? track.len + 2 : Math.max(0, track.len - dist);
+                    track.core.style.strokeDashoffset = off;
+                    track.glow.style.strokeDashoffset = off;
+                }
 
-                    const width = window.innerWidth;
-                    const isMobile = width <= 800;
+                function makeTrack(d) {
+                    const mk = (cls, parent, glow) => {
+                        const p = document.createElementNS(SVGNS, 'path');
+                        p.setAttribute('class', cls);
+                        p.setAttribute('d', d);
+                        if (glow) p.setAttribute('filter', 'url(#trekGlowFilter)');
+                        parent.appendChild(p);
+                        return p;
+                    };
+                    mk('trek-path-guide', guidesG);
+                    const glow = mk('trek-path-glow', glowsG, true);
+                    const core = mk('trek-path-core', coresG);
+                    const len = core.getTotalLength();
+                    [glow, core].forEach(p => { p.style.strokeDasharray = `${len} ${len + 4}`; });
+                    const track = { core, glow, len };
+                    setProgress(track, 0);
+                    return track;
+                }
 
-                    const heroActions = document.querySelector('.hero-actions');
-                    const sec1Header = document.querySelector('#sobre-mi .section-tag');
-                    const sec1Cards = document.querySelector('.profile-grid');
-                    const sec2Header = document.querySelector('#proyecto .section-header');
-                    const projectCard = document.getElementById('project-card');
-                    const sec2Card2 = document.getElementById('project-shenron');
-                    const sec3Header = document.querySelector('#habilidades .section-header-compact');
-                    const sec3Grid = document.querySelector('.skills-grid');
-                    const sec4Footer = document.getElementById('contacto');
+                // Una tarjeta por fila del grid (la del lado indicado): en escritorio 1, en móvil todas
+                function pickCards(grid, side) {
+                    if (!grid) return [];
+                    const rows = new Map();
+                    Array.from(grid.children).forEach(el => {
+                        const r = absRect(el);
+                        const key = Math.round(r.T / 10);
+                        const cur = rows.get(key);
+                        if (!cur || (side === 'right' ? r.R > cur.r.R : r.L < cur.r.L)) rows.set(key, { el, r });
+                    });
+                    return Array.from(rows.values()).sort((a, b) => a.r.T - b.r.T).map(v => ({ kind: 'card', el: v.el }));
+                }
 
-                    // Medir geometría de la tarjeta principal (DistribuTech Pro)
-                    if (projectCard) {
-                        const rc = projectCard.getBoundingClientRect();
-                        const L = rc.left + window.scrollX;
-                        const R = rc.right + window.scrollX;
-                        cardTop = rc.top + window.scrollY;
-                        cardBottom = rc.bottom + window.scrollY;
-                        const CX = (L + R) * 0.5;
-                        const rad = Math.min(24, (R - L) * 0.15);
+                function stationPoint(sectionIdx, isMobile) {
+                    const pill = sectionDefs[sectionIdx].pill;
+                    if (!pill) return null;
+                    const r = absRect(pill);
+                    return {
+                        kind: 'pt',
+                        x: isMobile ? 14 : Math.max(40, r.L - 28),
+                        y: (r.T + r.B) / 2,
+                        station: sectionIdx
+                    };
+                }
 
-                        // Camino 1: Antes de la tarjeta
-                        const ptHero = {
-                            x: width * 0.5,
-                            y: heroActions ? heroActions.offsetTop + 120 : 500
-                        };
-                        const ptSec1 = sec1Header ? {
-                            x: isMobile ? 32 : Math.max(50, sec1Header.getBoundingClientRect().left + window.scrollX - 28),
-                            y: sec1Header.getBoundingClientRect().top + window.scrollY + 14,
-                            isStation: true
-                        } : { x: width * 0.18, y: 1100, isStation: true };
-
-                        const ptMid1 = {
-                            x: isMobile ? 32 : Math.min(width - 70, width * 0.88),
-                            y: sec1Cards ? sec1Cards.offsetTop + sec1Cards.offsetHeight * 0.5 : 1500
-                        };
-
-                        const ptSec2 = sec2Header ? {
-                            x: isMobile ? 32 : Math.max(50, sec2Header.getBoundingClientRect().left + window.scrollX - 28),
-                            y: sec2Header.getBoundingClientRect().top + window.scrollY + 20,
-                            isStation: true
-                        } : { x: width * 0.16, y: 2000, isStation: true };
-
-                        const ptCardTop = { x: CX, y: cardTop };
-
-                        const ptsBefore = [ptHero, ptSec1, ptMid1, ptSec2, ptCardTop];
-                        const dBefore = makeCurve(ptsBefore);
-
-                        pathGuideBefore.setAttribute('d', dBefore);
-                        pathGlowBefore.setAttribute('d', dBefore);
-                        pathCoreBefore.setAttribute('d', dBefore);
-
-                        lenBefore = pathCoreBefore.getTotalLength();
-                        pathCoreBefore.style.strokeDasharray = `${lenBefore} ${lenBefore}`;
-                        pathGlowBefore.style.strokeDasharray = `${lenBefore} ${lenBefore}`;
-
-                        // Camino 2: División por los bordes de la tarjeta (Izquierda y Derecha)
-                        const dCardL = `M ${CX} ${cardTop} H ${L + rad} A ${rad} ${rad} 0 0 0 ${L} ${cardTop + rad} V ${cardBottom - rad} A ${rad} ${rad} 0 0 0 ${L + rad} ${cardBottom} H ${CX}`;
-                        const dCardR = `M ${CX} ${cardTop} H ${R - rad} A ${rad} ${rad} 0 0 1 ${R} ${cardTop + rad} V ${cardBottom - rad} A ${rad} ${rad} 0 0 1 ${R - rad} ${cardBottom} H ${CX}`;
-
-                        pathGuideCardL.setAttribute('d', dCardL);
-                        pathGlowCardL.setAttribute('d', dCardL);
-                        pathCoreCardL.setAttribute('d', dCardL);
-
-                        pathGuideCardR.setAttribute('d', dCardR);
-                        pathGlowCardR.setAttribute('d', dCardR);
-                        pathCoreCardR.setAttribute('d', dCardR);
-
-                        lenCardL = pathCoreCardL.getTotalLength();
-                        lenCardR = pathCoreCardR.getTotalLength();
-
-                        pathCoreCardL.style.strokeDasharray = `${lenCardL} ${lenCardL}`;
-                        pathGlowCardL.style.strokeDasharray = `${lenCardL} ${lenCardL}`;
-
-                        pathCoreCardR.style.strokeDasharray = `${lenCardR} ${lenCardR}`;
-                        pathGlowCardR.style.strokeDasharray = `${lenCardR} ${lenCardR}`;
-
-                        // Camino 3: Después de reunirse al final de la tarjeta
-                        const ptCardBot = { x: CX, y: cardBottom };
-
-                        const ptMid2 = {
-                            x: isMobile ? 32 : Math.min(width - 70, width * 0.90),
-                            y: sec2Card2 ? sec2Card2.offsetTop + sec2Card2.offsetHeight * 0.5 : cardBottom + 400
-                        };
-
-                        const ptSec3 = sec3Header ? {
-                            x: isMobile ? 32 : Math.max(50, sec3Header.getBoundingClientRect().left + window.scrollX - 28),
-                            y: sec3Header.getBoundingClientRect().top + window.scrollY + 16,
-                            isStation: true
-                        } : { x: width * 0.18, y: 3500, isStation: true };
-
-                        const ptMid3 = {
-                            x: isMobile ? 32 : Math.min(width - 70, width * 0.86),
-                            y: sec3Grid ? sec3Grid.offsetTop + sec3Grid.offsetHeight * 0.6 : 4000
-                        };
-
-                        const ptSec4 = sec4Footer ? {
-                            x: isMobile ? 32 : Math.max(50, width * 0.22),
-                            y: sec4Footer.offsetTop + 80,
-                            isStation: true
-                        } : { x: width * 0.22, y: 4500, isStation: true };
-
-                        const ptEnd = {
-                            x: width * 0.5,
-                            y: document.documentElement.scrollHeight - 60
-                        };
-
-                        const ptsAfter = [ptCardBot, ptMid2, ptSec3, ptMid3, ptSec4, ptEnd];
-                        const dAfter = makeCurve(ptsAfter);
-
-                        pathGuideAfter.setAttribute('d', dAfter);
-                        pathGlowAfter.setAttribute('d', dAfter);
-                        pathCoreAfter.setAttribute('d', dAfter);
-
-                        lenAfter = pathCoreAfter.getTotalLength();
-                        pathCoreAfter.style.strokeDasharray = `${lenAfter} ${lenAfter}`;
-                        pathGlowAfter.style.strokeDasharray = `${lenAfter} ${lenAfter}`;
-
-                        // Registro de estaciones / checkpoints
-                        nodesGroup.innerHTML = '';
-                        stations = [];
-
-                        const allStationPoints = [ptSec1, ptSec2, ptSec3, ptSec4];
-                        allStationPoints.forEach((p) => {
-                            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-                            circle.setAttribute('cx', p.x);
-                            circle.setAttribute('cy', p.y);
-                            circle.setAttribute('r', '7');
-                            circle.setAttribute('class', 'trek-node');
-                            nodesGroup.appendChild(circle);
-
-                            stations.push({ el: circle, y: p.y });
+                // Atenúa el haz bajo cualquier texto que no esté dentro de una tarjeta opaca
+                function buildMask(W, H) {
+                    if (!textMask || !maskBase) return;
+                    [textMask, maskBase].forEach(n => { n.setAttribute('width', W); n.setAttribute('height', H); });
+                    maskOuterG.innerHTML = '';
+                    maskInnerG.innerHTML = '';
+                    const rects = [];
+                    const root = document.querySelector('.main-content');
+                    if (root) {
+                        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+                            acceptNode: (n) => {
+                                if (!n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+                                const p = n.parentElement;
+                                if (!p || p.closest('.glass-card, .marquee-strip-wrapper')) return NodeFilter.FILTER_REJECT;
+                                return NodeFilter.FILTER_ACCEPT;
+                            }
+                        });
+                        const range = document.createRange();
+                        while (walker.nextNode()) {
+                            range.selectNodeContents(walker.currentNode);
+                            for (const r of range.getClientRects()) {
+                                if (r.width < 1 || r.height < 1) continue;
+                                rects.push({ x: r.left + window.scrollX, y: r.top + window.scrollY, w: r.width, h: r.height });
+                            }
+                        }
+                        // Pastillas e insignias completas (incluyen iconos) y la cinta marquee
+                        root.querySelectorAll('.section-tag, .spotlight-pill, .hero-badge, .marquee-strip-wrapper').forEach(el => {
+                            if (el.closest('.glass-card')) return;
+                            const r = absRect(el);
+                            rects.push({ x: r.L, y: r.T, w: r.R - r.L, h: r.B - r.T });
                         });
                     }
+                    const addRect = (g, r, pad, rx, fill) => {
+                        const n = document.createElementNS(SVGNS, 'rect');
+                        n.setAttribute('x', r.x - pad);
+                        n.setAttribute('y', r.y - pad);
+                        n.setAttribute('width', r.w + pad * 2);
+                        n.setAttribute('height', r.h + pad * 2);
+                        n.setAttribute('rx', rx);
+                        n.setAttribute('fill', fill);
+                        g.appendChild(n);
+                    };
+                    // Borde suave (~60%) y núcleo (~15%) para un fundido sin filtros costosos
+                    rects.forEach(r => addRect(maskOuterG, r, 16, 18, '#9a9a9a'));
+                    rects.forEach(r => addRect(maskInnerG, r, 5, 8, '#262626'));
+                }
 
-                    isBuilding = false;
+                function buildTrail() {
+                    // Medir sin las transformaciones de reveal / tilt / GSAP (causaban el descuadre)
+                    document.documentElement.classList.add('trek-measuring');
+
+                    const width = document.documentElement.clientWidth;
+                    const isMobile = width <= 800;
+                    const docH = document.documentElement.scrollHeight;
+
+                    guidesG.innerHTML = '';
+                    glowsG.innerHTML = '';
+                    coresG.innerHTML = '';
+                    nodesGroup.innerHTML = '';
+                    segments = [];
+                    stations = [];
+                    finaleY = Infinity;
+
+                    const heroCta = document.querySelector('.hero-cta-group');
+                    const footer = document.querySelector('.footer');
+                    const contactBanner = document.querySelector('.contact-banner');
+                    const startPt = { kind: 'pt', x: width * 0.5, y: heroCta ? absRect(heroCta).B + 50 : 500 };
+                    const endPt = { kind: 'pt', x: width * 0.5, y: footer ? absRect(footer).T - 36 : docH - 60 };
+
+                    const waypoints = [
+                        startPt,
+                        stationPoint(0, isMobile),
+                        ...pickCards(document.querySelector('.profile-grid'), 'right'),
+                        stationPoint(1, isMobile),
+                        ...['project-card', 'project-shenron']
+                            .map(id => document.getElementById(id)).filter(Boolean)
+                            .map(el => ({ kind: 'card', el })),
+                        stationPoint(2, isMobile),
+                        ...pickCards(document.querySelector('.skills-grid'), 'right'),
+                        contactBanner ? { kind: 'card', el: contactBanner, station: 3 } : null,
+                        endPt
+                    ].filter(Boolean);
+
+                    const addStation = (x, y, idx) => {
+                        const c = document.createElementNS(SVGNS, 'circle');
+                        c.setAttribute('cx', x);
+                        c.setAttribute('cy', y);
+                        c.setAttribute('r', '7');
+                        c.setAttribute('class', 'trek-node');
+                        nodesGroup.appendChild(c);
+                        stations.push({ el: c, y, idx });
+                    };
+
+                    let pts = [];
+                    const flushCurve = () => {
+                        if (pts.length >= 2) {
+                            segments.push({ type: 'curve', track: makeTrack(makeCurve(pts)), y0: pts[0].y, y1: pts[pts.length - 1].y });
+                        }
+                        pts = [];
+                    };
+                    const pushPt = (p) => {
+                        const last = pts[pts.length - 1];
+                        if (last && p.y <= last.y + 8) return false; // mantener el recorrido monótono en Y
+                        pts.push(p);
+                        return true;
+                    };
+
+                    waypoints.forEach(wp => {
+                        if (wp.kind === 'pt') {
+                            if (pushPt(wp) && wp.station !== undefined) addStation(wp.x, wp.y, wp.station);
+                            return;
+                        }
+                        // Tarjeta: el haz entra por el centro superior y se divide por ambos bordes
+                        const r = absRect(wp.el);
+                        const o = 1.5; // ligeramente por fuera del borde para que el núcleo se vea
+                        const L = r.L - o, R = r.R + o, T = r.T - o, B = r.B + o;
+                        const CX = (L + R) / 2;
+                        const cssRad = parseFloat(getComputedStyle(wp.el).borderTopLeftRadius) || 20;
+                        const rad = Math.max(1, Math.min(cssRad + o, (R - L) / 2 - 1, (B - T) / 2 - 1));
+
+                        pushPt({ x: CX, y: T });
+                        flushCurve();
+                        const dL = `M ${CX} ${T} H ${L + rad} A ${rad} ${rad} 0 0 0 ${L} ${T + rad} V ${B - rad} A ${rad} ${rad} 0 0 0 ${L + rad} ${B} H ${CX}`;
+                        const dR = `M ${CX} ${T} H ${R - rad} A ${rad} ${rad} 0 0 1 ${R} ${T + rad} V ${B - rad} A ${rad} ${rad} 0 0 1 ${R - rad} ${B} H ${CX}`;
+                        segments.push({ type: 'split', L: makeTrack(dL), R: makeTrack(dR), y0: T, y1: B });
+                        if (wp.station !== undefined) {
+                            addStation(CX, T, wp.station);
+                            if (wp.station === 3) finaleY = T;
+                        }
+                        pts = [{ x: CX, y: B }];
+                    });
+                    flushCurve();
+
+                    startY = segments.length ? segments[0].y0 : 0;
+                    endY = segments.length ? segments[segments.length - 1].y1 : docH;
+
+                    const wrapper = document.querySelector('.page-wrapper');
+                    buildMask(width, wrapper ? wrapper.scrollHeight : docH);
+
+                    document.documentElement.classList.remove('trek-measuring');
+                }
+
+                // Posición objetivo del haz: 55% del viewport, acelerando al final para llegar justo al último punto
+                function getTravelY() {
+                    const vh = window.innerHeight;
+                    const s = window.scrollY;
+                    const maxScroll = Math.max(1, document.documentElement.scrollHeight - vh);
+                    let t = s + vh * 0.55;
+                    const ramp = clamp((s - (maxScroll - vh)) / vh, 0, 1);
+                    t += ramp * (endY - (maxScroll + vh * 0.55));
+                    return Math.max(startY, t);
+                }
+
+                function distAtY(track, y) {
+                    let lo = 0, hi = track.len;
+                    while (hi - lo > 0.75) {
+                        const mid = (lo + hi) * 0.5;
+                        if (track.core.getPointAtLength(mid).y < y) lo = mid; else hi = mid;
+                    }
+                    return lo;
                 }
 
                 function updateTrail() {
-                    if (!lenBefore || !lenCardL || !lenAfter) return;
+                    if (!segments.length) return;
+                    const t = getTravelY();
+                    let headL = null, headR = null;
 
-                    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-                    if (maxScroll <= 0) return;
-
-                    const currentScroll = window.scrollY;
-                    const travelY = currentScroll < 40 
-                        ? pathCoreBefore.getPointAtLength(0).y 
-                        : currentScroll + window.innerHeight * 0.55;
-
-                    // 1. Iluminación reactiva de cabeceras de sección estilo Trek Cards (Chapter Glow)
-                    sectionTargets.forEach(target => {
-                        if (!target.sec || !target.pill) return;
-                        const sTop = target.sec.offsetTop - 150;
-                        const sBot = target.sec.offsetTop + target.sec.offsetHeight - 50;
-                        if (travelY >= sTop && travelY <= sBot) {
-                            target.pill.classList.add('is-active-section');
-                            if (target.title) target.title.classList.add('is-active-title');
+                    segments.forEach(seg => {
+                        const before = t <= seg.y0;
+                        const after = t >= seg.y1;
+                        if (seg.type === 'curve') {
+                            const dist = before ? 0 : after ? seg.track.len : distAtY(seg.track, t);
+                            setProgress(seg.track, dist);
+                            if (!before) {
+                                headL = seg.track.core.getPointAtLength(dist);
+                                headR = null;
+                            }
                         } else {
-                            target.pill.classList.remove('is-active-section');
-                            if (target.title) target.title.classList.remove('is-active-title');
+                            const ratio = before ? 0 : after ? 1 : (t - seg.y0) / (seg.y1 - seg.y0);
+                            const dL = ratio * seg.L.len, dR = ratio * seg.R.len;
+                            setProgress(seg.L, dL);
+                            setProgress(seg.R, dR);
+                            if (!before) {
+                                headL = seg.L.core.getPointAtLength(dL);
+                                headR = after ? null : seg.R.core.getPointAtLength(dR);
+                            }
                         }
                     });
 
-                    // 2. Comportamiento cinemático de la estela y división por los bordes de la tarjeta
-                    if (travelY <= cardTop) {
-                        // Antes de llegar a la tarjeta
-                        cometHead2.style.display = 'none';
-
-                        let lo = 0, hi = lenBefore;
-                        while (hi - lo > 1) {
-                            const mid = (lo + hi) * 0.5;
-                            if (pathCoreBefore.getPointAtLength(mid).y < travelY) lo = mid;
-                            else hi = mid;
-                        }
-                        const distB = lo;
-                        const offsetB = lenBefore - distB;
-                        pathCoreBefore.style.strokeDashoffset = `${offsetB}`;
-                        pathGlowBefore.style.strokeDashoffset = `${offsetB}`;
-
-                        pathCoreCardL.style.strokeDashoffset = `${lenCardL}`;
-                        pathGlowCardL.style.strokeDashoffset = `${lenCardL}`;
-                        pathCoreCardR.style.strokeDashoffset = `${lenCardR}`;
-                        pathGlowCardR.style.strokeDashoffset = `${lenCardR}`;
-
-                        pathCoreAfter.style.strokeDashoffset = `${lenAfter}`;
-                        pathGlowAfter.style.strokeDashoffset = `${lenAfter}`;
-
-                        const pt = pathCoreBefore.getPointAtLength(distB);
-                        cometHead1.setAttribute('transform', `translate(${pt.x}, ${pt.y})`);
-
-                    } else if (travelY > cardTop && travelY <= cardBottom) {
-                        // ¡EN LA TARJETA! El haz se divide simétricamente por los bordes izquierdo y derecho
-                        pathCoreBefore.style.strokeDashoffset = '0';
-                        pathGlowBefore.style.strokeDashoffset = '0';
-
-                        pathCoreAfter.style.strokeDashoffset = `${lenAfter}`;
-                        pathGlowAfter.style.strokeDashoffset = `${lenAfter}`;
-
-                        const cardTravelRatio = Math.min(1, Math.max(0, (travelY - cardTop) / (cardBottom - cardTop)));
-                        const distCard = cardTravelRatio * lenCardL;
-
-                        pathCoreCardL.style.strokeDashoffset = `${lenCardL - distCard}`;
-                        pathGlowCardL.style.strokeDashoffset = `${lenCardL - distCard}`;
-                        pathCoreCardR.style.strokeDashoffset = `${lenCardR - distCard}`;
-                        pathGlowCardR.style.strokeDashoffset = `${lenCardR - distCard}`;
-
-                        // Dos cometas activos recorriendo simultáneamente el contorno
+                    if (!headL) {
+                        const first = segments[0];
+                        headL = (first.type === 'curve' ? first.track : first.L).core.getPointAtLength(0);
+                    }
+                    const cometY = headL.y;
+                    cometHead1.setAttribute('transform', `translate(${headL.x}, ${headL.y})`);
+                    if (headR) {
                         cometHead2.style.display = '';
-                        const ptL = pathCoreCardL.getPointAtLength(distCard);
-                        const ptR = pathCoreCardR.getPointAtLength(distCard);
-                        cometHead1.setAttribute('transform', `translate(${ptL.x}, ${ptL.y})`);
-                        cometHead2.setAttribute('transform', `translate(${ptR.x}, ${ptR.y})`);
-
+                        cometHead2.setAttribute('transform', `translate(${headR.x}, ${headR.y})`);
                     } else {
-                        // Después de la tarjeta: Se reúnen en el centro inferior y continúan el camino
                         cometHead2.style.display = 'none';
-
-                        pathCoreBefore.style.strokeDashoffset = '0';
-                        pathGlowBefore.style.strokeDashoffset = '0';
-
-                        pathCoreCardL.style.strokeDashoffset = '0';
-                        pathGlowCardL.style.strokeDashoffset = '0';
-                        pathCoreCardR.style.strokeDashoffset = '0';
-                        pathGlowCardR.style.strokeDashoffset = '0';
-
-                        let lo = 0, hi = lenAfter;
-                        while (hi - lo > 1) {
-                            const mid = (lo + hi) * 0.5;
-                            if (pathCoreAfter.getPointAtLength(mid).y < travelY) lo = mid;
-                            else hi = mid;
-                        }
-                        let distA = lo;
-                        if (currentScroll >= maxScroll - 8) distA = lenAfter;
-
-                        const offsetA = lenAfter - distA;
-                        pathCoreAfter.style.strokeDashoffset = `${offsetA}`;
-                        pathGlowAfter.style.strokeDashoffset = `${offsetA}`;
-
-                        const pt = pathCoreAfter.getPointAtLength(distA);
-                        cometHead1.setAttribute('transform', `translate(${pt.x}, ${pt.y})`);
                     }
 
-                    // 3. Activar estaciones / checkpoints
+                    // Estaciones alcanzadas y sección activa: solo cuando el cometa llega a la altura del título
+                    let activeIdx = -1;
                     stations.forEach(st => {
-                        if (travelY >= st.y - 12) {
-                            st.el.classList.add('is-reached');
-                        } else {
-                            st.el.classList.remove('is-reached');
-                        }
+                        const reached = cometY >= st.y - 2;
+                        st.el.classList.toggle('is-reached', reached);
+                        if (reached) activeIdx = st.idx;
                     });
+                    sectionDefs.forEach((s, i) => {
+                        const on = i === activeIdx;
+                        if (s.pill) s.pill.classList.toggle('is-active-section', on);
+                        if (s.title) s.title.classList.toggle('is-active-title', on);
+                    });
+
+                    // Final: el haz llega detrás de la tarjeta de contacto → se ilumina y el resto se atenúa
+                    document.body.classList.toggle('trek-finale', cometY >= finaleY - 2);
                 }
 
-                setTimeout(() => {
-                    buildTrail();
-                    updateTrail();
-                }, 100);
+                let rebuildRaf = 0;
+                const rebuild = () => {
+                    if (rebuildRaf) return;
+                    rebuildRaf = requestAnimationFrame(() => {
+                        rebuildRaf = 0;
+                        buildTrail();
+                        updateTrail();
+                    });
+                };
 
-                window.addEventListener('load', () => {
-                    buildTrail();
-                    updateTrail();
-                });
-
+                buildTrail();
+                updateTrail();
+                window.addEventListener('load', rebuild);
+                if (document.fonts && document.fonts.ready) document.fonts.ready.then(rebuild);
+                window.addEventListener('resize', rebuild, { passive: true });
+                new ResizeObserver(rebuild).observe(document.body);
                 window.addEventListener('scroll', updateTrail, { passive: true });
-                window.addEventListener('resize', () => {
-                    buildTrail();
-                    updateTrail();
-                }, { passive: true });
             }
 
             // 3. Toque 3D sutil y elegante en el titular "Roberto Borrallo Álvarez"
