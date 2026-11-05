@@ -154,39 +154,39 @@
         const panel = document.getElementById('stack-panel');
         const DATA = [
             {
-                name: 'Frontend', title: 'Frontend y experiencia', desc: 'Interfaces rápidas, accesibles y con carácter, de la maqueta al detalle de animación.',
+                name: 'En mis proyectos', title: 'Lo que uso en mis proyectos', desc: 'Tecnologías con las que he construido DistribuTech Pro, Shenron y este portfolio. Puedes ver el código en GitHub.',
                 tiles: [
-                    ['fab fa-react', 'React 18', 'Componentes, hooks y estado'], ['fab fa-js', 'TypeScript', 'Tipado de extremo a extremo'],
-                    ['fab fa-html5', 'HTML5 semántico', 'Accesibilidad desde la base'], ['fab fa-css3-alt', 'CSS moderno', 'Grid, variables y animación'],
-                    ['fas fa-brush', 'Tailwind CSS', 'Utilidades y sistemas de diseño'], ['fas fa-bolt', 'Vite', 'Build rápido y HMR'],
-                    ['fas fa-cube', 'Three.js', 'Escenas WebGL interactivas'], ['fas fa-wave-square', 'GSAP', 'Micro-interacciones fluidas'],
-                    ['fas fa-cubes', 'Zustand', 'Estado global ligero']
+                    ['fab fa-react', 'React 18', 'Componentes, hooks y rutas'], ['fab fa-js', 'TypeScript', 'DistribuTech Pro'],
+                    ['fas fa-bolt', 'Vite', 'Entorno de desarrollo y build'], ['fas fa-brush', 'Tailwind CSS', 'Estilos y diseño responsive'],
+                    ['fas fa-database', 'PostgreSQL', '14 tablas, JSONB y RLS'], ['fas fa-bolt', 'Supabase', 'Auth, base de datos y roles'],
+                    ['fas fa-cubes', 'Zustand', 'Estado de la aplicación'], ['fas fa-chart-line', 'Recharts', 'Gráficas del panel'],
+                    ['fas fa-file-pdf', 'jsPDF', 'Documentos en PDF'], ['fab fa-html5', 'HTML, CSS y JavaScript', 'Shenron y este portfolio'],
+                    ['fas fa-cube', 'Three.js', 'El carrusel 3D de esta página'], ['fab fa-git-alt', 'Git, GitHub y Vercel', 'Ramas y previews']
                 ]
             },
             {
-                name: 'Backend y datos', title: 'Backend y datos', desc: 'Modelos relacionales sólidos, APIs claras y seguridad aplicada en la propia base de datos.',
+                name: 'Prácticas y formación', title: 'Prácticas y formación', desc: 'Lo que he trabajado en mis prácticas en SolWed y en el ciclo superior. Me manejo bien en Java y SQL.',
                 tiles: [
-                    ['fas fa-database', 'PostgreSQL', 'Modelado 3FN y SQL'], ['fas fa-bolt', 'Supabase', 'Auth, BaaS y tiempo real'],
-                    ['fab fa-node-js', 'Node.js', 'Servicios y APIs'], ['fas fa-plug', 'APIs REST', 'Diseño e integraciones'],
-                    ['fas fa-code', 'JSONB', 'Atributos dinámicos'], ['fas fa-shield-halved', 'RLS y RBAC', 'Aislamiento por rol'],
-                    ['fas fa-key', 'Autenticación', 'Sesiones y permisos']
+                    ['fab fa-java', 'Java', 'Programación en el ciclo'], ['fas fa-database', 'SQL y PL/SQL', 'Consultas y procedimientos'],
+                    ['fas fa-layer-group', 'JDBC e Hibernate', 'Acceso a datos y JPQL'], ['fas fa-box-open', 'Maven', 'Proyectos Java'],
+                    ['fas fa-vial', 'JUnit 5 y Selenium', 'Pruebas en cursos'], ['fas fa-leaf', 'MongoDB y Cassandra', 'Bases de datos NoSQL'],
+                    ['fab fa-wordpress', 'WordPress', 'Prácticas en SolWed'], ['fas fa-network-wired', 'Redes TCP/IP', 'Fundamentos con Linux'],
+                    ['fas fa-briefcase', 'Odoo y Salesforce', 'Cursos de CRM y ERP']
                 ]
             },
             {
-                name: 'IA y agentes', title: 'IA y agentes', desc: 'Desarrollo asistido por agentes y modelos integrados en producto, siempre con revisión humana.',
+                name: 'Con IA', title: 'Desarrollo con IA', desc: 'Cómo uso los asistentes de IA al programar. Siempre reviso el código antes de aceptarlo.',
                 tiles: [
-                    ['fas fa-robot', 'Claude Code', 'Desarrollo agéntico en terminal'], ['fas fa-plug-circle-bolt', 'MCP', 'Agentes conectados a herramientas'],
-                    ['fas fa-wand-magic-sparkles', 'Prompting', 'Contexto e instrucciones precisas'], ['fas fa-microchip', 'APIs de LLM', 'Modelos dentro del producto'],
-                    ['fas fa-code-compare', 'Revisión de código', 'Verificación del código generado'], ['fas fa-gears', 'Automatización', 'Flujos repetibles de desarrollo']
+                    ['fas fa-robot', 'Claude Code', 'Asistente en la terminal'], ['fas fa-plug-circle-bolt', 'MCP', 'Conecto el asistente a GitHub y Vercel'],
+                    ['fas fa-code-compare', 'Revisión de código', 'Leo y pruebo cada cambio']
                 ]
             },
             {
-                name: 'Herramientas', title: 'Herramientas y entrega', desc: 'Control de versiones, previews por rama y despliegue continuo para publicar con confianza.',
+                name: 'Aprendiendo ahora', unit: 'TEMAS', title: 'Lo que estoy aprendiendo', desc: 'Mis siguientes pasos. Aún no los muestro como experiencia, pero son en lo que trabajo ahora.',
                 tiles: [
-                    ['fab fa-git-alt', 'Git', 'Ramas, commits y revisión'], ['fab fa-github', 'GitHub', 'Repos, PRs y Actions'],
-                    ['fas fa-cloud-arrow-up', 'Vercel', 'Previews por rama y CI/CD'], ['fas fa-terminal', 'Terminal', 'Flujo diario en consola'],
-                    ['fas fa-screwdriver-wrench', 'DevTools', 'Depuración y rendimiento'], ['fas fa-chart-line', 'Recharts', 'Visualización de datos'],
-                    ['fas fa-file-pdf', 'jsPDF', 'Documentos en el cliente']
+                    ['fas fa-vial', 'Tests y CI', 'Vitest y GitHub Actions'], ['fab fa-node-js', 'Node.js', 'TypeScript en el servidor'],
+                    ['fas fa-microchip', 'APIs de modelos de lenguaje', 'Integrar IA en un producto'], ['fab fa-telegram', 'Bots de Telegram', 'Un proyecto propio'],
+                    ['fas fa-language', 'Inglés B2', 'Preparando Cambridge']
                 ]
             }
         ];
@@ -196,7 +196,7 @@
         DATA.forEach((d, i) => {
             const b = document.createElement('button');
             b.type = 'button'; b.className = 'stack-tab'; b.setAttribute('role', 'tab'); b.id = 'stack-tab-' + i;
-            b.innerHTML = `<b>${pad(i + 1)}</b><span>${d.name}<small>${d.tiles.length} TECNOLOGÍAS</small></span>`;
+            b.innerHTML = `<b>${pad(i + 1)}</b><span>${d.name}<small>${d.tiles.length} ${d.unit || 'TECNOLOGÍAS'}</small></span>`;
             b.addEventListener('click', () => select(i));
             b.addEventListener('keydown', (e) => {
                 const k = e.key;
@@ -234,12 +234,12 @@
         if (!host || !wrap) return;
         const LINES = [
             { t: 'cmd', s: '$ claude' },
-            { t: 'you', s: '> Añade RLS por rol a la tabla "quotes"' },
-            { t: 'out', s: '● Leyendo esquema vía MCP (supabase)…' },
-            { t: 'out', s: '● Plan: 1 migración · 3 políticas · tests' },
-            { t: 'out', s: '● Aplicando migración… ✓' },
-            { t: 'out', s: '● Revisando el diff… 0 incidencias' },
-            { t: 'ok', s: '✓ Listo para tu revisión' }
+            { t: 'you', s: '> Que cada cliente solo vea sus cotizaciones' },
+            { t: 'out', s: '● Leyendo database/schema.sql…' },
+            { t: 'out', s: '● Plan: 1 política RLS en "cotizaciones"' },
+            { t: 'out', s: '● Propone el cambio en un diff pequeño' },
+            { t: 'out', s: '● Roberto revisa y prueba con los 3 roles' },
+            { t: 'ok', s: '✓ Se acepta solo si lo entiendo' }
         ];
         const render = (n, partial) => {
             host.innerHTML = LINES.slice(0, n).map((l) => `<span class="tl tl-${l.t}">${l.s}</span>`).join('\n') +

@@ -8,39 +8,39 @@
 
     const CAPS = [
         {
-            key: 'frontend', name: 'FRONTEND', title: 'Interfaces rápidas, accesibles y con carácter',
-            desc: 'Aplicaciones React y TypeScript con diseño responsive, micro-interacciones cuidadas y rendimiento medido.',
+            key: 'frontend', name: 'FRONTEND', title: 'Interfaces claras y adaptables',
+            desc: 'Aplicaciones con React y TypeScript, diseño responsive y animaciones cuidadas. Las uso en DistribuTech Pro y en este portfolio.',
             chips: ['React', 'TypeScript', 'Tailwind', 'Vite']
         },
         {
-            key: 'backend', name: 'BACKEND', title: 'APIs claras y sistemas que escalan',
-            desc: 'Servicios REST con Node.js, autenticación robusta e integraciones limpias entre sistemas.',
-            chips: ['Node.js', 'REST', 'Auth', 'Integraciones']
+            key: 'backend', name: 'BACKEND', title: 'Autenticación, servicios y Java',
+            desc: 'Autenticación y consultas con Supabase en mis proyectos, y Java con JDBC, Hibernate y Maven en mi formación.',
+            chips: ['Supabase', 'Auth', 'Java', 'JDBC']
         },
         {
-            key: 'datos', name: 'DATOS', title: 'Modelos relacionales con flexibilidad JSONB',
-            desc: 'PostgreSQL en 3FN con atributos dinámicos, vistas y políticas RLS para aislar cada registro.',
-            chips: ['PostgreSQL', 'Supabase', 'JSONB', 'RLS']
+            key: 'datos', name: 'DATOS', title: 'Bases de datos relacionales y SQL',
+            desc: 'PostgreSQL con 14 tablas, políticas RLS y atributos JSONB en DistribuTech Pro. También PL/SQL, MongoDB y Cassandra en cursos.',
+            chips: ['PostgreSQL', 'SQL', 'JSONB', 'RLS']
         },
         {
-            key: 'ia', name: 'IA', title: 'Producto y flujo de trabajo con modelos de lenguaje',
-            desc: 'Integro LLMs en producto y desarrollo con agentes, siempre con revisión humana y criterio propio.',
-            chips: ['Claude Code', 'Agentes', 'Prompts', 'LLM APIs']
+            key: 'ia', name: 'IA', title: 'Desarrollo con asistentes de IA',
+            desc: 'Trabajo con Claude Code revisando y entendiendo cada cambio. Mi siguiente paso es integrar un modelo de lenguaje en un producto propio.',
+            chips: ['Claude Code', 'MCP', 'Revisión']
         },
         {
-            key: 'mcp', name: 'MCP', title: 'Agentes conectados a herramientas reales',
-            desc: 'Model Context Protocol para que el agente lea repositorios, bases de datos y despliegues en lugar de adivinar.',
-            chips: ['GitHub', 'Supabase', 'Vercel', 'Contexto']
+            key: 'mcp', name: 'WORDPRESS', title: 'Sitios web con WordPress',
+            desc: 'En mis prácticas en SolWed (abril a junio de 2026) modifiqué páginas de clientes, añadí productos y categorías y creé páginas nuevas.',
+            chips: ['WordPress', 'Páginas', 'Productos', 'Categorías']
         },
         {
-            key: 'seguridad', name: 'SEGURIDAD', title: 'Control de acceso por diseño',
-            desc: 'RBAC, Row Level Security y revisión de cada cambio antes de publicar. La velocidad no compromete la seguridad.',
-            chips: ['RBAC', 'RLS', 'Revisión', 'Secretos']
+            key: 'seguridad', name: 'SEGURIDAD', title: 'Permisos en la base de datos',
+            desc: 'Roles de cliente, comercial y administrador con Row Level Security en PostgreSQL: los permisos se aplican en la propia base de datos.',
+            chips: ['RBAC', 'RLS', 'Supabase Auth']
         },
         {
-            key: 'cloud', name: 'DESPLIEGUE', title: 'Entrega continua y global',
-            desc: 'Git, GitHub y Vercel con previews por rama: cada cambio se ve en producción antes de fusionarlo.',
-            chips: ['Git', 'GitHub', 'Vercel', 'CI/CD']
+            key: 'cloud', name: 'DESPLIEGUE', title: 'Control de versiones y publicación',
+            desc: 'Git y GitHub para el código, y Vercel para publicar con una vista previa por cada rama antes de fusionarla.',
+            chips: ['Git', 'GitHub', 'Vercel']
         }
     ];
     const N = CAPS.length;

@@ -63,9 +63,10 @@
     let hud = null;
 
     const sectionDefs = [
-        { pill: '#sobre-mi .section-tag', title: '#sobre-mi .section-heading' },
         { pill: '#proyecto .spotlight-pill', title: '#proyecto .section-title' },
+        { pill: '#sobre-mi .section-tag', title: '#sobre-mi .section-heading' },
         { pill: '#habilidades .section-tag', title: '#habilidades .section-heading' },
+        { pill: '#metodo .section-tag', title: '#metodo .section-heading' },
         { pill: '#contacto .section-tag', title: '#contacto .contact-title' }
     ].map((d) => ({ pill: document.querySelector(d.pill), title: document.querySelector(d.title) }));
 
@@ -245,7 +246,7 @@
             segments.push({ type: 'split', L: makeTrack(dL), R: makeTrack(dR), y0: T, y1: B, pref: (splitCount++ % 2 === 0) ? 'R' : 'L' });
             if (wp.station !== undefined) {
                 addStation(CX, T, wp.station);
-                if (wp.station === 3) finaleY = T;
+                if (wp.station === 4) finaleY = T;
             }
             pts = [{ x: CX, y: B }];
         });
