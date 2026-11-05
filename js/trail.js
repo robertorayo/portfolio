@@ -19,7 +19,6 @@
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
-    const SECTION_NAMES = ['MÉTODO', 'PROYECTOS', 'STACK', 'CONTACTO'];
     // Estela: longitud (px), grosor, opacidad. De más larga y tenue a más corta y brillante.
     const TAILS = [
         { L: 520, w: 2.4, o: 0.5 },
@@ -61,7 +60,6 @@
 
     /* ---------- Pistas (guía + resplandor + núcleo + estela) ---------- */
     function makeTrack(d) {
-        mk('path', { class: 'trek-path-guide', d }, guidesG);
         const glow = mk('path', { class: 'trek-path-glow', d, filter: 'url(#trekGlowFilter)' }, glowsG);
         const core = mk('path', { class: 'trek-path-core', d }, coresG);
         const len = core.getTotalLength();
@@ -165,7 +163,7 @@
         const heroSec = $('inicio');
         const footer = document.querySelector('.footer');
         const startPt = { kind: 'pt', x: width * 0.5, y: heroSec ? absRect(heroSec).B + 90 : 900 };
-        const endPt = { kind: 'pt', x: width * 0.5, y: footer ? absRect(footer).T - 36 : docH - 60 };
+        const endPt = { kind: 'pt', x: width * 0.5, y: footer ? absRect(footer).T - 3 : docH - 60 };
         const waypoints = [startPt, ...collectWaypoints(width, isMobile), endPt];
 
         const addStation = (x, y, idx) => {
@@ -223,10 +221,9 @@
         if (!hudG) return;
         hudG.innerHTML = '';
         const line = mk('line', { x1: 14, y1: 0, x2: 40, y2: 0, class: 'trek-hud-line' }, hudG);
-        const box = mk('rect', { x: 40, y: -11, width: 108, height: 22, rx: 11, class: 'trek-hud-box' }, hudG);
+        const box = mk('rect', { x: 40, y: -11, width: 54, height: 22, rx: 11, class: 'trek-hud-box' }, hudG);
         const pct = mk('text', { x: 52, y: 3.6, class: 'trek-hud-pct' }, hudG);
-        const name = mk('text', { x: 90, y: 3.6, class: 'trek-hud-name' }, hudG);
-        hud = { line, box, pct, name, last: '' };
+        hud = { line, box, pct, last: '' };
     }
 
     /* ---------- Chispas ---------- */
@@ -349,13 +346,13 @@
         if (hud && window.innerWidth > 900) {
             const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
             const pct = String(Math.round(clamp(window.scrollY / max, 0, 1) * 100)).padStart(2, '0') + '%';
-            const nm = activeIdx >= 0 ? SECTION_NAMES[activeIdx] || '' : 'INICIO';
-            if (pct + nm !== hud.last) { hud.pct.textContent = pct; hud.name.textContent = nm; hud.last = pct + nm; }
+            if (pct !== hud.last) { hud.pct.textContent = pct; hud.last = pct; }
             hudG.setAttribute('transform', `translate(${headL.x}, ${headL.y})`);
             hudG.style.opacity = '1';
         } else if (hudG) hudG.style.opacity = '0';
 
         document.body.classList.toggle('trek-finale', cometY >= finaleY - 2);
+        document.body.classList.toggle('trek-footer', cometY >= endY - 4);
     }
 
     let rebuildRaf = 0;
