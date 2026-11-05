@@ -154,24 +154,29 @@
         const panel = document.getElementById('stack-panel');
         const DATA = [
             {
-                name: 'En mis proyectos', title: 'Lo que uso en mis proyectos', desc: 'Tecnologías con las que he construido DistribuTech Pro, Shenron y este portfolio. Puedes ver el código en GitHub.',
+                name: 'Frontend', title: 'Interfaces y visualización', desc: 'Aplicaciones con React y TypeScript, y experiencias visuales con canvas y WebGL.',
                 tiles: [
-                    ['fab fa-react', 'React 18', 'Componentes, hooks y rutas'], ['fab fa-js', 'TypeScript', 'DistribuTech Pro'],
-                    ['fas fa-bolt', 'Vite', 'Entorno de desarrollo y build'], ['fas fa-brush', 'Tailwind CSS', 'Estilos y diseño responsive'],
-                    ['fas fa-database', 'PostgreSQL', '14 tablas, JSONB y RLS'], ['fas fa-bolt', 'Supabase', 'Auth, base de datos y roles'],
-                    ['fas fa-cubes', 'Zustand', 'Estado de la aplicación'], ['fas fa-chart-line', 'Recharts', 'Gráficas del panel'],
-                    ['fas fa-file-pdf', 'jsPDF', 'Documentos en PDF'], ['fab fa-html5', 'HTML, CSS y JavaScript', 'Shenron y este portfolio'],
-                    ['fas fa-cube', 'Three.js', 'El carrusel 3D de esta página'], ['fab fa-git-alt', 'Git, GitHub y Vercel', 'Ramas y previews']
+                    ['fab fa-react', 'React 18', 'Componentes, hooks y rutas'], ['fab fa-js', 'TypeScript', 'Tipado en toda la aplicación'],
+                    ['fas fa-bolt', 'Vite', 'Desarrollo y build'], ['fas fa-brush', 'Tailwind CSS', 'Diseño responsive'],
+                    ['fas fa-cubes', 'Zustand', 'Estado de la aplicación'], ['fas fa-chart-line', 'Recharts', 'Gráficas e informes'],
+                    ['fab fa-html5', 'HTML, CSS y JavaScript', 'Canvas y animación'], ['fas fa-cube', 'Three.js', 'Gráficos 3D con WebGL'],
+                    ['fas fa-file-pdf', 'jsPDF', 'Documentos en PDF']
                 ]
             },
             {
-                name: 'Prácticas y formación', title: 'Prácticas y formación', desc: 'Lo que he trabajado en unas prácticas de empresa y en el ciclo superior. Me manejo bien en Java y SQL.',
+                name: 'Datos y backend', title: 'Bases de datos y servicios', desc: 'Modelado relacional con SQL, seguridad por filas y acceso a datos desde Java.',
                 tiles: [
-                    ['fab fa-java', 'Java', 'Programación en el ciclo'], ['fas fa-database', 'SQL y PL/SQL', 'Consultas y procedimientos'],
-                    ['fas fa-layer-group', 'JDBC e Hibernate', 'Acceso a datos y JPQL'], ['fas fa-box-open', 'Maven', 'Proyectos Java'],
-                    ['fas fa-vial', 'JUnit 5 y Selenium', 'Pruebas en cursos'], ['fas fa-leaf', 'MongoDB y Cassandra', 'Bases de datos NoSQL'],
-                    ['fab fa-wordpress', 'WordPress', 'Prácticas de empresa'], ['fas fa-network-wired', 'Redes TCP/IP', 'Fundamentos con Linux'],
-                    ['fas fa-briefcase', 'Odoo y Salesforce', 'Cursos de CRM y ERP']
+                    ['fas fa-database', 'PostgreSQL', 'Modelo relacional y JSONB'], ['fas fa-bolt', 'Supabase', 'Autenticación y roles'],
+                    ['fas fa-shield-halved', 'Row Level Security', 'Permisos por fila'], ['fas fa-table', 'SQL y PL/SQL', 'Consultas y procedimientos'],
+                    ['fas fa-layer-group', 'JDBC e Hibernate', 'Acceso a datos y JPQL'], ['fas fa-leaf', 'MongoDB y Cassandra', 'Bases de datos NoSQL']
+                ]
+            },
+            {
+                name: 'Java y herramientas', title: 'Java, pruebas y despliegue', desc: 'Programación en Java, pruebas automáticas y publicación con control de versiones.',
+                tiles: [
+                    ['fab fa-java', 'Java', 'Programación orientada a objetos'], ['fas fa-box-open', 'Maven', 'Gestión de proyectos'],
+                    ['fas fa-vial', 'JUnit 5 y Selenium', 'Pruebas unitarias y de interfaz'], ['fab fa-git-alt', 'Git y GitHub', 'Ramas y control de versiones'],
+                    ['fas fa-cloud-arrow-up', 'Vercel', 'Despliegue con vista previa']
                 ]
             }
         ];

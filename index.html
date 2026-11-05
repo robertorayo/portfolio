@@ -24,20 +24,20 @@
       "@type": "Person",
       "name": "Roberto Borrallo Álvarez",
       "jobTitle": "Desarrollador web full-stack junior",
-      "knowsAbout": ["React", "TypeScript", "Java", "SQL", "PostgreSQL", "Supabase", "WordPress"],
+      "knowsAbout": ["React", "TypeScript", "Java", "SQL", "PostgreSQL", "Supabase"],
       "sameAs": ["https://github.com/robertorayo", "https://www.linkedin.com/in/roberto-borrallo-%C3%A1lvarez-42a5b2403"]
     }
     </script>
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="preload" href="vendor/fonts/outfit-1.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="vendor/fonts/fonts.css">
-    <link rel="stylesheet" href="styles.css?v=36">
+    <link rel="stylesheet" href="styles.css?v=38">
     <link rel="stylesheet" href="vendor/fontawesome/css/all.min.css">
     <script src="vendor/lib/three.min.js" defer></script>
     <script src="vendor/lib/gsap.min.js" defer></script>
-    <script src="js/hero.js?v=36" defer></script>
-    <script src="js/trail.js?v=36" defer></script>
-    <script src="js/main.js?v=36" defer></script>
+    <script src="js/hero.js?v=38" defer></script>
+    <script src="js/trail.js?v=38" defer></script>
+    <script src="js/main.js?v=38" defer></script>
 </head>
 
 <body>
@@ -115,7 +115,6 @@
                     <li><a href="#proyecto" class="nav-link"><i class="fas fa-layer-group"></i>
                             <span>Proyectos</span></a></li>
                     <li><a href="#habilidades" class="nav-link"><i class="fas fa-code"></i> <span>Stack</span></a></li>
-                    <li><a href="#datos" class="nav-link"><i class="fas fa-database"></i> <span>Datos</span></a></li>
                     <li><a href="#contacto" class="nav-link"><i class="fas fa-envelope"></i> <span>Contacto</span></a>
                     </li>
                 </ul>
@@ -194,10 +193,6 @@
                                 <span>Ver proyectos</span>
                                 <i class="fas fa-arrow-down"></i>
                             </a>
-                            <a href="cv-roberto-borrallo.pdf" download class="btn-hero-secondary magnetic-btn">
-                                <i class="fas fa-file-arrow-down"></i>
-                                <span>Descargar CV</span>
-                            </a>
                             <a href="https://github.com/robertorayo" target="_blank" rel="noopener noreferrer"
                                 class="btn-hero-secondary magnetic-btn">
                                 <i class="fab fa-github"></i>
@@ -230,10 +225,10 @@
                 <div class="marquee-row marquee-row--outline">
                     <div class="marquee-track">
                         <div class="marquee-group">
-                            <span>PostgreSQL</span><i class="marquee-star"></i><span>Supabase</span><i class="marquee-star"></i><span>WordPress</span><i class="marquee-star"></i><span>Three.js</span><i class="marquee-star"></i><span>Vercel</span><i class="marquee-star"></i>
+                            <span>PostgreSQL</span><i class="marquee-star"></i><span>Supabase</span><i class="marquee-star"></i><span>Tailwind</span><i class="marquee-star"></i><span>Three.js</span><i class="marquee-star"></i><span>Vercel</span><i class="marquee-star"></i>
                         </div>
                         <div class="marquee-group">
-                            <span>PostgreSQL</span><i class="marquee-star"></i><span>Supabase</span><i class="marquee-star"></i><span>WordPress</span><i class="marquee-star"></i><span>Three.js</span><i class="marquee-star"></i><span>Vercel</span><i class="marquee-star"></i>
+                            <span>PostgreSQL</span><i class="marquee-star"></i><span>Supabase</span><i class="marquee-star"></i><span>Tailwind</span><i class="marquee-star"></i><span>Three.js</span><i class="marquee-star"></i><span>Vercel</span><i class="marquee-star"></i>
                         </div>
                     </div>
                 </div>
@@ -364,12 +359,6 @@
                                         <i class="fab fa-github"></i>
                                         <span>Explorar código</span>
                                     </a>
-                                    <a href="https://github.com/robertorayo/DistribuTech-Pro/blob/main/docs/manual_tecnico.pdf"
-                                        target="_blank" rel="noopener noreferrer"
-                                        class="btn-project-secondary magnetic-btn">
-                                        <i class="fas fa-file-pdf"></i>
-                                        <span>Manual técnico</span>
-                                    </a>
                                 </div>
                             </div>
 
@@ -399,18 +388,47 @@
                                     </div>
                                 </div>
 
+                                <details class="demo-box rls-box">
+                                    <summary><i class="fas fa-shield-halved"></i> Ejemplo de política RLS <i
+                                            class="fas fa-chevron-down chev"></i></summary>
+                                    <div class="demo-body">
+                                        <pre class="code-block" aria-label="Extracto de una política RLS de DistribuTech Pro"><code><span class="c-cm">-- el cliente solo ve sus cotizaciones;</span>
+<span class="c-cm">-- el personal (admin/comercial) ve todas</span>
+<span class="c-kw">CREATE POLICY</span> <span class="c-str">"user_leer_cot"</span>
+  <span class="c-kw">ON</span> cotizaciones <span class="c-kw">FOR SELECT</span>
+  <span class="c-kw">USING</span> (
+    usuario_id = auth.uid()
+    <span class="c-kw">OR</span> get_my_rol() <span class="c-kw">IN</span> (<span class="c-str">'admin'</span>, <span class="c-str">'comercial'</span>)
+    <span class="c-cm">-- …y comerciales asignados</span>
+  );</code></pre>
+                                        <p class="demo-note">Extracto simplificado de <code class="inline-code">database/schema.sql</code>.
+                                            Las reglas de acceso viven en PostgreSQL, así que cada rol solo ve lo suyo aunque
+                                            se salte la interfaz.</p>
+                                    </div>
+                                </details>
+
                                 <details class="demo-box">
-                                    <summary><i class="fas fa-key"></i> Prueba la demo con cuentas de prueba <i
+                                    <summary><i class="fas fa-key"></i> Prueba la demo con una cuenta de prueba <i
                                             class="fas fa-chevron-down chev"></i></summary>
                                     <div class="demo-body">
                                         <div class="demo-table">
-                                            <div class="demo-acct"><strong>Cliente</strong><code>cliente@distributechpro.com</code><code>Cliente1324!</code></div>
-                                            <div class="demo-acct"><strong>Comercial</strong><code>comercial1@distributechpro.com</code><code>Comercial1234!</code></div>
-                                            <div class="demo-acct"><strong>Administrador</strong><code>admin@distributechpro.com</code><code>Admin1234!</code></div>
+                                            <a class="demo-acct" href="https://distributech-pro.vercel.app/login?demo=cliente" target="_blank" rel="noopener noreferrer">
+                                                <strong>Cliente <i class="fas fa-arrow-up-right-from-square"></i></strong>
+                                                <code>cliente@distributechpro.com</code><code>Cliente1324!</code>
+                                            </a>
+                                            <a class="demo-acct" href="https://distributech-pro.vercel.app/login?demo=comercial" target="_blank" rel="noopener noreferrer">
+                                                <strong>Comercial <i class="fas fa-arrow-up-right-from-square"></i></strong>
+                                                <code>comercial1@distributechpro.com</code><code>Comercial1234!</code>
+                                            </a>
+                                            <a class="demo-acct" href="https://distributech-pro.vercel.app/login?demo=admin" target="_blank" rel="noopener noreferrer">
+                                                <strong>Administrador <i class="fas fa-arrow-up-right-from-square"></i></strong>
+                                                <code>admin@distributechpro.com</code><code>Admin1234!</code>
+                                            </a>
                                         </div>
-                                        <p class="demo-note">Entorno de pruebas público: otras personas pueden haber modificado
-                                            los datos y la primera carga puede tardar unos segundos. Las mismas cuentas están en
-                                            el manual de usuario del repositorio.</p>
+                                        <p class="demo-note">Pulsa una cuenta para abrir el acceso con los datos ya escritos.
+                                            Es un entorno de pruebas público: cada cuenta admite una sola sesión a la vez, otras
+                                            personas pueden haber modificado los datos y la primera carga puede tardar unos
+                                            segundos.</p>
                                     </div>
                                 </details>
                             </div>
@@ -538,9 +556,8 @@
                     <div class="section-header-compact reveal-fade">
                         <span class="section-tag" data-trail-station="1"><span class="tag-mono-idx">02 //</span> <i
                                 class="fas fa-cubes"></i> TECNOLOGÍAS</span>
-                        <h2 class="section-heading">Tecnologías, <em>con su contexto</em></h2>
-                        <p class="section-lead">Separo lo que uso en mis proyectos de lo que he trabajado en prácticas y
-                            formación.</p>
+                        <h2 class="section-heading">Tecnologías, <em>por áreas</em></h2>
+                        <p class="section-lead">Lo que uso para construir una aplicación completa, agrupado por área.</p>
                     </div>
 
                     <div class="stack-explorer glass-card reveal-fade" id="stack-explorer" data-trail-card>
@@ -559,72 +576,18 @@
                 </div>
             </section>
 
-            <!-- ============ DATOS ============ -->
-            <section class="profile-section" id="datos">
-                <div class="section-container">
-                    <div class="section-header-compact reveal-fade">
-                        <span class="section-tag" data-trail-station="2"><span class="tag-mono-idx">03 //</span> <i
-                                class="fas fa-database"></i> DATOS Y SEGURIDAD</span>
-                        <h2 class="section-heading">Los permisos, <em>en la base de datos</em></h2>
-                        <p class="section-lead">Un extracto de DistribuTech Pro: las reglas de acceso viven en PostgreSQL, así que cada rol solo ve lo suyo aunque se salte la interfaz.</p>
-                    </div>
-
-                    <div class="method-bento">
-                        <article class="bento-card bento-code glass-card tilt-card reveal-fade" data-trail-card>
-                            <div class="code-col">
-                                <span class="bento-kicker">POSTGRESQL · RLS</span>
-                                <h3>Seguridad en la base de datos, no solo en la interfaz</h3>
-                                <pre class="code-block" aria-label="Extracto de una política RLS de DistribuTech Pro"><code><span class="c-cm">-- el cliente solo ve sus cotizaciones;</span>
-<span class="c-cm">-- el personal (admin/comercial) ve todas</span>
-<span class="c-kw">CREATE POLICY</span> <span class="c-str">"user_leer_cot"</span>
-  <span class="c-kw">ON</span> cotizaciones <span class="c-kw">FOR SELECT</span>
-  <span class="c-kw">USING</span> (
-    usuario_id = auth.uid()
-    <span class="c-kw">OR</span> get_my_rol() <span class="c-kw">IN</span> (<span class="c-str">'admin'</span>, <span class="c-str">'comercial'</span>)
-    <span class="c-cm">-- …y comerciales asignados</span>
-  );</code></pre>
-                                <p>Extracto simplificado de <code class="inline-code">database/schema.sql</code> en DistribuTech Pro: 14 tablas y 18 políticas RLS.</p>
-                            </div>
-                            <ul class="principles">
-                                <li>
-                                    <b>01</b>
-                                    <div>
-                                        <h4>Tres roles, un solo esquema</h4>
-                                        <p>Cliente, comercial y administrador comparten las mismas tablas; las políticas RLS deciden qué filas ve cada uno.</p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <b>02</b>
-                                    <div>
-                                        <h4>Atributos en JSONB</h4>
-                                        <p>Cada familia de producto tiene sus propias especificaciones sin una tabla por sector.</p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <b>03</b>
-                                    <div>
-                                        <h4>De cotización a pedido</h4>
-                                        <p>El cliente envía una cotización, el comercial la revisa y puede convertirla en pedido.</p>
-                                    </div>
-                                </li>
-                            </ul>
-                        </article>
-                    </div>
-                </div>
-            </section>
-
             <!-- ============ CONTACTO ============ -->
             <section class="contact-cta-section" id="contacto">
                 <div class="section-container">
-                    <div class="contact-banner glass-card reveal-fade" data-trail-card="3">
+                    <div class="contact-banner glass-card reveal-fade" data-trail-card="2">
                         <div class="contact-rings" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
                         <div class="contact-banner-content">
-                            <span class="section-tag"><span class="tag-mono-idx">04 //</span> <i
-                                    class="fas fa-comments"></i> CONTACTO</span>
-                            <h2 class="contact-title">¿Hablamos de <em>trabajar juntos</em>?</h2>
+                            <span class="section-tag"><span class="tag-mono-idx">03 //</span> <i
+                                    class="fas fa-comments"></i> COMUNICACIÓN DIRECTA</span>
+                            <h2 class="contact-title">¿Construimos algo que <em>merezca la pena</em>?</h2>
                             <p class="contact-text">
-                                Busco mi primera experiencia profesional como desarrollador full-stack junior. Si tienes una
-                                oferta, unas prácticas o quieres comentar alguno de mis proyectos, escríbeme.
+                                Estoy disponible para nuevos retos, proyectos de software y consultas sobre
+                                arquitectura o desarrollo con IA. Escríbeme y respondo en cuanto pueda.
                             </p>
 
                             <div class="email-copy-box">
@@ -643,9 +606,9 @@
                             </div>
 
                             <div class="contact-links">
-                                <a class="contact-link" href="cv-roberto-borrallo.pdf" download>
-                                    <i class="fas fa-file-arrow-down"></i>
-                                    <span><small>Currículum</small>Descargar CV (PDF)</span>
+                                <a class="contact-link" href="mailto:robertobamym@gmail.com">
+                                    <i class="fas fa-envelope"></i>
+                                    <span><small>Email</small>robertobamym@gmail.com</span>
                                     <i class="fas fa-arrow-up-right-from-square contact-link-arrow"></i>
                                 </a>
                                 <a class="contact-link" href="https://www.linkedin.com/in/roberto-borrallo-%C3%A1lvarez-42a5b2403"
@@ -687,7 +650,6 @@
                         <a href="#inicio">Inicio <i class="fas fa-arrow-up-right-from-square"></i></a>
                         <a href="#proyecto">Proyectos <i class="fas fa-arrow-up-right-from-square"></i></a>
                         <a href="#habilidades">Stack <i class="fas fa-arrow-up-right-from-square"></i></a>
-                        <a href="#datos">Datos <i class="fas fa-arrow-up-right-from-square"></i></a>
                         <a href="#contacto">Contacto <i class="fas fa-arrow-up-right-from-square"></i></a>
                     </nav>
 

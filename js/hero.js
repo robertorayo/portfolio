@@ -19,13 +19,8 @@
         },
         {
             key: 'datos', name: 'DATOS', title: 'Bases de datos relacionales y SQL',
-            desc: 'PostgreSQL con 14 tablas, políticas RLS y atributos JSONB en DistribuTech Pro. También PL/SQL, MongoDB y Cassandra en cursos.',
+            desc: 'PostgreSQL, políticas RLS y atributos JSONB. También PL/SQL, MongoDB y Cassandra.',
             chips: ['PostgreSQL', 'SQL', 'JSONB', 'RLS']
-        },
-        {
-            key: 'mcp', name: 'WORDPRESS', title: 'Sitios web con WordPress',
-            desc: 'En unas prácticas de empresa modifiqué páginas de clientes, añadí productos y categorías y creé páginas nuevas.',
-            chips: ['WordPress', 'Páginas', 'Productos', 'Categorías']
         },
         {
             key: 'seguridad', name: 'SEGURIDAD', title: 'Permisos en la base de datos',
@@ -127,7 +122,7 @@
     }
 
     const ICON_FA = {
-        frontend: 'fas fa-code', backend: 'fas fa-server', datos: 'fas fa-database',        mcp: 'fas fa-plug', seguridad: 'fas fa-shield-halved', cloud: 'fas fa-cloud-arrow-up'
+        frontend: 'fas fa-code', backend: 'fas fa-server', datos: 'fas fa-database',        seguridad: 'fas fa-shield-halved', cloud: 'fas fa-cloud-arrow-up'
     };
     let fallbackIcon = null;
 
