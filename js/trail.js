@@ -29,6 +29,36 @@
 
     let segments = [], stations = [];
     let obstacles = [], pageW = 1440;
+    // Los obstáculos se agrupan por filas de 120 px para consultarlos rápido
+    const OBS_ROW = 120;
+    let obsRows = new Map(), obsStamp = 0;
+    function indexObstacles() {
+        obsRows = new Map();
+        obstacles.forEach((o) => {
+            o._s = 0;
+            const a = Math.floor(o.y / OBS_ROW), b = Math.floor((o.y + o.h) / OBS_ROW);
+            for (let r = a; r <= b; r++) { let l = obsRows.get(r); if (!l) { l = []; obsRows.set(r, l); } l.push(o); }
+        });
+    }
+    function boxOverlap(L, T, R, B) {
+        let sum = 0;
+        obsStamp++;
+        const a = Math.floor(T / OBS_ROW), b = Math.floor(B / OBS_ROW);
+        for (let r = a; r <= b; r++) {
+            const list = obsRows.get(r);
+            if (!list) continue;
+            for (let i = 0; i < list.length; i++) {
+                const o = list[i];
+                if (o._s === obsStamp) continue;
+                o._s = obsStamp;
+                const ox = Math.min(R, o.x + o.w) - Math.max(L, o.x);
+                if (ox <= 0) continue;
+                const oy = Math.min(B, o.y + o.h) - Math.max(T, o.y);
+                if (oy > 0) sum += ox * oy * (o.k || 1.5);
+            }
+        }
+        return sum;
+    }
     let startY = 0, endY = 0, finaleY = Infinity;
     let hud = null;
 
@@ -136,22 +166,26 @@
                 range.selectNodeContents(walker.currentNode);
                 for (const r of range.getClientRects()) {
                     if (r.width < 1 || r.height < 1) continue;
-                    rects.push({ x: r.left + window.scrollX, y: r.top + window.scrollY, w: r.width, h: r.height });
+                    rects.push({ x: r.left + window.scrollX, y: r.top + window.scrollY, w: r.width, h: r.height, k: 1.5 });
                 }
             }
             root.querySelectorAll('.section-tag, .spotlight-pill, .hero-badge, .marquee-strip-wrapper').forEach((el) => {
                 if (el.closest('.glass-card')) return;
                 const r = absRect(el);
-                rects.push({ x: r.L, y: r.T, w: r.R - r.L, h: r.B - r.T });
+                rects.push({ x: r.L, y: r.T, w: r.R - r.L, h: r.B - r.T, k: el.matches('.marquee-strip-wrapper') ? 5 : 10, g: el.matches('.marquee-strip-wrapper') ? 6 : 8 });
             });
         }
         // Obstáculos para colocar el indicador de progreso donde menos estorbe
-        obstacles = rects.slice();
+        obstacles = rects.map((r) => Object.assign({}, r));
         document.querySelectorAll('.glass-card').forEach((el) => {
             if (el.closest('.navbar-wrapper')) return;
             const r = absRect(el);
-            obstacles.push({ x: r.L, y: r.T, w: r.R - r.L, h: r.B - r.T });
+            obstacles.push({ x: r.L, y: r.T, w: r.R - r.L, h: r.B - r.T, k: 10, g: 2 });
         });
+        const foot = document.querySelector('.footer');
+        if (foot) { const r = absRect(foot); obstacles.push({ x: r.L, y: r.T, w: r.R - r.L, h: r.B - r.T, k: 10, g: 12 }); }
+        obstacles.forEach((o) => { const g = o.g || 0; if (g) { o.x -= g; o.y -= g; o.w += g * 2; o.h += g * 2; } });
+        indexObstacles();
         const add = (g, r, pad, rx, fill) => mk('rect', { x: r.x - pad, y: r.y - pad, width: r.w + pad * 2, height: r.h + pad * 2, rx, fill }, g);
         rects.forEach((r) => add(maskOuter, r, 16, 18, '#9a9a9a'));
         rects.forEach((r) => add(maskInner, r, 5, 8, '#262626'));
@@ -229,9 +263,13 @@
 
     /* ---------- HUD de progreso ---------- */
     // La etiqueta del porcentaje orbita alrededor de la bola y se coloca en una de 4 posiciones diagonales
-    const HUD_R = 74, HUD_BW = 54, HUD_BH = 22, PLAN_STEP = 28, SW_X = 20000, SW_Y = 12000, HUD_MS = 420;
-    const STATES = [[-1, -1], [1, -1], [-1, 1], [1, 1]];          // [lado x, lado y]; -1 = izquierda/arriba
-    const stIdx = (sx, sy) => (sx > 0 ? 1 : 0) + (sy > 0 ? 2 : 0);
+    const HUD_R = 74, HUD_BW = 54, HUD_BH = 22, PLAN_STEP = 16, SW_X = 24000, SW_Y = 14000, HUD_MS = 360;
+    const HUD_LEAD_S = 0.2, HUD_LEAD_MAX = 200;   // anticipación: el cambio empieza antes, según la velocidad del scroll
+    // [lado x, lado y]: -1 = izquierda/arriba, 1 = derecha/abajo. Las cuatro últimas (casi horizontales) solo se
+    // usan cuando las diagonales quedarían tapadas, por ejemplo en el hueco estrecho entre dos tarjetas.
+    const STATES = [[-1, -1], [1, -1], [-1, 1], [1, 1], [-1, -0.26], [1, -0.26], [-1, 0.26], [1, 0.26]];
+    const NS = STATES.length, HORIZ_BIAS = 1200;
+    const stIdx = (sx, sy) => STATES.findIndex((q) => q[0] === sx && q[1] === sy);
     const stAngle = (i) => Math.atan2(STATES[i][1] * 0.5, STATES[i][0] * 0.866);   // ±30° respecto a la horizontal
     const stCenter = (i) => { const a = stAngle(i); return [HUD_R * Math.cos(a), HUD_R * Math.sin(a)]; };
 
@@ -278,45 +316,72 @@
         hud.raf = k < 1 ? requestAnimationFrame(stepHud) : 0;
     }
 
-    // Área de solapamiento de la etiqueta (en la posición i) con texto, tarjetas, etc. (menor = mejor)
+    // Coste de colocar la etiqueta en la posición i: solapamiento con texto y, sobre todo, con elementos opacos
+    // (tarjetas, píldoras, footer) que la esconderían; también cuenta el conector.
     function hudOverlap(i, x, y) {
         const c = stCenter(i), hx = HUD_BW / 2 + 5, hy = HUD_BH / 2 + 5;
         const L = x + c[0] - hx, R = x + c[0] + hx, T = y + c[1] - hy, B = y + c[1] + hy;
-        let s = (L < 8 || R > pageW - 8) ? 1e5 : 0;
-        for (let k = 0; k < obstacles.length; k++) {
-            const o = obstacles[k];
-            if (o.y > B || o.y + o.h < T) continue;
-            const ox = Math.min(R, o.x + o.w) - Math.max(L, o.x);
-            if (ox <= 0) continue;
-            const oy = Math.min(B, o.y + o.h) - Math.max(T, o.y);
-            if (oy > 0) s += ox * oy;
-        }
-        return s;
+        let sum = (L < 8 || R > pageW - 8) ? 1e5 : 0;
+        if (Math.abs(STATES[i][1]) < 0.5) sum += HORIZ_BIAS;
+        sum += boxOverlap(L, T, R, B);
+        const a = stAngle(i), ca = Math.cos(a), sa = Math.sin(a);
+        for (let r = 20; r <= 44; r += 12) sum += boxOverlap(x + r * ca - 4, y + r * sa - 4, x + r * ca + 4, y + r * sa + 4) * 1.5;
+        return sum;
     }
 
     // Camino de mínimo coste entre las 4 posiciones, penalizando los cambios para que sea estable
     function viterbi(cost, pref, prev, sxFree) {
         const n = cost.length - 1;
-        const trans = (p, q) => p === q ? 0 : (STATES[p][0] !== STATES[q][0] ? SW_X : 0) + (STATES[p][1] !== STATES[q][1] ? SW_Y : 0);
+        const dY = (p, q) => Math.abs(STATES[p][1] - STATES[q][1]) * SW_Y * 0.6;      // subir/bajar un nivel cuesta menos que dos
+        const trans = (p, q) => p === q ? 0 : (STATES[p][0] !== STATES[q][0] ? SW_X : 0) + dY(p, q);
         // Continuidad con el tramo anterior: cambiar de posición al empezar también cuesta
-        const start = (q) => (sxFree || STATES[prev][0] === STATES[q][0] ? 0 : SW_X) + (STATES[prev][1] === STATES[q][1] ? 0 : SW_Y);
+        const start = (q) => (sxFree || STATES[prev][0] === STATES[q][0] ? 0 : SW_X) + dY(prev, q);
         let dp = cost[0].map((c, q) => c + start(q) + (q === pref ? 0 : 0.01));
         const back = [];
         for (let i = 1; i <= n; i++) {
-            const nd = [0, 0, 0, 0], bk = [0, 0, 0, 0];
-            for (let q = 0; q < 4; q++) {
+            const nd = new Array(NS), bk = new Array(NS);
+            for (let q = 0; q < NS; q++) {
                 let best = Infinity, bp = 0;
-                for (let p = 0; p < 4; p++) { const v = dp[p] + trans(p, q); if (v < best) { best = v; bp = p; } }
+                for (let p = 0; p < NS; p++) { const v = dp[p] + trans(p, q); if (v < best) { best = v; bp = p; } }
                 nd[q] = best + cost[i][q]; bk[q] = bp;
             }
             dp = nd; back.push(bk);
         }
         let q = 0;
-        for (let k = 1; k < 4; k++) if (dp[k] < dp[q] - 1) q = k;
+        for (let k = 1; k < NS; k++) if (dp[k] < dp[q] - 1) q = k;
         if (dp[pref] <= dp[q] + 1) q = pref;
         const total = dp[q], states = new Array(n + 1);
         for (let i = n; i >= 0; i--) { states[i] = q; if (i > 0) q = back[i - 1][q]; }
         return { states, total };
+    }
+
+    // Permanencia mínima: las rachas demasiado cortas se funden con la vecina que mejor encaje,
+    // para que la etiqueta no cambie de sitio varias veces en pocos píxeles de scroll.
+    const MIN_RUN = 12, MERGE_TOL = 30000;
+    function smoothRuns(states, cost, prev) {
+        for (let guard = 0; guard < 60; guard++) {
+            const runs = [];
+            let s0 = 0;
+            for (let i = 1; i <= states.length; i++) {
+                if (i === states.length || states[i] !== states[s0]) { runs.push([s0, i - 1, states[s0]]); s0 = i; }
+            }
+            let changed = false;
+            for (let r = 0; r < runs.length && !changed; r++) {
+                const a = runs[r][0], b = runs[r][1], st = runs[r][2];
+                if (b - a + 1 >= MIN_RUN) continue;
+                if (r === 0 && prev != null && st === prev) continue;
+                const left = r > 0 ? runs[r - 1][2] : (prev != null ? prev : null);
+                const right = r < runs.length - 1 ? runs[r + 1][2] : null;
+                if (left === null && right === null) continue;
+                const sum = (q) => { let t = 0; for (let i = a; i <= b; i++) t += cost[i][q]; return t; };
+                const pick = left === null ? right : right === null ? left : (sum(left) <= sum(right) ? left : right);
+                if (pick === st) continue;
+                if (sum(pick) - sum(st) > MERGE_TOL) continue;     // esa racha corta evita que la etiqueta quede tapada: se conserva
+                for (let i = a; i <= b; i++) states[i] = pick;
+                changed = true;
+            }
+            if (!changed) break;
+        }
     }
 
     // Planifica por adelantado la posición de la etiqueta en cada tramo
@@ -329,16 +394,19 @@
         let prev = stIdx(1, -1);                  // posición en la que terminó el tramo anterior
         segments.forEach((seg) => {
             if (seg.type === 'curve') {
-                const cost = sample(seg.track).map((p) => [0, 1, 2, 3].map((i) => hudOverlap(i, p.x, p.y)));
+                const cost = sample(seg.track).map((p) => STATES.map((_, i) => hudOverlap(i, p.x, p.y)));
                 const r = viterbi(cost, prev, prev, false);
+                smoothRuns(r.states, cost, prev);
                 seg.plan = r.states;
                 prev = r.states[r.states.length - 1];
             } else {
                 // Tarjeta dividida: se elige la rama (izquierda o derecha) y, dentro de ella, la altura de la etiqueta.
                 // Al elegir rama no se penaliza el lado, para que en empates alterne entre tarjetas.
                 const run = (track, sx) => {
-                    const cost = sample(track).map((p) => [0, 1, 2, 3].map((i) => STATES[i][0] === sx ? hudOverlap(i, p.x, p.y) : 1e12));
-                    return viterbi(cost, stIdx(sx, STATES[prev][1]), prev, true);
+                    const cost = sample(track).map((p) => STATES.map((_, i) => STATES[i][0] === sx ? hudOverlap(i, p.x, p.y) : 1e12));
+                    const r = viterbi(cost, stIdx(sx, STATES[prev][1]), prev, true);
+                    smoothRuns(r.states, cost, null);
+                    return r;
                 };
                 const rl = run(seg.L, -1), rr = run(seg.R, 1);
                 const branch = Math.abs(rl.total - rr.total) < 400 ? seg.pref : (rl.total < rr.total ? 'L' : 'R');
@@ -405,10 +473,25 @@
     }
 
     let lastHeadY = null;
+    let velY = 0, lastTY = null, lastTT = 0, settleTimer = 0;
 
-    function update() {
+    function update(settle) {
         if (!segments.length) return;
         const t = getTravelY();
+        // Velocidad del recorrido (px/s) para anticipar los cambios de posición de la etiqueta
+        if (settle) {
+            velY = 0;
+        } else {
+            const nowT = performance.now();
+            if (lastTY !== null) {
+                const dtS = Math.max(8, nowT - lastTT) / 1000;
+                velY = velY * 0.6 + ((t - lastTY) / dtS) * 0.4;
+            }
+            lastTY = t; lastTT = nowT;
+            clearTimeout(settleTimer);
+            settleTimer = setTimeout(() => update(true), 140);
+        }
+        const lead = clamp(velY * HUD_LEAD_S, -HUD_LEAD_MAX, HUD_LEAD_MAX);
         let headL = null, headR = null, act = 0;
 
         segments.forEach((seg, si) => {
@@ -475,12 +558,13 @@
             const seg = segments[act];
             let p = headL, si;
             if (seg.type === 'curve') {
-                const i = clamp(Math.round((seg.cur || 0) / PLAN_STEP), 0, seg.plan.length - 1);
-                si = seg.plan[i];
+                const k = seg.track.len / Math.max(1, seg.y1 - seg.y0);
+                const dist = clamp((seg.cur || 0) + lead * k, 0, seg.track.len);
+                si = seg.plan[clamp(Math.round(dist / PLAN_STEP), 0, seg.plan.length - 1)];
             } else {
                 const tr = seg.plan.branch === 'L' ? seg.L : seg.R;
-                const i = clamp(Math.round((seg.ratio || 0) * tr.len / PLAN_STEP), 0, seg.plan.states.length - 1);
-                si = seg.plan.states[i];
+                const ra = clamp((seg.ratio || 0) + lead / Math.max(1, seg.y1 - seg.y0), 0, 1);
+                si = seg.plan.states[clamp(Math.round(ra * tr.len / PLAN_STEP), 0, seg.plan.states.length - 1)];
                 p = (seg.plan.branch === 'R' && headR) ? headR : headL;
             }
             hud.p = p;
@@ -506,6 +590,6 @@
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(rebuild);
     window.addEventListener('resize', rebuild, { passive: true });
     new ResizeObserver(rebuild).observe(document.body);
-    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('scroll', () => update(false), { passive: true });
     document.addEventListener('stack:changed', rebuild);
 })();
