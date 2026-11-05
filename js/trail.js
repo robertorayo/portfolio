@@ -222,32 +222,34 @@
 
         const wrapper = document.querySelector('.page-wrapper');
         buildMask(width, wrapper ? wrapper.scrollHeight : docH);
+        planHud();
 
         document.documentElement.classList.remove('trek-measuring');
     }
 
     /* ---------- HUD de progreso ---------- */
-    const HUD_W = 100, HUD_H = 30;
+    const HUD_W = 100, HUD_H = 30, HUD_UP = 14, PLAN_STEP = 28, SWITCH_COST = 9000;
     function buildHud() {
         if (!hudG) return;
         hudG.innerHTML = '';
-        const line = mk('line', { y1: 0, y2: 0, class: 'trek-hud-line' }, hudG);
-        const box = mk('rect', { y: -11, width: 54, height: 22, rx: 11, class: 'trek-hud-box' }, hudG);
-        const pct = mk('text', { y: 3.6, class: 'trek-hud-pct' }, hudG);
-        hud = { line, box, pct, last: '', side: '', seg: -1 };
+        const line = mk('path', { class: 'trek-hud-line' }, hudG);
+        const box = mk('rect', { y: -HUD_UP - 11, width: 54, height: 22, rx: 11, class: 'trek-hud-box' }, hudG);
+        const pct = mk('text', { y: -HUD_UP + 3.6, class: 'trek-hud-pct' }, hudG);
+        hud = { line, box, pct, last: '', side: '' };
         setHudSide('R');
     }
+    // Conector en escalón (sin diagonales): sale de la bola, sube y entra en la etiqueta, que queda más alta
     function setHudSide(side) {
         if (!hud || hud.side === side) return;
         hud.side = side;
         const k = side === 'R' ? 1 : -1;
-        hud.line.setAttribute('x1', 14 * k); hud.line.setAttribute('x2', 40 * k);
+        hud.line.setAttribute('d', `M ${12 * k} 0 H ${26 * k} V ${-HUD_UP} H ${40 * k}`);
         hud.box.setAttribute('x', side === 'R' ? 40 : -94);
         hud.pct.setAttribute('x', side === 'R' ? 52 : -82);
     }
-    // Área de solapamiento del indicador con texto, tarjetas, etc. (menor = mejor)
+    // Área de solapamiento de la etiqueta con texto, tarjetas, etc. (menor = mejor)
     function hudOverlap(side, x, y) {
-        const L = side === 'R' ? x + 8 : x - 8 - HUD_W, R = L + HUD_W, T = y - HUD_H / 2, B = y + HUD_H / 2;
+        const L = side === 'R' ? x + 8 : x - 8 - HUD_W, R = L + HUD_W, cy = y - HUD_UP, T = cy - HUD_H / 2, B = cy + HUD_H / 2;
         let s = (L < 8 || R > pageW - 8) ? 1e5 : 0;
         for (let i = 0; i < obstacles.length; i++) {
             const o = obstacles[i];
@@ -258,6 +260,46 @@
             if (oy > 0) s += ox * oy;
         }
         return s;
+    }
+    // Planifica por adelantado el lado del indicador en cada tramo, para que no oscile con el scroll.
+    function planHud() {
+        segments.forEach((seg) => {
+            if (seg.type === 'curve') {
+                const len = seg.track.len, n = Math.max(1, Math.ceil(len / PLAN_STEP));
+                const cost = [];
+                for (let i = 0; i <= n; i++) {
+                    const p = seg.track.core.getPointAtLength(Math.min(len, i * PLAN_STEP));
+                    cost.push([hudOverlap('L', p.x, p.y), hudOverlap('R', p.x, p.y)]);
+                }
+                // Viterbi con penalización por cambiar de lado: solo cambia si compensa de verdad
+                const pref = seg.pref === 'R' ? 1 : 0;
+                let dp = [cost[0][0] + (pref === 0 ? 0 : 0.01), cost[0][1] + (pref === 1 ? 0 : 0.01)];
+                const back = [];
+                for (let i = 1; i <= n; i++) {
+                    const nd = [0, 0], bk = [0, 0];
+                    for (let st = 0; st < 2; st++) {
+                        const stay = dp[st], sw = dp[1 - st] + SWITCH_COST;
+                        if (stay <= sw) { nd[st] = stay + cost[i][st]; bk[st] = st; } else { nd[st] = sw + cost[i][st]; bk[st] = 1 - st; }
+                    }
+                    dp = nd; back.push(bk);
+                }
+                let st = dp[0] <= dp[1] ? 0 : 1;
+                if (Math.abs(dp[0] - dp[1]) < 1) st = pref;
+                const sides = new Array(n + 1);
+                for (let i = n; i >= 0; i--) { sides[i] = st ? 'R' : 'L'; if (i > 0) st = back[i - 1][st]; }
+                seg.plan = sides;
+            } else {
+                // Tarjeta dividida: una sola decisión para todo el tramo (rama izquierda con etiqueta a la izquierda, o derecha)
+                const sum = (track, side) => {
+                    let t = 0;
+                    const n = Math.max(1, Math.ceil(track.len / PLAN_STEP));
+                    for (let i = 0; i <= n; i++) { const p = track.core.getPointAtLength(Math.min(track.len, i * PLAN_STEP)); t += hudOverlap(side, p.x, p.y); }
+                    return t;
+                };
+                const sL = sum(seg.L, 'L'), sR = sum(seg.R, 'R');
+                seg.hudSide = Math.abs(sL - sR) < 400 ? seg.pref : (sL < sR ? 'L' : 'R');
+            }
+        });
     }
 
     /* ---------- Chispas ---------- */
@@ -329,7 +371,7 @@
             if (seg.type === 'curve') {
                 const dist = before ? 0 : after ? seg.track.len : distAtY(seg.track, t);
                 setProgress(seg.track, dist, before ? 0 : dist + past);
-                if (!before) { headL = seg.track.core.getPointAtLength(dist); headR = null; }
+                if (!before) { headL = seg.track.core.getPointAtLength(dist); headR = null; seg.cur = dist; }
             } else {
                 const ratio = before ? 0 : after ? 1 : (t - seg.y0) / (seg.y1 - seg.y0);
                 const dL = ratio * seg.L.len, dR = ratio * seg.R.len;
@@ -377,18 +419,21 @@
             if (s.title) s.title.classList.toggle('is-active-title', on);
         });
 
-        // Indicador de progreso: se coloca por el lado donde menos estorba
+        // Indicador de progreso: el lado viene planificado por tramo (estable al hacer scroll)
         if (hud && window.innerWidth > 900) {
             const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
             const pct = String(Math.round(clamp(window.scrollY / max, 0, 1) * 100)).padStart(2, '0') + '%';
             if (pct !== hud.last) { hud.pct.textContent = pct; hud.last = pct; }
             const seg = segments[act];
-            if (hud.seg !== act) { hud.seg = act; setHudSide(seg.pref); }
-            const pL = headL, pR = headR || headL;
-            const sL = hudOverlap('L', pL.x, pL.y), sR = hudOverlap('R', pR.x, pR.y);
-            const cur = hud.side === 'L' ? sL : sR, other = hud.side === 'L' ? sR : sL;
-            if (other + 500 < cur) setHudSide(hud.side === 'L' ? 'R' : 'L');
-            const p = hud.side === 'L' ? pL : pR;
+            let side = seg.pref, p = headL;
+            if (seg.type === 'curve') {
+                const plan = seg.plan, i = clamp(Math.round((seg.cur || 0) / PLAN_STEP), 0, plan.length - 1);
+                side = plan[i];
+            } else {
+                side = seg.hudSide;
+                p = side === 'R' && headR ? headR : headL;
+            }
+            setHudSide(side);
             hudG.setAttribute('transform', `translate(${p.x}, ${p.y})`);
             hudG.style.opacity = '1';
         } else if (hudG) hudG.style.opacity = '0';
