@@ -139,7 +139,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 
 /* Indicador de progreso pegado al cometa */
 .trek-hud { transition: opacity 0.3s ease; opacity: 0; }
-.trek-hud-line { fill: none; stroke: rgba(255,255,255,0.5); stroke-width: 1px; stroke-linejoin: round; }
+.trek-hud-line { fill: none; stroke: rgba(255,255,255,0.5); stroke-width: 1px; stroke-linecap: round; }
 .trek-hud-box { fill: rgba(8,10,14,0.88); stroke: rgba(255,255,255,0.35); stroke-width: 1px; }
 .trek-hud-pct { fill: #ffffff; font: 600 10px var(--font-mono); letter-spacing: 0.06em; }
 

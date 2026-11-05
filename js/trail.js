@@ -228,31 +228,63 @@
     }
 
     /* ---------- HUD de progreso ---------- */
-    const HUD_W = 100, HUD_H = 30, HUD_UP = 14, PLAN_STEP = 28, SWITCH_COST = 9000;
+    // La etiqueta del porcentaje orbita alrededor de la bola y se coloca en una de 4 posiciones diagonales
+    const HUD_R = 74, HUD_BW = 54, HUD_BH = 22, PLAN_STEP = 28, SW_X = 20000, SW_Y = 12000, HUD_MS = 420;
+    const STATES = [[-1, -1], [1, -1], [-1, 1], [1, 1]];          // [lado x, lado y]; -1 = izquierda/arriba
+    const stIdx = (sx, sy) => (sx > 0 ? 1 : 0) + (sy > 0 ? 2 : 0);
+    const stAngle = (i) => Math.atan2(STATES[i][1] * 0.5, STATES[i][0] * 0.866);   // ±30° respecto a la horizontal
+    const stCenter = (i) => { const a = stAngle(i); return [HUD_R * Math.cos(a), HUD_R * Math.sin(a)]; };
+
     function buildHud() {
         if (!hudG) return;
         hudG.innerHTML = '';
-        const line = mk('path', { class: 'trek-hud-line' }, hudG);
-        const box = mk('rect', { y: -HUD_UP - 11, width: 54, height: 22, rx: 11, class: 'trek-hud-box' }, hudG);
-        const pct = mk('text', { y: -HUD_UP + 3.6, class: 'trek-hud-pct' }, hudG);
-        hud = { line, box, pct, last: '', side: '' };
-        setHudSide('R');
+        const line = mk('line', { class: 'trek-hud-line' }, hudG);
+        const box = mk('rect', { width: HUD_BW, height: HUD_BH, rx: HUD_BH / 2, class: 'trek-hud-box' }, hudG);
+        const pct = mk('text', { class: 'trek-hud-pct', 'text-anchor': 'middle' }, hudG);
+        hud = { line, box, pct, last: '', init: false, ang: 0, from: 0, delta: 0, to: 0, t0: 0, raf: 0, p: { x: 0, y: 0 } };
     }
-    // Conector en escalón (sin diagonales): sale de la bola, sube y entra en la etiqueta, que queda más alta
-    function setHudSide(side) {
-        if (!hud || hud.side === side) return;
-        hud.side = side;
-        const k = side === 'R' ? 1 : -1;
-        hud.line.setAttribute('d', `M ${12 * k} 0 H ${26 * k} V ${-HUD_UP} H ${40 * k}`);
-        hud.box.setAttribute('x', side === 'R' ? 40 : -94);
-        hud.pct.setAttribute('x', side === 'R' ? 52 : -82);
+
+    // Dibuja la etiqueta en el ángulo actual: conector recto desde la bola hasta el borde de la etiqueta
+    function renderHud() {
+        if (!hud) return;
+        const a = hud.ang, ca = Math.cos(a), sa = Math.sin(a);
+        const cx = HUD_R * ca, cy = HUD_R * sa;
+        const ex = Math.abs(ca) > 1e-6 ? (HUD_BW / 2) / Math.abs(ca) : 1e9;
+        const ey = Math.abs(sa) > 1e-6 ? (HUD_BH / 2) / Math.abs(sa) : 1e9;
+        const r0 = 11, r1 = HUD_R - Math.min(ex, ey);
+        hud.line.setAttribute('x1', (r0 * ca).toFixed(2)); hud.line.setAttribute('y1', (r0 * sa).toFixed(2));
+        hud.line.setAttribute('x2', (r1 * ca).toFixed(2)); hud.line.setAttribute('y2', (r1 * sa).toFixed(2));
+        hud.box.setAttribute('x', (cx - HUD_BW / 2).toFixed(2)); hud.box.setAttribute('y', (cy - HUD_BH / 2).toFixed(2));
+        hud.pct.setAttribute('x', cx.toFixed(2)); hud.pct.setAttribute('y', (cy + 3.6).toFixed(2));
+        hudG.setAttribute('transform', `translate(${hud.p.x.toFixed(1)}, ${hud.p.y.toFixed(1)})`);
     }
-    // Área de solapamiento de la etiqueta con texto, tarjetas, etc. (menor = mejor)
-    function hudOverlap(side, x, y) {
-        const L = side === 'R' ? x + 8 : x - 8 - HUD_W, R = L + HUD_W, cy = y - HUD_UP, T = cy - HUD_H / 2, B = cy + HUD_H / 2;
+
+    // Cambia de posición con un desplazamiento fluido en arco (la etiqueta nunca cruza la bola)
+    function setHudTarget(i) {
+        const to = stAngle(i);
+        if (!hud.init) { hud.init = true; hud.ang = hud.to = to; return; }
+        if (Math.abs(to - hud.to) < 1e-6) return;
+        let d = to - hud.ang;
+        while (d > Math.PI) d -= Math.PI * 2;
+        while (d < -Math.PI) d += Math.PI * 2;
+        hud.from = hud.ang; hud.delta = d; hud.to = to; hud.t0 = performance.now();
+        if (!hud.raf) hud.raf = requestAnimationFrame(stepHud);
+    }
+    function stepHud(now) {
+        const k = clamp((now - hud.t0) / HUD_MS, 0, 1);
+        const e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+        hud.ang = hud.from + hud.delta * e;
+        renderHud();
+        hud.raf = k < 1 ? requestAnimationFrame(stepHud) : 0;
+    }
+
+    // Área de solapamiento de la etiqueta (en la posición i) con texto, tarjetas, etc. (menor = mejor)
+    function hudOverlap(i, x, y) {
+        const c = stCenter(i), hx = HUD_BW / 2 + 5, hy = HUD_BH / 2 + 5;
+        const L = x + c[0] - hx, R = x + c[0] + hx, T = y + c[1] - hy, B = y + c[1] + hy;
         let s = (L < 8 || R > pageW - 8) ? 1e5 : 0;
-        for (let i = 0; i < obstacles.length; i++) {
-            const o = obstacles[i];
+        for (let k = 0; k < obstacles.length; k++) {
+            const o = obstacles[k];
             if (o.y > B || o.y + o.h < T) continue;
             const ox = Math.min(R, o.x + o.w) - Math.max(L, o.x);
             if (ox <= 0) continue;
@@ -261,43 +293,58 @@
         }
         return s;
     }
-    // Planifica por adelantado el lado del indicador en cada tramo, para que no oscile con el scroll.
+
+    // Camino de mínimo coste entre las 4 posiciones, penalizando los cambios para que sea estable
+    function viterbi(cost, pref, prev, sxFree) {
+        const n = cost.length - 1;
+        const trans = (p, q) => p === q ? 0 : (STATES[p][0] !== STATES[q][0] ? SW_X : 0) + (STATES[p][1] !== STATES[q][1] ? SW_Y : 0);
+        // Continuidad con el tramo anterior: cambiar de posición al empezar también cuesta
+        const start = (q) => (sxFree || STATES[prev][0] === STATES[q][0] ? 0 : SW_X) + (STATES[prev][1] === STATES[q][1] ? 0 : SW_Y);
+        let dp = cost[0].map((c, q) => c + start(q) + (q === pref ? 0 : 0.01));
+        const back = [];
+        for (let i = 1; i <= n; i++) {
+            const nd = [0, 0, 0, 0], bk = [0, 0, 0, 0];
+            for (let q = 0; q < 4; q++) {
+                let best = Infinity, bp = 0;
+                for (let p = 0; p < 4; p++) { const v = dp[p] + trans(p, q); if (v < best) { best = v; bp = p; } }
+                nd[q] = best + cost[i][q]; bk[q] = bp;
+            }
+            dp = nd; back.push(bk);
+        }
+        let q = 0;
+        for (let k = 1; k < 4; k++) if (dp[k] < dp[q] - 1) q = k;
+        if (dp[pref] <= dp[q] + 1) q = pref;
+        const total = dp[q], states = new Array(n + 1);
+        for (let i = n; i >= 0; i--) { states[i] = q; if (i > 0) q = back[i - 1][q]; }
+        return { states, total };
+    }
+
+    // Planifica por adelantado la posición de la etiqueta en cada tramo
     function planHud() {
+        const sample = (track) => {
+            const n = Math.max(1, Math.ceil(track.len / PLAN_STEP)), pts = [];
+            for (let i = 0; i <= n; i++) pts.push(track.core.getPointAtLength(Math.min(track.len, i * PLAN_STEP)));
+            return pts;
+        };
+        let prev = stIdx(1, -1);                  // posición en la que terminó el tramo anterior
         segments.forEach((seg) => {
             if (seg.type === 'curve') {
-                const len = seg.track.len, n = Math.max(1, Math.ceil(len / PLAN_STEP));
-                const cost = [];
-                for (let i = 0; i <= n; i++) {
-                    const p = seg.track.core.getPointAtLength(Math.min(len, i * PLAN_STEP));
-                    cost.push([hudOverlap('L', p.x, p.y), hudOverlap('R', p.x, p.y)]);
-                }
-                // Viterbi con penalización por cambiar de lado: solo cambia si compensa de verdad
-                const pref = seg.pref === 'R' ? 1 : 0;
-                let dp = [cost[0][0] + (pref === 0 ? 0 : 0.01), cost[0][1] + (pref === 1 ? 0 : 0.01)];
-                const back = [];
-                for (let i = 1; i <= n; i++) {
-                    const nd = [0, 0], bk = [0, 0];
-                    for (let st = 0; st < 2; st++) {
-                        const stay = dp[st], sw = dp[1 - st] + SWITCH_COST;
-                        if (stay <= sw) { nd[st] = stay + cost[i][st]; bk[st] = st; } else { nd[st] = sw + cost[i][st]; bk[st] = 1 - st; }
-                    }
-                    dp = nd; back.push(bk);
-                }
-                let st = dp[0] <= dp[1] ? 0 : 1;
-                if (Math.abs(dp[0] - dp[1]) < 1) st = pref;
-                const sides = new Array(n + 1);
-                for (let i = n; i >= 0; i--) { sides[i] = st ? 'R' : 'L'; if (i > 0) st = back[i - 1][st]; }
-                seg.plan = sides;
+                const cost = sample(seg.track).map((p) => [0, 1, 2, 3].map((i) => hudOverlap(i, p.x, p.y)));
+                const r = viterbi(cost, prev, prev, false);
+                seg.plan = r.states;
+                prev = r.states[r.states.length - 1];
             } else {
-                // Tarjeta dividida: una sola decisión para todo el tramo (rama izquierda con etiqueta a la izquierda, o derecha)
-                const sum = (track, side) => {
-                    let t = 0;
-                    const n = Math.max(1, Math.ceil(track.len / PLAN_STEP));
-                    for (let i = 0; i <= n; i++) { const p = track.core.getPointAtLength(Math.min(track.len, i * PLAN_STEP)); t += hudOverlap(side, p.x, p.y); }
-                    return t;
+                // Tarjeta dividida: se elige la rama (izquierda o derecha) y, dentro de ella, la altura de la etiqueta.
+                // Al elegir rama no se penaliza el lado, para que en empates alterne entre tarjetas.
+                const run = (track, sx) => {
+                    const cost = sample(track).map((p) => [0, 1, 2, 3].map((i) => STATES[i][0] === sx ? hudOverlap(i, p.x, p.y) : 1e12));
+                    return viterbi(cost, stIdx(sx, STATES[prev][1]), prev, true);
                 };
-                const sL = sum(seg.L, 'L'), sR = sum(seg.R, 'R');
-                seg.hudSide = Math.abs(sL - sR) < 400 ? seg.pref : (sL < sR ? 'L' : 'R');
+                const rl = run(seg.L, -1), rr = run(seg.R, 1);
+                const branch = Math.abs(rl.total - rr.total) < 400 ? seg.pref : (rl.total < rr.total ? 'L' : 'R');
+                const states = branch === 'L' ? rl.states : rr.states;
+                seg.plan = { branch, states };
+                prev = states[states.length - 1];
             }
         });
     }
@@ -375,6 +422,7 @@
             } else {
                 const ratio = before ? 0 : after ? 1 : (t - seg.y0) / (seg.y1 - seg.y0);
                 const dL = ratio * seg.L.len, dR = ratio * seg.R.len;
+                seg.ratio = ratio;
                 setProgress(seg.L, dL, before ? 0 : dL + past);
                 setProgress(seg.R, dR, before ? 0 : dR + past);
                 if (!before) {
@@ -419,22 +467,25 @@
             if (s.title) s.title.classList.toggle('is-active-title', on);
         });
 
-        // Indicador de progreso: el lado viene planificado por tramo (estable al hacer scroll)
+        // Indicador de progreso: posición planificada por tramo y animada al cambiar
         if (hud && window.innerWidth > 900) {
             const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
             const pct = String(Math.round(clamp(window.scrollY / max, 0, 1) * 100)).padStart(2, '0') + '%';
             if (pct !== hud.last) { hud.pct.textContent = pct; hud.last = pct; }
             const seg = segments[act];
-            let side = seg.pref, p = headL;
+            let p = headL, si;
             if (seg.type === 'curve') {
-                const plan = seg.plan, i = clamp(Math.round((seg.cur || 0) / PLAN_STEP), 0, plan.length - 1);
-                side = plan[i];
+                const i = clamp(Math.round((seg.cur || 0) / PLAN_STEP), 0, seg.plan.length - 1);
+                si = seg.plan[i];
             } else {
-                side = seg.hudSide;
-                p = side === 'R' && headR ? headR : headL;
+                const tr = seg.plan.branch === 'L' ? seg.L : seg.R;
+                const i = clamp(Math.round((seg.ratio || 0) * tr.len / PLAN_STEP), 0, seg.plan.states.length - 1);
+                si = seg.plan.states[i];
+                p = (seg.plan.branch === 'R' && headR) ? headR : headL;
             }
-            setHudSide(side);
-            hudG.setAttribute('transform', `translate(${p.x}, ${p.y})`);
+            hud.p = p;
+            setHudTarget(si);
+            renderHud();
             hudG.style.opacity = '1';
         } else if (hudG) hudG.style.opacity = '0';
 
