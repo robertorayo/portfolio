@@ -23,13 +23,8 @@
             chips: ['PostgreSQL', 'SQL', 'JSONB', 'RLS']
         },
         {
-            key: 'ia', name: 'IA', title: 'Desarrollo con asistentes de IA',
-            desc: 'Trabajo con Claude Code revisando y entendiendo cada cambio. Mi siguiente paso es integrar un modelo de lenguaje en un producto propio.',
-            chips: ['Claude Code', 'MCP', 'Revisión']
-        },
-        {
             key: 'mcp', name: 'WORDPRESS', title: 'Sitios web con WordPress',
-            desc: 'En mis prácticas en SolWed (abril a junio de 2026) modifiqué páginas de clientes, añadí productos y categorías y creé páginas nuevas.',
+            desc: 'En unas prácticas de empresa modifiqué páginas de clientes, añadí productos y categorías y creé páginas nuevas.',
             chips: ['WordPress', 'Páginas', 'Productos', 'Categorías']
         },
         {
@@ -132,8 +127,7 @@
     }
 
     const ICON_FA = {
-        frontend: 'fas fa-code', backend: 'fas fa-server', datos: 'fas fa-database', ia: 'fas fa-wand-magic-sparkles',
-        mcp: 'fas fa-plug', seguridad: 'fas fa-shield-halved', cloud: 'fas fa-cloud-arrow-up'
+        frontend: 'fas fa-code', backend: 'fas fa-server', datos: 'fas fa-database',        mcp: 'fas fa-plug', seguridad: 'fas fa-shield-halved', cloud: 'fas fa-cloud-arrow-up'
     };
     let fallbackIcon = null;
 
@@ -468,6 +462,7 @@
     canvas.addEventListener('pointerdown', (e) => {
         if (e.button !== undefined && e.button !== 0) return;
         canvas.setPointerCapture(e.pointerId);
+        wheeling = false; wheelAxis = null; clearTimeout(wheelTimer);
         drag = { x: e.clientX, startX: e.clientX, y: e.clientY, t: performance.now(), moved: 0 };
         velocity = 0;
         lastInteraction = performance.now();
@@ -504,12 +499,48 @@
     canvas.addEventListener('pointerup', endDrag);
     canvas.addEventListener('pointercancel', endDrag);
     canvas.addEventListener('pointerleave', () => { pointer.inside = false; });
+    /* Panel táctil y rueda horizontal: un gesto continuo, no una suma de saltos.
+       - El eje se decide al empezar el gesto y se mantiene hasta que se detienen los eventos,
+         así una diagonal con dos dedos no se escapa al scroll de la página.
+       - La posición sigue al dedo con un suavizado y la inercia la pone el propio sistema.
+       - Al terminar, el carrusel se ajusta a la ficha más cercana teniendo en cuenta la velocidad. */
+    const WHEEL_GAP = 130;            // ms sin eventos para dar el gesto por terminado
+    let wheeling = false, wheelAxis = null, wheelLast = 0, wheelTimer = 0;
+    let wheelPos = 0, wheelStart = 0, wheelVel = 0;
+
+    function endWheel() {
+        if (!wheeling) return;
+        wheeling = false; wheelAxis = null;
+        const flick = clamp(wheelVel * 4, -0.6, 0.6);
+        target = Math.round(clamp(wheelPos + flick, wheelStart - 3, wheelStart + 3));
+        wheelVel = 0;
+        lastInteraction = performance.now();
+    }
+
     canvas.addEventListener('wheel', (e) => {
-        if (Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 2) {
-            e.preventDefault();
-            pos += e.deltaX * 0.004; target = Math.round(pos);
-            lastInteraction = performance.now();
+        const now = performance.now();
+        if (now - wheelLast > WHEEL_GAP) wheelAxis = null;         // gesto nuevo
+        wheelLast = now;
+        const ax = Math.abs(e.deltaX), ay = Math.abs(e.deltaY);
+        if (!wheelAxis) {
+            if (ax < 0.5 && ay < 0.5) return;
+            wheelAxis = (ax >= 1 && ax * 1.3 >= ay) ? 'x' : 'y';
+            if (wheelAxis === 'x') {
+                wheeling = true;
+                wheelStart = wheelPos = pos; wheelVel = 0;
+                target = pos;
+            }
         }
+        if (wheelAxis !== 'x') return;                              // vertical: scroll normal de la página
+        e.preventDefault();
+        const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? innerHeight : 1;
+        const per = clamp(view.w * 0.2, 120, 260) * 0.9;            // algo más sensible que el arrastre
+        const dpos = clamp((e.deltaX * unit) / per, -0.6, 0.6);
+        wheelPos = clamp(wheelPos + dpos, wheelStart - 3, wheelStart + 3);
+        wheelVel = wheelVel * 0.6 + dpos * 0.4;
+        lastInteraction = now;
+        clearTimeout(wheelTimer);
+        wheelTimer = setTimeout(endWheel, WHEEL_GAP);
     }, { passive: false });
 
     /* ---------- Bucle ---------- */
@@ -528,11 +559,12 @@
         const k = 1 - Math.pow(0.0008, dt);       // suavizado independiente del fps
         const t = now / 1000;
 
-        if (!drag) pos += (target - pos) * k * 0.9;
+        if (wheeling) pos += (wheelPos - pos) * Math.min(1, k * 1.7);
+        else if (!drag) pos += (target - pos) * k * 0.9;
         setActive(mod(Math.round(pos), N));
 
         // Autoplay suave
-        if (!reduceMotion && !drag && now - lastInteraction > 7000) {
+        if (!reduceMotion && !drag && !wheeling && now - lastInteraction > 7000) {
             autoTimer += dt;
             if (autoTimer > 4.2) { autoTimer = 0; target = Math.round(target) + 1; }
         } else autoTimer = 0;
@@ -584,7 +616,7 @@
         const tag = panel.tag;
         if (!tag) return;
         const g = tiles[activeIdx];
-        const settled = Math.abs(pos - Math.round(pos)) < 0.06 && !drag;
+        const settled = Math.abs(pos - Math.round(pos)) < 0.06 && !drag && !wheeling;
         tmp.set(SIZE * 0.5 + 0.16, SIZE * 0.5 - 0.1, 0.2);
         g.localToWorld(tmp);
         tmp.project(camera);

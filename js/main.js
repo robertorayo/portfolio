@@ -165,28 +165,13 @@
                 ]
             },
             {
-                name: 'Prácticas y formación', title: 'Prácticas y formación', desc: 'Lo que he trabajado en mis prácticas en SolWed y en el ciclo superior. Me manejo bien en Java y SQL.',
+                name: 'Prácticas y formación', title: 'Prácticas y formación', desc: 'Lo que he trabajado en unas prácticas de empresa y en el ciclo superior. Me manejo bien en Java y SQL.',
                 tiles: [
                     ['fab fa-java', 'Java', 'Programación en el ciclo'], ['fas fa-database', 'SQL y PL/SQL', 'Consultas y procedimientos'],
                     ['fas fa-layer-group', 'JDBC e Hibernate', 'Acceso a datos y JPQL'], ['fas fa-box-open', 'Maven', 'Proyectos Java'],
                     ['fas fa-vial', 'JUnit 5 y Selenium', 'Pruebas en cursos'], ['fas fa-leaf', 'MongoDB y Cassandra', 'Bases de datos NoSQL'],
-                    ['fab fa-wordpress', 'WordPress', 'Prácticas en SolWed'], ['fas fa-network-wired', 'Redes TCP/IP', 'Fundamentos con Linux'],
+                    ['fab fa-wordpress', 'WordPress', 'Prácticas de empresa'], ['fas fa-network-wired', 'Redes TCP/IP', 'Fundamentos con Linux'],
                     ['fas fa-briefcase', 'Odoo y Salesforce', 'Cursos de CRM y ERP']
-                ]
-            },
-            {
-                name: 'Con IA', title: 'Desarrollo con IA', desc: 'Cómo uso los asistentes de IA al programar. Siempre reviso el código antes de aceptarlo.',
-                tiles: [
-                    ['fas fa-robot', 'Claude Code', 'Asistente en la terminal'], ['fas fa-plug-circle-bolt', 'MCP', 'Conecto el asistente a GitHub y Vercel'],
-                    ['fas fa-code-compare', 'Revisión de código', 'Leo y pruebo cada cambio']
-                ]
-            },
-            {
-                name: 'Aprendiendo ahora', unit: 'TEMAS', title: 'Lo que estoy aprendiendo', desc: 'Mis siguientes pasos. Aún no los muestro como experiencia, pero son en lo que trabajo ahora.',
-                tiles: [
-                    ['fas fa-vial', 'Tests y CI', 'Vitest y GitHub Actions'], ['fab fa-node-js', 'Node.js', 'TypeScript en el servidor'],
-                    ['fas fa-microchip', 'APIs de modelos de lenguaje', 'Integrar IA en un producto'], ['fab fa-telegram', 'Bots de Telegram', 'Un proyecto propio'],
-                    ['fas fa-language', 'Inglés B2', 'Preparando Cambridge']
                 ]
             }
         ];
@@ -225,40 +210,5 @@
             document.dispatchEvent(new Event('stack:changed'));
         }
         select(0);
-    })();
-
-    /* 7. Terminal ilustrativa: se "teclea" al entrar en pantalla */
-    (function terminal() {
-        const host = document.getElementById('terminal-body');
-        const wrap = document.getElementById('terminal');
-        if (!host || !wrap) return;
-        const LINES = [
-            { t: 'cmd', s: '$ claude' },
-            { t: 'you', s: '> Que cada cliente solo vea sus cotizaciones' },
-            { t: 'out', s: '● Leyendo database/schema.sql…' },
-            { t: 'out', s: '● Plan: 1 política RLS en "cotizaciones"' },
-            { t: 'out', s: '● Propone el cambio en un diff pequeño' },
-            { t: 'out', s: '● Roberto revisa y prueba con los 3 roles' },
-            { t: 'ok', s: '✓ Se acepta solo si lo entiendo' }
-        ];
-        const render = (n, partial) => {
-            host.innerHTML = LINES.slice(0, n).map((l) => `<span class="tl tl-${l.t}">${l.s}</span>`).join('\n') +
-                (partial !== undefined ? `\n<span class="tl tl-${LINES[n].t}">${partial}<i class="caret"></i></span>` : '<i class="caret"></i>');
-        };
-        const full = () => render(LINES.length);
-        if (reduceMotion) { full(); return; }
-        let started = false;
-        const run = async () => {
-            if (started) return; started = true;
-            const wait = (ms) => new Promise((r) => setTimeout(r, ms));
-            for (let i = 0; i < LINES.length; i++) {
-                const s = LINES[i].s, speed = LINES[i].t === 'out' || LINES[i].t === 'ok' ? 12 : 30;
-                for (let c = 1; c <= s.length; c += (speed < 20 ? 2 : 1)) { render(i, s.slice(0, c)); await wait(speed); }
-                render(i + 1);
-                await wait(LINES[i].t === 'you' ? 520 : 260);
-            }
-        };
-        render(0, '');
-        new IntersectionObserver((en, io) => { if (en[0].isIntersecting) { run(); io.disconnect(); } }, { threshold: 0.4 }).observe(wrap);
     })();
 })();
