@@ -1,337 +1,376 @@
-/* Línea de trayectoria interactiva al scroll: curvas entre secciones, división por los bordes de cada tarjeta y máscara bajo el texto. */
+/* ==========================================================================
+   LÍNEA DE TRAYECTORIA AL SCROLL
+   - Curvas entre estaciones (marcadas con data-trail-station)
+   - Se divide por los bordes de las tarjetas marcadas con data-trail-card
+   - Estela con degradado, chispas, ondas en cada estación e indicador de progreso
+   - Máscara SVG que atenúa el haz cuando pasa por detrás de texto
+   ========================================================================== */
 (function () {
-'use strict';
-            // 2. Trek Scroll Journey Trail Engine
-            //    - Curvas entre estaciones (cabeceras de sección)
-            //    - División por los bordes de CADA tarjeta que atraviesa el haz
-            //    - Máscara SVG que atenúa el haz cuando pasa por detrás de texto
-            const trailSvg = document.getElementById('trek-trail-svg');
-            const guidesG = document.getElementById('trek-guides');
-            const glowsG = document.getElementById('trek-glows');
-            const coresG = document.getElementById('trek-cores');
-            const nodesGroup = document.getElementById('trek-nodes-group');
-            const cometHead1 = document.getElementById('trek-comet-head-1');
-            const cometHead2 = document.getElementById('trek-comet-head-2');
-            const textMask = document.getElementById('trekTextMask');
-            const maskBase = document.getElementById('trek-mask-base');
-            const maskOuterG = document.getElementById('trek-mask-outer');
-            const maskInnerG = document.getElementById('trek-mask-inner');
+    'use strict';
 
-            if (trailSvg && guidesG && glowsG && coresG && cometHead1 && cometHead2) {
-                const SVGNS = 'http://www.w3.org/2000/svg';
-                const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
-                let segments = [];
-                let stations = [];
-                let startY = 0, endY = 0, finaleY = Infinity;
+    const SVGNS = 'http://www.w3.org/2000/svg';
+    const $ = (id) => document.getElementById(id);
+    const svg = $('trek-trail-svg');
+    const guidesG = $('trek-guides'), glowsG = $('trek-glows'), coresG = $('trek-cores'), tailsG = $('trek-tails');
+    const nodesG = $('trek-nodes-group'), partsG = $('trek-particles'), hudG = $('trek-hud');
+    const head1 = $('trek-comet-head-1'), head2 = $('trek-comet-head-2');
+    const textMask = $('trekTextMask'), maskBase = $('trek-mask-base'), maskOuter = $('trek-mask-outer'), maskInner = $('trek-mask-inner');
+    if (!svg || !guidesG || !glowsG || !coresG || !tailsG || !head1 || !head2) return;
 
-                const sectionDefs = [
-                    { pill: '#sobre-mi .section-tag', title: '#sobre-mi .section-heading' },
-                    { pill: '#proyecto .spotlight-pill', title: '#proyecto .section-title' },
-                    { pill: '#habilidades .section-tag', title: '#habilidades .section-heading' },
-                    { pill: '#contacto .section-tag', title: '#contacto .contact-title' }
-                ].map(d => ({ pill: document.querySelector(d.pill), title: document.querySelector(d.title) }));
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+    const SECTION_NAMES = ['MÉTODO', 'PROYECTOS', 'STACK', 'CONTACTO'];
+    // Estela: longitud (px), grosor, opacidad. De más larga y tenue a más corta y brillante.
+    const TAILS = [
+        { L: 520, w: 2.4, o: 0.5 },
+        { L: 240, w: 3.2, o: 0.75 },
+        { L: 110, w: 4.4, o: 0.92 },
+        { L: 40, w: 6.2, o: 1 }
+    ];
 
-                // Rectángulo en coordenadas de documento
-                const absRect = (el) => {
-                    const r = el.getBoundingClientRect();
-                    return { L: r.left + window.scrollX, R: r.right + window.scrollX, T: r.top + window.scrollY, B: r.bottom + window.scrollY };
-                };
+    let segments = [], stations = [];
+    let startY = 0, endY = 0, finaleY = Infinity;
+    let hud = null;
 
-                function makeCurve(pts) {
-                    let d = `M ${pts[0].x} ${pts[0].y}`;
-                    for (let i = 0; i < pts.length - 1; i++) {
-                        const p0 = pts[i], p1 = pts[i + 1];
-                        const my = p0.y + (p1.y - p0.y) * 0.5;
-                        d += ` C ${p0.x} ${my}, ${p1.x} ${my}, ${p1.x} ${p1.y}`;
-                    }
-                    return d;
+    const sectionDefs = [
+        { pill: '#sobre-mi .section-tag', title: '#sobre-mi .section-heading' },
+        { pill: '#proyecto .spotlight-pill', title: '#proyecto .section-title' },
+        { pill: '#habilidades .section-tag', title: '#habilidades .section-heading' },
+        { pill: '#contacto .section-tag', title: '#contacto .contact-title' }
+    ].map((d) => ({ pill: document.querySelector(d.pill), title: document.querySelector(d.title) }));
+
+    const absRect = (el) => {
+        const r = el.getBoundingClientRect();
+        return { L: r.left + window.scrollX, R: r.right + window.scrollX, T: r.top + window.scrollY, B: r.bottom + window.scrollY };
+    };
+    const mk = (tag, attrs, parent) => {
+        const n = document.createElementNS(SVGNS, tag);
+        Object.keys(attrs || {}).forEach((k) => n.setAttribute(k, attrs[k]));
+        if (parent) parent.appendChild(n);
+        return n;
+    };
+
+    function makeCurve(pts) {
+        let d = `M ${pts[0].x} ${pts[0].y}`;
+        for (let i = 0; i < pts.length - 1; i++) {
+            const p0 = pts[i], p1 = pts[i + 1], my = p0.y + (p1.y - p0.y) * 0.5;
+            d += ` C ${p0.x} ${my}, ${p1.x} ${my}, ${p1.x} ${p1.y}`;
+        }
+        return d;
+    }
+
+    /* ---------- Pistas (guía + resplandor + núcleo + estela) ---------- */
+    function makeTrack(d) {
+        mk('path', { class: 'trek-path-guide', d }, guidesG);
+        const glow = mk('path', { class: 'trek-path-glow', d, filter: 'url(#trekGlowFilter)' }, glowsG);
+        const core = mk('path', { class: 'trek-path-core', d }, coresG);
+        const len = core.getTotalLength();
+        const tails = TAILS.map((t) => {
+            const p = mk('path', { class: 'trek-tail', d }, tailsG);
+            p.style.strokeWidth = t.w + 'px';
+            p.style.opacity = '0';
+            return p;
+        });
+        [glow, core].forEach((p) => { p.style.strokeDasharray = `${len} ${len + 4}`; });
+        const track = { core, glow, tails, len, _k: '' };
+        setProgress(track, 0, 0);
+        return track;
+    }
+
+    function setProgress(track, dist, virt) {
+        const key = dist.toFixed(1) + '|' + virt.toFixed(1);
+        if (key === track._k) return;
+        track._k = key;
+        const off = dist <= 0 ? track.len + 2 : Math.max(0, track.len - dist);
+        track.core.style.strokeDashoffset = off;
+        track.glow.style.strokeDashoffset = off;
+        const big = track.len * 2 + 10;
+        TAILS.forEach((t, i) => {
+            const p = track.tails[i];
+            const start = Math.max(0, virt - t.L), end = Math.min(track.len, virt);
+            const seg = end - start;
+            if (seg < 0.6 || virt <= 0) { p.style.opacity = '0'; return; }
+            p.style.strokeDasharray = `${seg} ${big}`;
+            p.style.strokeDashoffset = `${-start}`;
+            p.style.opacity = t.o;
+        });
+    }
+
+    /* ---------- Waypoints desde el DOM ---------- */
+    function collectWaypoints(width, isMobile) {
+        const items = [];
+        document.querySelectorAll('[data-trail-station]').forEach((el) => {
+            const r = absRect(el);
+            items.push({
+                kind: 'pt', sortY: r.T,
+                x: isMobile ? 14 : Math.max(40, r.L - 28),
+                y: (r.T + r.B) / 2,
+                station: parseInt(el.getAttribute('data-trail-station'), 10)
+            });
+        });
+        document.querySelectorAll('[data-trail-card]').forEach((el) => {
+            const v = el.getAttribute('data-trail-card');
+            items.push({ kind: 'card', el, sortY: absRect(el).T, station: v === '' ? undefined : parseInt(v, 10) });
+        });
+        items.sort((a, b) => a.sortY - b.sortY);
+        return items;
+    }
+
+    /* ---------- Máscara bajo texto ---------- */
+    function buildMask(W, H) {
+        if (!textMask || !maskBase) return;
+        [textMask, maskBase].forEach((n) => { n.setAttribute('width', W); n.setAttribute('height', H); });
+        maskOuter.innerHTML = ''; maskInner.innerHTML = '';
+        const rects = [];
+        const root = document.querySelector('.main-content');
+        if (root) {
+            const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+                acceptNode: (n) => {
+                    if (!n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+                    const p = n.parentElement;
+                    if (!p || p.closest('.glass-card, .marquee-strip-wrapper, .hero-stage')) return NodeFilter.FILTER_REJECT;
+                    return NodeFilter.FILTER_ACCEPT;
                 }
-
-                function setProgress(track, dist) {
-                    const off = dist <= 0 ? track.len + 2 : Math.max(0, track.len - dist);
-                    track.core.style.strokeDashoffset = off;
-                    track.glow.style.strokeDashoffset = off;
+            });
+            const range = document.createRange();
+            while (walker.nextNode()) {
+                range.selectNodeContents(walker.currentNode);
+                for (const r of range.getClientRects()) {
+                    if (r.width < 1 || r.height < 1) continue;
+                    rects.push({ x: r.left + window.scrollX, y: r.top + window.scrollY, w: r.width, h: r.height });
                 }
-
-                function makeTrack(d) {
-                    const mk = (cls, parent, glow) => {
-                        const p = document.createElementNS(SVGNS, 'path');
-                        p.setAttribute('class', cls);
-                        p.setAttribute('d', d);
-                        if (glow) p.setAttribute('filter', 'url(#trekGlowFilter)');
-                        parent.appendChild(p);
-                        return p;
-                    };
-                    mk('trek-path-guide', guidesG);
-                    const glow = mk('trek-path-glow', glowsG, true);
-                    const core = mk('trek-path-core', coresG);
-                    const len = core.getTotalLength();
-                    [glow, core].forEach(p => { p.style.strokeDasharray = `${len} ${len + 4}`; });
-                    const track = { core, glow, len };
-                    setProgress(track, 0);
-                    return track;
-                }
-
-                // Una tarjeta por fila del grid (la del lado indicado): en escritorio 1, en móvil todas
-                function pickCards(grid, side) {
-                    if (!grid) return [];
-                    const rows = new Map();
-                    Array.from(grid.children).forEach(el => {
-                        const r = absRect(el);
-                        const key = Math.round(r.T / 10);
-                        const cur = rows.get(key);
-                        if (!cur || (side === 'right' ? r.R > cur.r.R : r.L < cur.r.L)) rows.set(key, { el, r });
-                    });
-                    return Array.from(rows.values()).sort((a, b) => a.r.T - b.r.T).map(v => ({ kind: 'card', el: v.el }));
-                }
-
-                function stationPoint(sectionIdx, isMobile) {
-                    const pill = sectionDefs[sectionIdx].pill;
-                    if (!pill) return null;
-                    const r = absRect(pill);
-                    return {
-                        kind: 'pt',
-                        x: isMobile ? 14 : Math.max(40, r.L - 28),
-                        y: (r.T + r.B) / 2,
-                        station: sectionIdx
-                    };
-                }
-
-                // Atenúa el haz bajo cualquier texto que no esté dentro de una tarjeta opaca
-                function buildMask(W, H) {
-                    if (!textMask || !maskBase) return;
-                    [textMask, maskBase].forEach(n => { n.setAttribute('width', W); n.setAttribute('height', H); });
-                    maskOuterG.innerHTML = '';
-                    maskInnerG.innerHTML = '';
-                    const rects = [];
-                    const root = document.querySelector('.main-content');
-                    if (root) {
-                        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
-                            acceptNode: (n) => {
-                                if (!n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
-                                const p = n.parentElement;
-                                if (!p || p.closest('.glass-card, .marquee-strip-wrapper')) return NodeFilter.FILTER_REJECT;
-                                return NodeFilter.FILTER_ACCEPT;
-                            }
-                        });
-                        const range = document.createRange();
-                        while (walker.nextNode()) {
-                            range.selectNodeContents(walker.currentNode);
-                            for (const r of range.getClientRects()) {
-                                if (r.width < 1 || r.height < 1) continue;
-                                rects.push({ x: r.left + window.scrollX, y: r.top + window.scrollY, w: r.width, h: r.height });
-                            }
-                        }
-                        // Pastillas e insignias completas (incluyen iconos) y la cinta marquee
-                        root.querySelectorAll('.section-tag, .spotlight-pill, .hero-badge, .marquee-strip-wrapper').forEach(el => {
-                            if (el.closest('.glass-card')) return;
-                            const r = absRect(el);
-                            rects.push({ x: r.L, y: r.T, w: r.R - r.L, h: r.B - r.T });
-                        });
-                    }
-                    const addRect = (g, r, pad, rx, fill) => {
-                        const n = document.createElementNS(SVGNS, 'rect');
-                        n.setAttribute('x', r.x - pad);
-                        n.setAttribute('y', r.y - pad);
-                        n.setAttribute('width', r.w + pad * 2);
-                        n.setAttribute('height', r.h + pad * 2);
-                        n.setAttribute('rx', rx);
-                        n.setAttribute('fill', fill);
-                        g.appendChild(n);
-                    };
-                    // Borde suave (~60%) y núcleo (~15%) para un fundido sin filtros costosos
-                    rects.forEach(r => addRect(maskOuterG, r, 16, 18, '#9a9a9a'));
-                    rects.forEach(r => addRect(maskInnerG, r, 5, 8, '#262626'));
-                }
-
-                function buildTrail() {
-                    // Medir sin las transformaciones de reveal / tilt / GSAP (causaban el descuadre)
-                    document.documentElement.classList.add('trek-measuring');
-
-                    const width = document.documentElement.clientWidth;
-                    const isMobile = width <= 800;
-                    const docH = document.documentElement.scrollHeight;
-
-                    guidesG.innerHTML = '';
-                    glowsG.innerHTML = '';
-                    coresG.innerHTML = '';
-                    nodesGroup.innerHTML = '';
-                    segments = [];
-                    stations = [];
-                    finaleY = Infinity;
-
-                    const heroSec = document.getElementById('inicio');
-                    const footer = document.querySelector('.footer');
-                    const contactBanner = document.querySelector('.contact-banner');
-                    const startPt = { kind: 'pt', x: width * 0.5, y: heroSec ? absRect(heroSec).B + 90 : 900 };
-                    const endPt = { kind: 'pt', x: width * 0.5, y: footer ? absRect(footer).T - 36 : docH - 60 };
-
-                    const waypoints = [
-                        startPt,
-                        stationPoint(0, isMobile),
-                        ...pickCards(document.querySelector('.profile-grid'), 'right'),
-                        stationPoint(1, isMobile),
-                        ...['project-card', 'project-shenron']
-                            .map(id => document.getElementById(id)).filter(Boolean)
-                            .map(el => ({ kind: 'card', el })),
-                        stationPoint(2, isMobile),
-                        ...pickCards(document.querySelector('.skills-grid'), 'right'),
-                        contactBanner ? { kind: 'card', el: contactBanner, station: 3 } : null,
-                        endPt
-                    ].filter(Boolean);
-
-                    const addStation = (x, y, idx) => {
-                        const c = document.createElementNS(SVGNS, 'circle');
-                        c.setAttribute('cx', x);
-                        c.setAttribute('cy', y);
-                        c.setAttribute('r', '7');
-                        c.setAttribute('class', 'trek-node');
-                        nodesGroup.appendChild(c);
-                        stations.push({ el: c, y, idx });
-                    };
-
-                    let pts = [];
-                    const flushCurve = () => {
-                        if (pts.length >= 2) {
-                            segments.push({ type: 'curve', track: makeTrack(makeCurve(pts)), y0: pts[0].y, y1: pts[pts.length - 1].y });
-                        }
-                        pts = [];
-                    };
-                    const pushPt = (p) => {
-                        const last = pts[pts.length - 1];
-                        if (last && p.y <= last.y + 8) return false; // mantener el recorrido monótono en Y
-                        pts.push(p);
-                        return true;
-                    };
-
-                    waypoints.forEach(wp => {
-                        if (wp.kind === 'pt') {
-                            if (pushPt(wp) && wp.station !== undefined) addStation(wp.x, wp.y, wp.station);
-                            return;
-                        }
-                        // Tarjeta: el haz entra por el centro superior y se divide por ambos bordes
-                        const r = absRect(wp.el);
-                        const o = 1.5; // ligeramente por fuera del borde para que el núcleo se vea
-                        const L = r.L - o, R = r.R + o, T = r.T - o, B = r.B + o;
-                        const CX = (L + R) / 2;
-                        const cssRad = parseFloat(getComputedStyle(wp.el).borderTopLeftRadius) || 20;
-                        const rad = Math.max(1, Math.min(cssRad + o, (R - L) / 2 - 1, (B - T) / 2 - 1));
-
-                        pushPt({ x: CX, y: T });
-                        flushCurve();
-                        const dL = `M ${CX} ${T} H ${L + rad} A ${rad} ${rad} 0 0 0 ${L} ${T + rad} V ${B - rad} A ${rad} ${rad} 0 0 0 ${L + rad} ${B} H ${CX}`;
-                        const dR = `M ${CX} ${T} H ${R - rad} A ${rad} ${rad} 0 0 1 ${R} ${T + rad} V ${B - rad} A ${rad} ${rad} 0 0 1 ${R - rad} ${B} H ${CX}`;
-                        segments.push({ type: 'split', L: makeTrack(dL), R: makeTrack(dR), y0: T, y1: B });
-                        if (wp.station !== undefined) {
-                            addStation(CX, T, wp.station);
-                            if (wp.station === 3) finaleY = T;
-                        }
-                        pts = [{ x: CX, y: B }];
-                    });
-                    flushCurve();
-
-                    startY = segments.length ? segments[0].y0 : 0;
-                    endY = segments.length ? segments[segments.length - 1].y1 : docH;
-
-                    const wrapper = document.querySelector('.page-wrapper');
-                    buildMask(width, wrapper ? wrapper.scrollHeight : docH);
-
-                    document.documentElement.classList.remove('trek-measuring');
-                }
-
-                // Posición objetivo del haz: 55% del viewport, acelerando al final para llegar justo al último punto
-                function getTravelY() {
-                    const vh = window.innerHeight;
-                    const s = window.scrollY;
-                    const maxScroll = Math.max(1, document.documentElement.scrollHeight - vh);
-                    let t = s + vh * 0.55;
-                    const ramp = clamp((s - (maxScroll - vh)) / vh, 0, 1);
-                    t += ramp * (endY - (maxScroll + vh * 0.55));
-                    return Math.max(startY, t);
-                }
-
-                function distAtY(track, y) {
-                    let lo = 0, hi = track.len;
-                    while (hi - lo > 0.75) {
-                        const mid = (lo + hi) * 0.5;
-                        if (track.core.getPointAtLength(mid).y < y) lo = mid; else hi = mid;
-                    }
-                    return lo;
-                }
-
-                function updateTrail() {
-                    if (!segments.length) return;
-                    const t = getTravelY();
-                    let headL = null, headR = null;
-
-                    segments.forEach(seg => {
-                        const before = t <= seg.y0;
-                        const after = t >= seg.y1;
-                        if (seg.type === 'curve') {
-                            const dist = before ? 0 : after ? seg.track.len : distAtY(seg.track, t);
-                            setProgress(seg.track, dist);
-                            if (!before) {
-                                headL = seg.track.core.getPointAtLength(dist);
-                                headR = null;
-                            }
-                        } else {
-                            const ratio = before ? 0 : after ? 1 : (t - seg.y0) / (seg.y1 - seg.y0);
-                            const dL = ratio * seg.L.len, dR = ratio * seg.R.len;
-                            setProgress(seg.L, dL);
-                            setProgress(seg.R, dR);
-                            if (!before) {
-                                headL = seg.L.core.getPointAtLength(dL);
-                                headR = after ? null : seg.R.core.getPointAtLength(dR);
-                            }
-                        }
-                    });
-
-                    if (!headL) {
-                        const first = segments[0];
-                        headL = (first.type === 'curve' ? first.track : first.L).core.getPointAtLength(0);
-                    }
-                    const cometY = headL.y;
-                    cometHead1.setAttribute('transform', `translate(${headL.x}, ${headL.y})`);
-                    if (headR) {
-                        cometHead2.style.display = '';
-                        cometHead2.setAttribute('transform', `translate(${headR.x}, ${headR.y})`);
-                    } else {
-                        cometHead2.style.display = 'none';
-                    }
-
-                    // Estaciones alcanzadas y sección activa: solo cuando el cometa llega a la altura del título
-                    let activeIdx = -1;
-                    stations.forEach(st => {
-                        const reached = cometY >= st.y - 2;
-                        st.el.classList.toggle('is-reached', reached);
-                        if (reached) activeIdx = st.idx;
-                    });
-                    sectionDefs.forEach((s, i) => {
-                        const on = i === activeIdx;
-                        if (s.pill) s.pill.classList.toggle('is-active-section', on);
-                        if (s.title) s.title.classList.toggle('is-active-title', on);
-                    });
-
-                    // Final: el haz llega detrás de la tarjeta de contacto → se ilumina y el resto se atenúa
-                    document.body.classList.toggle('trek-finale', cometY >= finaleY - 2);
-                }
-
-                let rebuildRaf = 0;
-                const rebuild = () => {
-                    if (rebuildRaf) return;
-                    rebuildRaf = requestAnimationFrame(() => {
-                        rebuildRaf = 0;
-                        buildTrail();
-                        updateTrail();
-                    });
-                };
-
-                rebuild();
-                window.addEventListener('load', rebuild);
-                if (document.fonts && document.fonts.ready) document.fonts.ready.then(rebuild);
-                window.addEventListener('resize', rebuild, { passive: true });
-                new ResizeObserver(rebuild).observe(document.body);
-                window.addEventListener('scroll', updateTrail, { passive: true });
             }
+            root.querySelectorAll('.section-tag, .spotlight-pill, .hero-badge, .marquee-strip-wrapper').forEach((el) => {
+                if (el.closest('.glass-card')) return;
+                const r = absRect(el);
+                rects.push({ x: r.L, y: r.T, w: r.R - r.L, h: r.B - r.T });
+            });
+        }
+        const add = (g, r, pad, rx, fill) => mk('rect', { x: r.x - pad, y: r.y - pad, width: r.w + pad * 2, height: r.h + pad * 2, rx, fill }, g);
+        rects.forEach((r) => add(maskOuter, r, 16, 18, '#9a9a9a'));
+        rects.forEach((r) => add(maskInner, r, 5, 8, '#262626'));
+    }
 
+    /* ---------- Construcción ---------- */
+    function buildTrail() {
+        document.documentElement.classList.add('trek-measuring');
+
+        const width = document.documentElement.clientWidth;
+        const isMobile = width <= 800;
+        const docH = document.documentElement.scrollHeight;
+
+        [guidesG, glowsG, coresG, tailsG, nodesG].forEach((g) => { g.innerHTML = ''; });
+        segments = []; stations = []; finaleY = Infinity;
+
+        const heroSec = $('inicio');
+        const footer = document.querySelector('.footer');
+        const startPt = { kind: 'pt', x: width * 0.5, y: heroSec ? absRect(heroSec).B + 90 : 900 };
+        const endPt = { kind: 'pt', x: width * 0.5, y: footer ? absRect(footer).T - 36 : docH - 60 };
+        const waypoints = [startPt, ...collectWaypoints(width, isMobile), endPt];
+
+        const addStation = (x, y, idx) => {
+            const ripple = mk('circle', { cx: x, cy: y, r: 8, class: 'trek-ripple' }, nodesG);
+            const ring = mk('circle', { cx: x, cy: y, r: 9, class: 'trek-node' }, nodesG);
+            const dot = mk('circle', { cx: x, cy: y, r: 3.6, class: 'trek-node-dot' }, nodesG);
+            stations.push({ ring, dot, ripple, y, idx, on: false });
+        };
+
+        let pts = [];
+        const flush = () => {
+            if (pts.length >= 2) segments.push({ type: 'curve', track: makeTrack(makeCurve(pts)), y0: pts[0].y, y1: pts[pts.length - 1].y });
+            pts = [];
+        };
+        const push = (p) => {
+            const last = pts[pts.length - 1];
+            if (last && p.y <= last.y + 8) return false;
+            pts.push(p);
+            return true;
+        };
+
+        waypoints.forEach((wp) => {
+            if (wp.kind === 'pt') {
+                if (push(wp) && wp.station !== undefined) addStation(wp.x, wp.y, wp.station);
+                return;
+            }
+            const r = absRect(wp.el), o = 1.5;
+            const L = r.L - o, R = r.R + o, T = r.T - o, B = r.B + o, CX = (L + R) / 2;
+            const cssRad = parseFloat(getComputedStyle(wp.el).borderTopLeftRadius) || 20;
+            const rad = Math.max(1, Math.min(cssRad + o, (R - L) / 2 - 1, (B - T) / 2 - 1));
+            if (!push({ x: CX, y: T })) return;
+            flush();
+            const dL = `M ${CX} ${T} H ${L + rad} A ${rad} ${rad} 0 0 0 ${L} ${T + rad} V ${B - rad} A ${rad} ${rad} 0 0 0 ${L + rad} ${B} H ${CX}`;
+            const dR = `M ${CX} ${T} H ${R - rad} A ${rad} ${rad} 0 0 1 ${R} ${T + rad} V ${B - rad} A ${rad} ${rad} 0 0 1 ${R - rad} ${B} H ${CX}`;
+            segments.push({ type: 'split', L: makeTrack(dL), R: makeTrack(dR), y0: T, y1: B });
+            if (wp.station !== undefined) {
+                addStation(CX, T, wp.station);
+                if (wp.station === 3) finaleY = T;
+            }
+            pts = [{ x: CX, y: B }];
+        });
+        flush();
+
+        startY = segments.length ? segments[0].y0 : 0;
+        endY = segments.length ? segments[segments.length - 1].y1 : docH;
+
+        const wrapper = document.querySelector('.page-wrapper');
+        buildMask(width, wrapper ? wrapper.scrollHeight : docH);
+
+        document.documentElement.classList.remove('trek-measuring');
+    }
+
+    /* ---------- HUD de progreso ---------- */
+    function buildHud() {
+        if (!hudG) return;
+        hudG.innerHTML = '';
+        const line = mk('line', { x1: 14, y1: 0, x2: 40, y2: 0, class: 'trek-hud-line' }, hudG);
+        const box = mk('rect', { x: 40, y: -11, width: 108, height: 22, rx: 11, class: 'trek-hud-box' }, hudG);
+        const pct = mk('text', { x: 52, y: 3.6, class: 'trek-hud-pct' }, hudG);
+        const name = mk('text', { x: 90, y: 3.6, class: 'trek-hud-name' }, hudG);
+        hud = { line, box, pct, name, last: '' };
+    }
+
+    /* ---------- Chispas ---------- */
+    const parts = [];
+    let partsRaf = 0, partsLast = 0;
+    if (partsG && !reduceMotion) {
+        for (let i = 0; i < 22; i++) {
+            parts.push({ el: mk('circle', { r: 1.6, class: 'trek-spark', opacity: 0 }, partsG), x: 0, y: 0, vx: 0, vy: 0, life: 0 });
+        }
+    }
+    function emit(x, y, strength) {
+        if (!parts.length) return;
+        const n = Math.min(3, Math.ceil(strength));
+        for (let k = 0; k < n; k++) {
+            const p = parts.find((q) => q.life <= 0);
+            if (!p) return;
+            p.x = x + (Math.random() - 0.5) * 6; p.y = y + (Math.random() - 0.5) * 6;
+            const a = Math.random() * Math.PI * 2, s = 14 + Math.random() * 34;
+            p.vx = Math.cos(a) * s; p.vy = Math.sin(a) * s - 6; p.life = 1;
+        }
+        if (!partsRaf) { partsLast = performance.now(); partsRaf = requestAnimationFrame(tickParts); }
+    }
+    function tickParts(now) {
+        const dt = Math.min(0.05, (now - partsLast) / 1000); partsLast = now;
+        let alive = false;
+        parts.forEach((p) => {
+            if (p.life <= 0) return;
+            p.life -= dt * 1.5;
+            if (p.life <= 0) { p.el.setAttribute('opacity', 0); return; }
+            alive = true;
+            p.x += p.vx * dt; p.y += p.vy * dt; p.vx *= 0.97; p.vy *= 0.97;
+            p.el.setAttribute('cx', p.x.toFixed(1)); p.el.setAttribute('cy', p.y.toFixed(1));
+            p.el.setAttribute('r', (0.5 + p.life * 1.6).toFixed(2));
+            p.el.setAttribute('opacity', (p.life * 0.85).toFixed(2));
+        });
+        partsRaf = alive ? requestAnimationFrame(tickParts) : 0;
+    }
+
+    /* ---------- Recorrido ---------- */
+    function getTravelY() {
+        const vh = window.innerHeight, s = window.scrollY;
+        const maxScroll = Math.max(1, document.documentElement.scrollHeight - vh);
+        let t = s + vh * 0.55;
+        const ramp = clamp((s - (maxScroll - vh)) / vh, 0, 1);
+        t += ramp * (endY - (maxScroll + vh * 0.55));
+        return Math.max(startY, t);
+    }
+
+    function distAtY(track, y) {
+        let lo = 0, hi = track.len;
+        while (hi - lo > 0.75) {
+            const mid = (lo + hi) * 0.5;
+            if (track.core.getPointAtLength(mid).y < y) lo = mid; else hi = mid;
+        }
+        return lo;
+    }
+
+    let lastHeadY = null;
+
+    function update() {
+        if (!segments.length) return;
+        const t = getTravelY();
+        let headL = null, headR = null;
+
+        segments.forEach((seg) => {
+            const before = t <= seg.y0, after = t >= seg.y1;
+            const past = after ? t - seg.y1 : 0;
+            if (seg.type === 'curve') {
+                const dist = before ? 0 : after ? seg.track.len : distAtY(seg.track, t);
+                setProgress(seg.track, dist, before ? 0 : dist + past);
+                if (!before) { headL = seg.track.core.getPointAtLength(dist); headR = null; }
+            } else {
+                const ratio = before ? 0 : after ? 1 : (t - seg.y0) / (seg.y1 - seg.y0);
+                const dL = ratio * seg.L.len, dR = ratio * seg.R.len;
+                setProgress(seg.L, dL, before ? 0 : dL + past);
+                setProgress(seg.R, dR, before ? 0 : dR + past);
+                if (!before) {
+                    headL = seg.L.core.getPointAtLength(dL);
+                    headR = after ? null : seg.R.core.getPointAtLength(dR);
+                }
+            }
+        });
+
+        if (!headL) {
+            const f = segments[0];
+            headL = (f.type === 'curve' ? f.track : f.L).core.getPointAtLength(0);
+        }
+        const cometY = headL.y;
+        head1.setAttribute('transform', `translate(${headL.x}, ${headL.y})`);
+        if (headR) { head2.style.display = ''; head2.setAttribute('transform', `translate(${headR.x}, ${headR.y})`); }
+        else head2.style.display = 'none';
+
+        // Chispas al avanzar
+        if (lastHeadY !== null) {
+            const dy = Math.abs(cometY - lastHeadY);
+            if (dy > 1.5) { emit(headL.x, headL.y, dy / 14); if (headR) emit(headR.x, headR.y, dy / 20); }
+        }
+        lastHeadY = cometY;
+
+        // Estaciones y sección activa
+        let activeIdx = -1;
+        stations.forEach((st) => {
+            const reached = cometY >= st.y - 2;
+            if (reached !== st.on) {
+                st.on = reached;
+                st.ring.classList.toggle('is-reached', reached);
+                st.dot.classList.toggle('is-reached', reached);
+                st.ripple.classList.remove('is-ping');
+                if (reached) { void st.ripple.getBoundingClientRect(); st.ripple.classList.add('is-ping'); }
+            }
+            if (reached) activeIdx = st.idx;
+        });
+        sectionDefs.forEach((s, i) => {
+            const on = i === activeIdx;
+            if (s.pill) s.pill.classList.toggle('is-active-section', on);
+            if (s.title) s.title.classList.toggle('is-active-title', on);
+        });
+
+        // HUD
+        if (hud && window.innerWidth > 900) {
+            const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+            const pct = String(Math.round(clamp(window.scrollY / max, 0, 1) * 100)).padStart(2, '0') + '%';
+            const nm = activeIdx >= 0 ? SECTION_NAMES[activeIdx] || '' : 'INICIO';
+            if (pct + nm !== hud.last) { hud.pct.textContent = pct; hud.name.textContent = nm; hud.last = pct + nm; }
+            hudG.setAttribute('transform', `translate(${headL.x}, ${headL.y})`);
+            hudG.style.opacity = '1';
+        } else if (hudG) hudG.style.opacity = '0';
+
+        document.body.classList.toggle('trek-finale', cometY >= finaleY - 2);
+    }
+
+    let rebuildRaf = 0;
+    const rebuild = () => {
+        if (rebuildRaf) return;
+        rebuildRaf = requestAnimationFrame(() => { rebuildRaf = 0; buildTrail(); lastHeadY = null; update(); });
+    };
+
+    buildHud();
+    buildTrail();
+    update();
+    window.addEventListener('load', rebuild);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(rebuild);
+    window.addEventListener('resize', rebuild, { passive: true });
+    new ResizeObserver(rebuild).observe(document.body);
+    window.addEventListener('scroll', update, { passive: true });
+    document.addEventListener('stack:changed', rebuild);
 })();

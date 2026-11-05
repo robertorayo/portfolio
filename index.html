@@ -17,13 +17,13 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20">
+    <link rel="stylesheet" href="styles.css?v=21">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-    <script src="js/hero.js?v=20" defer></script>
-    <script src="js/trail.js?v=20" defer></script>
-    <script src="js/main.js?v=20" defer></script>
+    <script src="js/hero.js?v=21" defer></script>
+    <script src="js/trail.js?v=21" defer></script>
+    <script src="js/main.js?v=21" defer></script>
 </head>
 
 <body>
@@ -70,16 +70,19 @@
                 <g id="trek-guides"></g>
                 <g id="trek-glows"></g>
                 <g id="trek-cores"></g>
+                <g id="trek-tails"></g>
                 <g id="trek-nodes-group"></g>
+                <g id="trek-particles"></g>
+                <g id="trek-hud" class="trek-hud"></g>
                 <g id="trek-comet-head-1" class="trek-comet-head">
-                    <circle cx="0" cy="0" r="18" fill="url(#trekAuraGradient)" class="trek-aura-pulse" />
-                    <circle cx="0" cy="0" r="7" stroke="rgba(255, 255, 255, 0.85)" stroke-width="1.5" fill="none" />
-                    <circle cx="0" cy="0" r="3.5" fill="#ffffff" />
+                    <circle cx="0" cy="0" r="22" fill="url(#trekAuraGradient)" class="trek-aura-pulse" />
+                    <circle cx="0" cy="0" r="8" stroke="rgba(255, 255, 255, 0.9)" stroke-width="1.5" fill="none" class="trek-comet-ring" />
+                    <circle cx="0" cy="0" r="3.8" fill="#ffffff" />
                 </g>
                 <g id="trek-comet-head-2" class="trek-comet-head" style="display: none;">
-                    <circle cx="0" cy="0" r="18" fill="url(#trekAuraGradient)" class="trek-aura-pulse" />
-                    <circle cx="0" cy="0" r="7" stroke="rgba(255, 255, 255, 0.85)" stroke-width="1.5" fill="none" />
-                    <circle cx="0" cy="0" r="3.5" fill="#ffffff" />
+                    <circle cx="0" cy="0" r="22" fill="url(#trekAuraGradient)" class="trek-aura-pulse" />
+                    <circle cx="0" cy="0" r="8" stroke="rgba(255, 255, 255, 0.9)" stroke-width="1.5" fill="none" class="trek-comet-ring" />
+                    <circle cx="0" cy="0" r="3.8" fill="#ffffff" />
                 </g>
             </g>
         </svg>
@@ -193,28 +196,26 @@
                 <div class="chapter-badge" aria-hidden="true"><b>00</b><span>CAPÍTULO<br>BIENVENIDA</span></div>
             </section>
 
-            <!-- Cinta -->
+            <!-- Cinta doble -->
             <div class="marquee-strip-wrapper reveal-fade" aria-hidden="true">
-                <div class="marquee-track">
-                    <div class="marquee-group">
-                        <span>FULL-STACK</span><span class="marquee-sep">&bull;</span>
-                        <span>TYPESCRIPT</span><span class="marquee-sep">&bull;</span>
-                        <span>AGENTES DE IA</span><span class="marquee-sep">&bull;</span>
-                        <span>MCP</span><span class="marquee-sep">&bull;</span>
-                        <span>REACT</span><span class="marquee-sep">&bull;</span>
-                        <span>POSTGRESQL &amp; SUPABASE</span><span class="marquee-sep">&bull;</span>
-                        <span>WEBGL</span><span class="marquee-sep">&bull;</span>
-                        <span>SaaS B2B</span><span class="marquee-sep">&bull;</span>
+                <div class="marquee-row">
+                    <div class="marquee-track">
+                        <div class="marquee-group">
+                            <span>Full-stack</span><i class="marquee-star"></i><span>TypeScript</span><i class="marquee-star"></i><span>Agentes de IA</span><i class="marquee-star"></i><span>MCP</span><i class="marquee-star"></i><span>React</span><i class="marquee-star"></i>
+                        </div>
+                        <div class="marquee-group">
+                            <span>Full-stack</span><i class="marquee-star"></i><span>TypeScript</span><i class="marquee-star"></i><span>Agentes de IA</span><i class="marquee-star"></i><span>MCP</span><i class="marquee-star"></i><span>React</span><i class="marquee-star"></i>
+                        </div>
                     </div>
-                    <div class="marquee-group" aria-hidden="true">
-                        <span>FULL-STACK</span><span class="marquee-sep">&bull;</span>
-                        <span>TYPESCRIPT</span><span class="marquee-sep">&bull;</span>
-                        <span>AGENTES DE IA</span><span class="marquee-sep">&bull;</span>
-                        <span>MCP</span><span class="marquee-sep">&bull;</span>
-                        <span>REACT</span><span class="marquee-sep">&bull;</span>
-                        <span>POSTGRESQL &amp; SUPABASE</span><span class="marquee-sep">&bull;</span>
-                        <span>WEBGL</span><span class="marquee-sep">&bull;</span>
-                        <span>SaaS B2B</span><span class="marquee-sep">&bull;</span>
+                </div>
+                <div class="marquee-row marquee-row--outline">
+                    <div class="marquee-track marquee-track--reverse">
+                        <div class="marquee-group">
+                            <span>PostgreSQL</span><i class="marquee-star"></i><span>Supabase</span><i class="marquee-star"></i><span>WebGL</span><i class="marquee-star"></i><span>SaaS B2B</span><i class="marquee-star"></i><span>Vercel</span><i class="marquee-star"></i>
+                        </div>
+                        <div class="marquee-group">
+                            <span>PostgreSQL</span><i class="marquee-star"></i><span>Supabase</span><i class="marquee-star"></i><span>WebGL</span><i class="marquee-star"></i><span>SaaS B2B</span><i class="marquee-star"></i><span>Vercel</span><i class="marquee-star"></i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -223,59 +224,109 @@
             <section class="profile-section" id="sobre-mi">
                 <div class="section-container">
                     <div class="section-header-compact reveal-fade">
-                        <span class="section-tag"><span class="tag-mono-idx">01 //</span> <i
+                        <span class="section-tag" data-trail-station="0"><span class="tag-mono-idx">01 //</span> <i
                                 class="fas fa-terminal"></i> MÉTODO DE TRABAJO</span>
-                        <h2 class="section-heading">Ingeniería sólida, acelerada con agentes de IA</h2>
-                        <p class="section-lead">Uso la IA como un compañero de equipo: ella propone y ejecuta, yo
-                            decido, reviso y respondo del resultado.</p>
+                        <h2 class="section-heading">Ingeniería sólida, <em>acelerada</em> con agentes de IA</h2>
+                        <p class="section-lead">La IA es mi compañera de equipo: propone y ejecuta, yo decido, reviso y
+                            respondo del resultado.</p>
                     </div>
 
-                    <div class="profile-grid">
-                        <div class="profile-card glass-card tilt-card reveal-fade">
-                            <div class="profile-card-icon"><i class="fas fa-sitemap"></i></div>
-                            <h3>Arquitectura primero</h3>
-                            <p>Modelo los datos en 3FN, uso JSONB donde el dominio es dinámico y diseño interfaces
-                                modulares pensadas para crecer sin deuda.</p>
-                        </div>
-
-                        <div class="profile-card glass-card tilt-card reveal-fade">
-                            <div class="profile-card-icon"><i class="fas fa-robot"></i></div>
-                            <h3>Desarrollo con agentes</h3>
-                            <p>Trabajo con Claude Code y servidores MCP conectados a GitHub, Supabase y Vercel para
-                                planificar, implementar y verificar en bucle.</p>
-                        </div>
-
-                        <div class="profile-card glass-card tilt-card reveal-fade">
-                            <div class="profile-card-icon"><i class="fas fa-shield-halved"></i></div>
-                            <h3>Seguridad por diseño</h3>
-                            <p>RBAC, políticas RLS en PostgreSQL y revisión humana de cada cambio. La velocidad de la
-                                IA no sustituye al criterio.</p>
-                        </div>
-                    </div>
-
-                    <!-- Terminal ilustrativa del flujo con agentes -->
-                    <div class="workflow-block reveal-fade">
-                        <div class="workflow-text">
-                            <span class="workflow-kicker">FLUJO · PLANIFICAR → EJECUTAR → VERIFICAR</span>
-                            <h3>Un bucle corto entre la idea y el código revisado</h3>
-                            <ul class="workflow-steps">
-                                <li><b>01</b><span>Contexto: el agente lee el repositorio y el esquema real mediante
-                                        MCP.</span></li>
-                                <li><b>02</b><span>Plan: propone cambios pequeños y revisables antes de
-                                        tocar nada.</span></li>
-                                <li><b>03</b><span>Verificación: compila, prueba en el navegador y revisa el diff antes
-                                        de publicar.</span></li>
-                            </ul>
-                        </div>
-                        <div class="terminal glass-card" id="terminal" role="img"
-                            aria-label="Ejemplo ilustrativo de una sesión con un agente de IA">
-                            <div class="terminal-bar">
-                                <span class="chrome-dot dot-red"></span><span class="chrome-dot dot-yellow"></span><span
-                                    class="chrome-dot dot-green"></span>
-                                <span class="terminal-title">agente — sesión de ejemplo</span>
+                    <div class="method-bento">
+                        <!-- Terminal -->
+                        <article class="bento-card bento-terminal glass-card reveal-fade">
+                            <div class="terminal" id="terminal" role="img"
+                                aria-label="Ejemplo ilustrativo de una sesión con un agente de IA">
+                                <div class="terminal-bar">
+                                    <span class="chrome-dot dot-red"></span><span
+                                        class="chrome-dot dot-yellow"></span><span class="chrome-dot dot-green"></span>
+                                    <span class="terminal-title">agente · sesión de ejemplo</span>
+                                </div>
+                                <pre class="terminal-body" id="terminal-body" aria-hidden="true"></pre>
                             </div>
-                            <pre class="terminal-body" id="terminal-body" aria-hidden="true"></pre>
-                        </div>
+                            <ol class="flow-steps">
+                                <li><b>01</b><span>Contexto</span><small>Lee repo y esquema vía MCP</small></li>
+                                <li><b>02</b><span>Plan</span><small>Propone cambios pequeños</small></li>
+                                <li><b>03</b><span>Verificación</span><small>Compila, prueba y revisa el diff</small>
+                                </li>
+                            </ol>
+                        </article>
+
+                        <!-- Agente + MCP -->
+                        <article class="bento-card bento-agents glass-card tilt-card reveal-fade" data-trail-card>
+                            <span class="bento-kicker">AGENTES · MCP</span>
+                            <h3>Un agente conectado a las herramientas reales</h3>
+                            <svg class="agent-diagram" viewBox="0 0 420 250" role="img"
+                                aria-label="Diagrama de un agente conectado a GitHub, Supabase, Vercel y el navegador">
+                                <defs>
+                                    <path id="ag-a" d="M210 125 L70 52" />
+                                    <path id="ag-b" d="M210 125 L350 52" />
+                                    <path id="ag-c" d="M210 125 L70 200" />
+                                    <path id="ag-d" d="M210 125 L350 200" />
+                                </defs>
+                                <g class="ag-links">
+                                    <use href="#ag-a" /><use href="#ag-b" /><use href="#ag-c" /><use href="#ag-d" />
+                                </g>
+                                <g class="ag-packets">
+                                    <circle r="3.2"><animateMotion dur="2.6s" repeatCount="indefinite"><mpath href="#ag-a" /></animateMotion></circle>
+                                    <circle r="3.2"><animateMotion dur="3.1s" begin="0.5s" repeatCount="indefinite"><mpath href="#ag-b" /></animateMotion></circle>
+                                    <circle r="3.2"><animateMotion dur="2.9s" begin="1s" repeatCount="indefinite"><mpath href="#ag-c" /></animateMotion></circle>
+                                    <circle r="3.2"><animateMotion dur="3.4s" begin="1.6s" repeatCount="indefinite"><mpath href="#ag-d" /></animateMotion></circle>
+                                </g>
+                                <g class="ag-core">
+                                    <circle cx="210" cy="125" r="46" class="ag-halo" />
+                                    <circle cx="210" cy="125" r="34" class="ag-core-disc" />
+                                    <text x="210" y="130" text-anchor="middle">AGENTE</text>
+                                </g>
+                                <g class="ag-node"><rect x="22" y="34" width="96" height="36" rx="10" /><text x="70" y="57" text-anchor="middle">GitHub</text></g>
+                                <g class="ag-node"><rect x="302" y="34" width="96" height="36" rx="10" /><text x="350" y="57" text-anchor="middle">Supabase</text></g>
+                                <g class="ag-node"><rect x="22" y="182" width="96" height="36" rx="10" /><text x="70" y="205" text-anchor="middle">Vercel</text></g>
+                                <g class="ag-node"><rect x="302" y="182" width="96" height="36" rx="10" /><text x="350" y="205" text-anchor="middle">Navegador</text></g>
+                            </svg>
+                            <p>Con Model Context Protocol el agente lee código, base de datos y despliegues en lugar de
+                                adivinar.</p>
+                        </article>
+
+                        <!-- Código RLS -->
+                        <article class="bento-card bento-code glass-card reveal-fade">
+                            <span class="bento-kicker">DATOS · SEGURIDAD</span>
+                            <h3>Seguridad en la base de datos, no solo en la interfaz</h3>
+                            <pre class="code-block" aria-label="Ejemplo de política RLS en SQL"><code><span class="c-cm">-- cada comercial solo ve sus presupuestos</span>
+<span class="c-kw">create policy</span> <span class="c-str">"quotes_select_own"</span>
+  <span class="c-kw">on</span> quotes <span class="c-kw">for select</span>
+  <span class="c-kw">using</span> (
+    auth.uid() = owner_id
+    <span class="c-kw">or</span> is_admin()
+  );</code></pre>
+                            <p>Modelo en 3FN, atributos JSONB y políticas RLS para aislar cada registro por rol.</p>
+                        </article>
+
+                        <!-- Principios -->
+                        <article class="bento-card bento-principles glass-card tilt-card reveal-fade" data-trail-card>
+                            <span class="bento-kicker">PRINCIPIOS</span>
+                            <ul class="principles">
+                                <li>
+                                    <b>01</b>
+                                    <div>
+                                        <h4>Plan antes que código</h4>
+                                        <p>El agente propone, yo apruebo el enfoque antes de que se toque nada.</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <b>02</b>
+                                    <div>
+                                        <h4>Cambios pequeños y revisables</h4>
+                                        <p>Diffs que se leen en minutos y se pueden revertir sin miedo.</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <b>03</b>
+                                    <div>
+                                        <h4>Humano en el bucle</h4>
+                                        <p>Cada línea que llega a producción la he entendido y la firmo yo.</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </article>
                     </div>
                 </div>
             </section>
@@ -284,12 +335,12 @@
             <section class="project-section" id="proyecto">
                 <div class="section-container">
                     <div class="section-header reveal-fade">
-                        <div class="spotlight-pill">
+                        <div class="spotlight-pill" data-trail-station="1">
                             <span class="pulse-beacon"></span>
                             <span class="tag-mono-idx">02 //</span>
                             <span>PROYECTOS DESTACADOS</span>
                         </div>
-                        <h2 class="section-title">Proyectos seleccionados</h2>
+                        <h2 class="section-title">Proyectos <em>seleccionados</em></h2>
                         <p class="section-subtitle">
                             Una plataforma SaaS de producción y una experiencia web inmersiva: dos extremos del mismo
                             oficio.
@@ -297,7 +348,8 @@
                     </div>
 
                     <!-- DistribuTech Pro -->
-                    <article class="project-showcase glass-card tilt-card reveal-fade" id="project-card">
+                    <article class="project-showcase glass-card tilt-card reveal-fade" id="project-card" data-trail-card>
+                        <span class="project-index" aria-hidden="true">01</span>
                         <div class="showcase-header">
                             <div class="showcase-badges-left">
                                 <span class="badge-project-type"><i class="fas fa-layer-group"></i> Plataforma SaaS
@@ -334,11 +386,6 @@
                                         <img src="distributech-dashboard.png" loading="lazy"
                                             alt="DistribuTech Pro: centro de mando administrativo"
                                             class="mockup-screenshot-img">
-                                        <div class="mockup-image-glow-border"></div>
-                                    </div>
-                                    <div class="mockup-footer-bar">
-                                        <span><i class="fas fa-check-circle"></i> Centro de mando · React + TypeScript +
-                                            Supabase</span>
                                     </div>
                                 </div>
                             </div>
@@ -359,32 +406,31 @@
                                         <div class="pillar-bullet"><i class="fas fa-database"></i></div>
                                         <div class="pillar-desc">
                                             <h4>Catálogo dinámico 3FN + JSONB</h4>
-                                            <p>Esquema relacional con atributos JSONB para especificaciones técnicas
-                                                complejas, sin migraciones estructurales.</p>
+                                            <p>Atributos JSONB para especificaciones técnicas complejas, sin
+                                                migraciones estructurales.</p>
                                         </div>
                                     </div>
                                     <div class="pillar-row">
                                         <div class="pillar-bullet"><i class="fas fa-hand-holding-dollar"></i></div>
                                         <div class="pillar-desc">
                                             <h4>Márgenes en tiempo real</h4>
-                                            <p>Presupuestación interactiva entre cliente y comercial con cálculo
-                                                instantáneo de costes y conversión a pedido.</p>
+                                            <p>Presupuestación interactiva con cálculo instantáneo de costes y
+                                                conversión a pedido.</p>
                                         </div>
                                     </div>
                                     <div class="pillar-row">
                                         <div class="pillar-bullet"><i class="fas fa-shield-halved"></i></div>
                                         <div class="pillar-desc">
                                             <h4>RBAC y políticas RLS</h4>
-                                            <p>Aislamiento de registros con Row Level Security y roles de Cliente,
-                                                Comercial y Administrador.</p>
+                                            <p>Aislamiento por Row Level Security y roles de Cliente, Comercial y
+                                                Administrador.</p>
                                         </div>
                                     </div>
                                     <div class="pillar-row">
                                         <div class="pillar-bullet"><i class="fas fa-chart-pie"></i></div>
                                         <div class="pillar-desc">
-                                            <h4>Analítica y documentos PDF</h4>
-                                            <p>Dashboards con Recharts y generación de cotizaciones y albaranes en PDF
-                                                con jsPDF.</p>
+                                            <h4>Analítica y PDF</h4>
+                                            <p>Dashboards con Recharts y cotizaciones y albaranes en PDF con jsPDF.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -414,7 +460,8 @@
                     </article>
 
                     <!-- Shenron -->
-                    <article class="project-showcase glass-card tilt-card reveal-fade" id="project-shenron">
+                    <article class="project-showcase glass-card tilt-card reveal-fade" id="project-shenron" data-trail-card>
+                        <span class="project-index" aria-hidden="true">02</span>
                         <div class="showcase-header">
                             <div class="showcase-badges-left">
                                 <span class="badge-project-type"><i class="fas fa-cube"></i> Creative development</span>
@@ -448,11 +495,6 @@
                                     <div class="mockup-image-wrapper">
                                         <img src="shenron-preview.jpg" loading="lazy"
                                             alt="Shenron: experiencia web inmersiva" class="mockup-screenshot-img">
-                                        <div class="mockup-image-glow-border"></div>
-                                    </div>
-                                    <div class="mockup-footer-bar">
-                                        <span><i class="fas fa-check-circle"></i> En producción en Vercel · HTML, CSS y
-                                            JavaScript</span>
                                     </div>
                                 </div>
                             </div>
@@ -472,17 +514,17 @@
                                     <div class="pillar-row">
                                         <div class="pillar-bullet"><i class="fas fa-film"></i></div>
                                         <div class="pillar-desc">
-                                            <h4>Secuencia de fotogramas en canvas</h4>
+                                            <h4>Secuencia en canvas</h4>
                                             <p>239 imágenes dibujadas según el scroll, con carga progresiva y vídeo de
-                                                respaldo para que la página nunca espere.</p>
+                                                respaldo.</p>
                                         </div>
                                     </div>
                                     <div class="pillar-row">
                                         <div class="pillar-bullet"><i class="fas fa-wand-magic-sparkles"></i></div>
                                         <div class="pillar-desc">
-                                            <h4>Atmósfera y narrativa visual</h4>
-                                            <p>Paleta esmeralda, grano de película, tipografía expresiva y almas
-                                                flotantes reactivas al puntero.</p>
+                                            <h4>Atmósfera visual</h4>
+                                            <p>Paleta esmeralda, grano de película y almas flotantes reactivas al
+                                                puntero.</p>
                                         </div>
                                     </div>
                                     <div class="pillar-row">
@@ -490,15 +532,14 @@
                                         <div class="pillar-desc">
                                             <h4>Oráculo interactivo</h4>
                                             <p>Un formulario de invocación que responde con la voz del dragón, con
-                                                regiones accesibles y estados de carga.</p>
+                                                regiones accesibles.</p>
                                         </div>
                                     </div>
                                     <div class="pillar-row">
                                         <div class="pillar-bullet"><i class="fas fa-cloud-arrow-up"></i></div>
                                         <div class="pillar-desc">
                                             <h4>Despliegue continuo</h4>
-                                            <p>Integración con GitHub y distribución global de baja latencia en
-                                                Vercel.</p>
+                                            <p>Integración con GitHub y distribución global en Vercel.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -535,72 +576,22 @@
             <section class="skills-section" id="habilidades">
                 <div class="section-container">
                     <div class="section-header-compact reveal-fade">
-                        <span class="section-tag"><span class="tag-mono-idx">03 //</span> <i class="fas fa-cubes"></i>
-                            COMPETENCIAS &amp; TECNOLOGÍAS</span>
-                        <h2 class="section-heading">Un stack moderno, de la interfaz al agente</h2>
+                        <span class="section-tag" data-trail-station="2"><span class="tag-mono-idx">03 //</span> <i
+                                class="fas fa-cubes"></i> COMPETENCIAS &amp; TECNOLOGÍAS</span>
+                        <h2 class="section-heading">Un stack moderno, <em>de la interfaz al agente</em></h2>
                     </div>
 
-                    <div class="skills-grid">
-                        <div class="skill-category-card glass-card tilt-card reveal-fade">
-                            <div class="category-header">
-                                <i class="fas fa-laptop-code"></i>
-                                <h3>Frontend &amp; experiencia</h3>
+                    <div class="stack-explorer glass-card reveal-fade" id="stack-explorer" data-trail-card>
+                        <div class="stack-tabs" id="stack-tabs" role="tablist" aria-label="Categorías del stack"></div>
+                        <div class="stack-panel" id="stack-panel" role="tabpanel">
+                            <div class="stack-panel-head">
+                                <span class="stack-panel-num" id="stack-num">01</span>
+                                <div>
+                                    <h3 id="stack-title"></h3>
+                                    <p id="stack-desc"></p>
+                                </div>
                             </div>
-                            <ul class="skills-list">
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>React 18 /
-                                        TypeScript</span></li>
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>HTML5 semántico y CSS
-                                        moderno</span></li>
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Tailwind CSS</span></li>
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Zustand / Context
-                                        API</span></li>
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Three.js y animación
-                                        con GSAP</span></li>
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Diseño responsive y
-                                        accesible</span></li>
-                            </ul>
-                        </div>
-
-                        <div class="skill-category-card glass-card tilt-card reveal-fade">
-                            <div class="category-header">
-                                <i class="fas fa-server"></i>
-                                <h3>Backend &amp; datos</h3>
-                            </div>
-                            <ul class="skills-list">
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>PostgreSQL y modelado
-                                        3FN</span></li>
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Supabase (BaaS)</span>
-                                </li>
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Row Level Security y
-                                        RBAC</span></li>
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>JSONB y atributos
-                                        dinámicos</span></li>
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>APIs REST /
-                                        Node.js</span></li>
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Git, GitHub y CI/CD en
-                                        Vercel</span></li>
-                            </ul>
-                        </div>
-
-                        <div class="skill-category-card glass-card tilt-card reveal-fade">
-                            <div class="category-header">
-                                <i class="fas fa-wand-magic-sparkles"></i>
-                                <h3>IA &amp; agentes</h3>
-                            </div>
-                            <ul class="skills-list">
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Claude Code y
-                                        desarrollo agéntico</span></li>
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Servidores MCP
-                                        (GitHub, Supabase, Vercel)</span></li>
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Ingeniería de prompts y
-                                        contexto</span></li>
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Integración de APIs de
-                                        LLM en producto</span></li>
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Revisión y verificación
-                                        de código generado</span></li>
-                                <li><i class="fas fa-circle-check skill-check-icon"></i> <span>Automatización de
-                                        flujos de desarrollo</span></li>
-                            </ul>
+                            <div class="stack-tiles" id="stack-tiles"></div>
                         </div>
                     </div>
                 </div>
@@ -609,11 +600,12 @@
             <!-- ============ CONTACTO ============ -->
             <section class="contact-cta-section" id="contacto">
                 <div class="section-container">
-                    <div class="contact-banner glass-card reveal-fade">
+                    <div class="contact-banner glass-card reveal-fade" data-trail-card="3">
+                        <div class="contact-rings" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
                         <div class="contact-banner-content">
                             <span class="section-tag"><span class="tag-mono-idx">04 //</span> <i
                                     class="fas fa-comments"></i> COMUNICACIÓN DIRECTA</span>
-                            <h2 class="contact-title">¿Construimos algo que merezca la pena?</h2>
+                            <h2 class="contact-title">¿Construimos algo que <em>merezca la pena</em>?</h2>
                             <p class="contact-text">
                                 Estoy disponible para nuevos retos, proyectos de software y consultas sobre
                                 arquitectura o desarrollo con IA. Escríbeme y respondo en cuanto pueda.
@@ -633,6 +625,26 @@
                                     <span>Escribir mensaje</span>
                                 </a>
                             </div>
+
+                            <div class="contact-links">
+                                <a class="contact-link" href="mailto:robertobamym@gmail.com">
+                                    <i class="fas fa-envelope"></i>
+                                    <span><small>Email</small>robertobamym@gmail.com</span>
+                                    <i class="fas fa-arrow-up-right-from-square contact-link-arrow"></i>
+                                </a>
+                                <a class="contact-link" href="https://www.linkedin.com/in/roberto-borrallo-%C3%A1lvarez-42a5b2403"
+                                    target="_blank" rel="noopener noreferrer">
+                                    <i class="fab fa-linkedin-in"></i>
+                                    <span><small>LinkedIn</small>Roberto Borrallo Álvarez</span>
+                                    <i class="fas fa-arrow-up-right-from-square contact-link-arrow"></i>
+                                </a>
+                                <a class="contact-link" href="https://github.com/robertorayo" target="_blank"
+                                    rel="noopener noreferrer">
+                                    <i class="fab fa-github"></i>
+                                    <span><small>GitHub</small>robertorayo</span>
+                                    <i class="fas fa-arrow-up-right-from-square contact-link-arrow"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -645,55 +657,45 @@
                     <div class="footer-col-identity">
                         <div class="footer-brand">
                             <span class="footer-monogram">RB</span>
-                            <h3 class="footer-name">Roberto Borrallo Álvarez</h3>
+                            <div>
+                                <h3 class="footer-name">Roberto Borrallo Álvarez</h3>
+                                <p class="footer-role">Software Engineer · AI-native developer</p>
+                            </div>
                         </div>
                         <p class="footer-bio">
-                            Ingeniero de software full-stack. Construyo productos web escalables, cuidados y
-                            acelerados con IA.
+                            Producto web escalable, cuidado hasta el último píxel y acelerado con IA. Disponible desde
+                            España, en horario CET.
                         </p>
                     </div>
 
-                    <div class="footer-col-links">
-                        <h4 class="footer-heading">Navegación</h4>
-                        <ul class="footer-nav-list">
-                            <li><a href="#inicio"><i class="fas fa-chevron-right"></i> Inicio</a></li>
-                            <li><a href="#sobre-mi"><i class="fas fa-chevron-right"></i> Método</a></li>
-                            <li><a href="#proyecto"><i class="fas fa-chevron-right"></i> Proyectos</a></li>
-                            <li><a href="#habilidades"><i class="fas fa-chevron-right"></i> Stack</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="footer-col-contact">
-                        <h4 class="footer-heading">Contacto</h4>
-                        <ul class="footer-contact-list">
-                            <li><i class="fas fa-envelope"></i>
-                                <span><a href="mailto:robertobamym@gmail.com"
-                                        class="footer-mail-link">robertobamym@gmail.com</a></span></li>
-                            <li><i class="fas fa-location-dot"></i> <span>España · CET</span></li>
-                        </ul>
-                    </div>
+                    <nav class="footer-nav" aria-label="Pie de página">
+                        <a href="#inicio">Inicio <i class="fas fa-arrow-up-right-from-square"></i></a>
+                        <a href="#sobre-mi">Método <i class="fas fa-arrow-up-right-from-square"></i></a>
+                        <a href="#proyecto">Proyectos <i class="fas fa-arrow-up-right-from-square"></i></a>
+                        <a href="#habilidades">Stack <i class="fas fa-arrow-up-right-from-square"></i></a>
+                        <a href="#contacto">Contacto <i class="fas fa-arrow-up-right-from-square"></i></a>
+                    </nav>
 
                     <div class="footer-col-social">
                         <h4 class="footer-heading">Presencia digital</h4>
                         <div class="footer-social-buttons">
                             <a href="https://github.com/robertorayo" target="_blank" rel="noopener noreferrer"
-                                class="social-btn">
-                                <i class="fab fa-github"></i><span>GitHub</span>
-                            </a>
-                            <a href="https://www.linkedin.com/in/roberto-borrallo-%C3%A1lvarez-42a5b2403" target="_blank" rel="noopener noreferrer"
-                                class="social-btn">
-                                <i class="fab fa-linkedin-in"></i><span>LinkedIn</span>
-                            </a>
-                            <a href="mailto:robertobamym@gmail.com" class="social-btn">
-                                <i class="fas fa-envelope"></i><span>Email</span>
-                            </a>
+                                class="social-btn"><i class="fab fa-github"></i><span>GitHub</span></a>
+                            <a href="https://www.linkedin.com/in/roberto-borrallo-%C3%A1lvarez-42a5b2403"
+                                target="_blank" rel="noopener noreferrer" class="social-btn"><i
+                                    class="fab fa-linkedin-in"></i><span>LinkedIn</span></a>
+                            <a href="mailto:robertobamym@gmail.com" class="social-btn"><i
+                                    class="fas fa-envelope"></i><span>Email</span></a>
                         </div>
                     </div>
                 </div>
 
+                <div class="footer-wordmark" aria-hidden="true">ROBERTO BORRALLO</div>
+
                 <div class="footer-bottom">
                     <div class="footer-copyright">© 2026 Roberto Borrallo Álvarez. Todos los derechos reservados.</div>
-                    <div class="footer-signature">Diseñado en blanco y negro · Three.js · Hecho a mano con IA</div>
+                    <a href="#inicio" class="to-top">Volver arriba <i class="fas fa-arrow-up"></i></a>
+                    <div class="footer-signature">Blanco y negro · Three.js · Hecho a mano con IA</div>
                 </div>
             </div>
         </footer>

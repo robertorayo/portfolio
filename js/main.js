@@ -145,6 +145,88 @@
         });
     })();
 
+    /* 8. Explorador de stack */
+    (function stackExplorer() {
+        const tabsEl = document.getElementById('stack-tabs');
+        const tilesEl = document.getElementById('stack-tiles');
+        if (!tabsEl || !tilesEl) return;
+        const numEl = document.getElementById('stack-num'), titleEl = document.getElementById('stack-title'), descEl = document.getElementById('stack-desc');
+        const panel = document.getElementById('stack-panel');
+        const DATA = [
+            {
+                name: 'Frontend', title: 'Frontend y experiencia', desc: 'Interfaces rápidas, accesibles y con carácter, de la maqueta al detalle de animación.',
+                tiles: [
+                    ['fab fa-react', 'React 18', 'Componentes, hooks y estado'], ['fab fa-js', 'TypeScript', 'Tipado de extremo a extremo'],
+                    ['fab fa-html5', 'HTML5 semántico', 'Accesibilidad desde la base'], ['fab fa-css3-alt', 'CSS moderno', 'Grid, variables y animación'],
+                    ['fas fa-brush', 'Tailwind CSS', 'Utilidades y sistemas de diseño'], ['fas fa-bolt', 'Vite', 'Build rápido y HMR'],
+                    ['fas fa-cube', 'Three.js', 'Escenas WebGL interactivas'], ['fas fa-wave-square', 'GSAP', 'Micro-interacciones fluidas'],
+                    ['fas fa-cubes', 'Zustand', 'Estado global ligero']
+                ]
+            },
+            {
+                name: 'Backend y datos', title: 'Backend y datos', desc: 'Modelos relacionales sólidos, APIs claras y seguridad aplicada en la propia base de datos.',
+                tiles: [
+                    ['fas fa-database', 'PostgreSQL', 'Modelado 3FN y SQL'], ['fas fa-bolt', 'Supabase', 'Auth, BaaS y tiempo real'],
+                    ['fab fa-node-js', 'Node.js', 'Servicios y APIs'], ['fas fa-plug', 'APIs REST', 'Diseño e integraciones'],
+                    ['fas fa-code', 'JSONB', 'Atributos dinámicos'], ['fas fa-shield-halved', 'RLS y RBAC', 'Aislamiento por rol'],
+                    ['fas fa-key', 'Autenticación', 'Sesiones y permisos']
+                ]
+            },
+            {
+                name: 'IA y agentes', title: 'IA y agentes', desc: 'Desarrollo asistido por agentes y modelos integrados en producto, siempre con revisión humana.',
+                tiles: [
+                    ['fas fa-robot', 'Claude Code', 'Desarrollo agéntico en terminal'], ['fas fa-plug-circle-bolt', 'MCP', 'Agentes conectados a herramientas'],
+                    ['fas fa-wand-magic-sparkles', 'Prompting', 'Contexto e instrucciones precisas'], ['fas fa-microchip', 'APIs de LLM', 'Modelos dentro del producto'],
+                    ['fas fa-code-compare', 'Revisión de código', 'Verificación del código generado'], ['fas fa-gears', 'Automatización', 'Flujos repetibles de desarrollo']
+                ]
+            },
+            {
+                name: 'Herramientas', title: 'Herramientas y entrega', desc: 'Control de versiones, previews por rama y despliegue continuo para publicar con confianza.',
+                tiles: [
+                    ['fab fa-git-alt', 'Git', 'Ramas, commits y revisión'], ['fab fa-github', 'GitHub', 'Repos, PRs y Actions'],
+                    ['fas fa-cloud-arrow-up', 'Vercel', 'Previews por rama y CI/CD'], ['fas fa-terminal', 'Terminal', 'Flujo diario en consola'],
+                    ['fas fa-screwdriver-wrench', 'DevTools', 'Depuración y rendimiento'], ['fas fa-chart-line', 'Recharts', 'Visualización de datos'],
+                    ['fas fa-file-pdf', 'jsPDF', 'Documentos en el cliente']
+                ]
+            }
+        ];
+        const pad = (n) => String(n).padStart(2, '0');
+        let current = -1;
+
+        DATA.forEach((d, i) => {
+            const b = document.createElement('button');
+            b.type = 'button'; b.className = 'stack-tab'; b.setAttribute('role', 'tab'); b.id = 'stack-tab-' + i;
+            b.innerHTML = `<b>${pad(i + 1)}</b><span>${d.name}<small>${d.tiles.length} TECNOLOGÍAS</small></span>`;
+            b.addEventListener('click', () => select(i));
+            b.addEventListener('keydown', (e) => {
+                const k = e.key;
+                if (k === 'ArrowDown' || k === 'ArrowRight') { e.preventDefault(); select((i + 1) % DATA.length, true); }
+                else if (k === 'ArrowUp' || k === 'ArrowLeft') { e.preventDefault(); select((i - 1 + DATA.length) % DATA.length, true); }
+            });
+            tabsEl.appendChild(b);
+        });
+
+        function select(i, focus) {
+            if (i === current) return;
+            current = i;
+            const d = DATA[i];
+            [...tabsEl.children].forEach((t, k) => {
+                const on = k === i;
+                t.classList.toggle('is-active', on);
+                t.setAttribute('aria-selected', on ? 'true' : 'false');
+                t.tabIndex = on ? 0 : -1;
+                if (on && focus) t.focus();
+            });
+            panel.setAttribute('aria-labelledby', 'stack-tab-' + i);
+            numEl.textContent = pad(i + 1);
+            titleEl.textContent = d.title;
+            descEl.textContent = d.desc;
+            tilesEl.innerHTML = d.tiles.map((t, k) => `<div class="stack-tile" style="--i:${k}"><i class="${t[0]}"></i><strong>${t[1]}</strong><small>${t[2]}</small></div>`).join('');
+            document.dispatchEvent(new Event('stack:changed'));
+        }
+        select(0);
+    })();
+
     /* 7. Terminal ilustrativa: se "teclea" al entrar en pantalla */
     (function terminal() {
         const host = document.getElementById('terminal-body');
