@@ -17,13 +17,13 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=22">
+    <link rel="stylesheet" href="styles.css?v=23">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-    <script src="js/hero.js?v=22" defer></script>
-    <script src="js/trail.js?v=22" defer></script>
-    <script src="js/main.js?v=22" defer></script>
+    <script src="js/hero.js?v=23" defer></script>
+    <script src="js/trail.js?v=23" defer></script>
+    <script src="js/main.js?v=23" defer></script>
 </head>
 
 <body>
@@ -73,7 +73,6 @@
                 <g id="trek-tails"></g>
                 <g id="trek-nodes-group"></g>
                 <g id="trek-particles"></g>
-                <g id="trek-hud" class="trek-hud"></g>
                 <g id="trek-comet-head-1" class="trek-comet-head">
                     <circle cx="0" cy="0" r="22" fill="url(#trekAuraGradient)" class="trek-aura-pulse" />
                     <circle cx="0" cy="0" r="8" stroke="rgba(255, 255, 255, 0.9)" stroke-width="1.5" fill="none" class="trek-comet-ring" />
@@ -86,6 +85,9 @@
                 </g>
             </g>
         </svg>
+
+        <!-- Indicador de progreso (encima del contenido) -->
+        <svg class="trek-hud-svg" id="trek-hud-svg" aria-hidden="true"><g id="trek-hud" class="trek-hud"></g></svg>
 
         <!-- Navegación -->
         <header class="navbar-wrapper">

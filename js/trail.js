@@ -28,6 +28,7 @@
     ];
 
     let segments = [], stations = [];
+    let obstacles = [], pageW = 1440;
     let startY = 0, endY = 0, finaleY = Infinity;
     let hud = null;
 
@@ -144,6 +145,13 @@
                 rects.push({ x: r.L, y: r.T, w: r.R - r.L, h: r.B - r.T });
             });
         }
+        // Obstáculos para colocar el indicador de progreso donde menos estorbe
+        obstacles = rects.slice();
+        document.querySelectorAll('.glass-card').forEach((el) => {
+            if (el.closest('.navbar-wrapper')) return;
+            const r = absRect(el);
+            obstacles.push({ x: r.L, y: r.T, w: r.R - r.L, h: r.B - r.T });
+        });
         const add = (g, r, pad, rx, fill) => mk('rect', { x: r.x - pad, y: r.y - pad, width: r.w + pad * 2, height: r.h + pad * 2, rx, fill }, g);
         rects.forEach((r) => add(maskOuter, r, 16, 18, '#9a9a9a'));
         rects.forEach((r) => add(maskInner, r, 5, 8, '#262626'));
@@ -154,6 +162,7 @@
         document.documentElement.classList.add('trek-measuring');
 
         const width = document.documentElement.clientWidth;
+        pageW = width;
         const isMobile = width <= 800;
         const docH = document.documentElement.scrollHeight;
 
@@ -173,9 +182,10 @@
             stations.push({ ring, dot, ripple, y, idx, on: false });
         };
 
+        let splitCount = 0;
         let pts = [];
         const flush = () => {
-            if (pts.length >= 2) segments.push({ type: 'curve', track: makeTrack(makeCurve(pts)), y0: pts[0].y, y1: pts[pts.length - 1].y });
+            if (pts.length >= 2) segments.push({ type: 'curve', track: makeTrack(makeCurve(pts)), y0: pts[0].y, y1: pts[pts.length - 1].y, pref: 'R' });
             pts = [];
         };
         const push = (p) => {
@@ -198,7 +208,7 @@
             flush();
             const dL = `M ${CX} ${T} H ${L + rad} A ${rad} ${rad} 0 0 0 ${L} ${T + rad} V ${B - rad} A ${rad} ${rad} 0 0 0 ${L + rad} ${B} H ${CX}`;
             const dR = `M ${CX} ${T} H ${R - rad} A ${rad} ${rad} 0 0 1 ${R} ${T + rad} V ${B - rad} A ${rad} ${rad} 0 0 1 ${R - rad} ${B} H ${CX}`;
-            segments.push({ type: 'split', L: makeTrack(dL), R: makeTrack(dR), y0: T, y1: B });
+            segments.push({ type: 'split', L: makeTrack(dL), R: makeTrack(dR), y0: T, y1: B, pref: (splitCount++ % 2 === 0) ? 'R' : 'L' });
             if (wp.station !== undefined) {
                 addStation(CX, T, wp.station);
                 if (wp.station === 3) finaleY = T;
@@ -217,13 +227,37 @@
     }
 
     /* ---------- HUD de progreso ---------- */
+    const HUD_W = 100, HUD_H = 30;
     function buildHud() {
         if (!hudG) return;
         hudG.innerHTML = '';
-        const line = mk('line', { x1: 14, y1: 0, x2: 40, y2: 0, class: 'trek-hud-line' }, hudG);
-        const box = mk('rect', { x: 40, y: -11, width: 54, height: 22, rx: 11, class: 'trek-hud-box' }, hudG);
-        const pct = mk('text', { x: 52, y: 3.6, class: 'trek-hud-pct' }, hudG);
-        hud = { line, box, pct, last: '' };
+        const line = mk('line', { y1: 0, y2: 0, class: 'trek-hud-line' }, hudG);
+        const box = mk('rect', { y: -11, width: 54, height: 22, rx: 11, class: 'trek-hud-box' }, hudG);
+        const pct = mk('text', { y: 3.6, class: 'trek-hud-pct' }, hudG);
+        hud = { line, box, pct, last: '', side: '', seg: -1 };
+        setHudSide('R');
+    }
+    function setHudSide(side) {
+        if (!hud || hud.side === side) return;
+        hud.side = side;
+        const k = side === 'R' ? 1 : -1;
+        hud.line.setAttribute('x1', 14 * k); hud.line.setAttribute('x2', 40 * k);
+        hud.box.setAttribute('x', side === 'R' ? 40 : -94);
+        hud.pct.setAttribute('x', side === 'R' ? 52 : -82);
+    }
+    // Área de solapamiento del indicador con texto, tarjetas, etc. (menor = mejor)
+    function hudOverlap(side, x, y) {
+        const L = side === 'R' ? x + 8 : x - 8 - HUD_W, R = L + HUD_W, T = y - HUD_H / 2, B = y + HUD_H / 2;
+        let s = (L < 8 || R > pageW - 8) ? 1e5 : 0;
+        for (let i = 0; i < obstacles.length; i++) {
+            const o = obstacles[i];
+            if (o.y > B || o.y + o.h < T) continue;
+            const ox = Math.min(R, o.x + o.w) - Math.max(L, o.x);
+            if (ox <= 0) continue;
+            const oy = Math.min(B, o.y + o.h) - Math.max(T, o.y);
+            if (oy > 0) s += ox * oy;
+        }
+        return s;
     }
 
     /* ---------- Chispas ---------- */
@@ -286,10 +320,11 @@
     function update() {
         if (!segments.length) return;
         const t = getTravelY();
-        let headL = null, headR = null;
+        let headL = null, headR = null, act = 0;
 
-        segments.forEach((seg) => {
+        segments.forEach((seg, si) => {
             const before = t <= seg.y0, after = t >= seg.y1;
+            if (!before) act = si;
             const past = after ? t - seg.y1 : 0;
             if (seg.type === 'curve') {
                 const dist = before ? 0 : after ? seg.track.len : distAtY(seg.track, t);
@@ -342,12 +377,19 @@
             if (s.title) s.title.classList.toggle('is-active-title', on);
         });
 
-        // HUD
+        // Indicador de progreso: se coloca por el lado donde menos estorba
         if (hud && window.innerWidth > 900) {
             const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
             const pct = String(Math.round(clamp(window.scrollY / max, 0, 1) * 100)).padStart(2, '0') + '%';
             if (pct !== hud.last) { hud.pct.textContent = pct; hud.last = pct; }
-            hudG.setAttribute('transform', `translate(${headL.x}, ${headL.y})`);
+            const seg = segments[act];
+            if (hud.seg !== act) { hud.seg = act; setHudSide(seg.pref); }
+            const pL = headL, pR = headR || headL;
+            const sL = hudOverlap('L', pL.x, pL.y), sR = hudOverlap('R', pR.x, pR.y);
+            const cur = hud.side === 'L' ? sL : sR, other = hud.side === 'L' ? sR : sL;
+            if (other + 500 < cur) setHudSide(hud.side === 'L' ? 'R' : 'L');
+            const p = hud.side === 'L' ? pL : pR;
+            hudG.setAttribute('transform', `translate(${p.x}, ${p.y})`);
             hudG.style.opacity = '1';
         } else if (hudG) hudG.style.opacity = '0';
 
