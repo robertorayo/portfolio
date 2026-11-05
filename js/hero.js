@@ -9,28 +9,28 @@
     const CAPS = [
         {
             key: 'frontend', name: 'FRONTEND', title: 'Interfaces claras y adaptables',
-            desc: 'Aplicaciones con React y TypeScript, diseño responsive y animaciones cuidadas. Las uso en DistribuTech Pro y en este portfolio.',
-            chips: ['React', 'TypeScript', 'Tailwind', 'Vite']
+            desc: 'Aplicaciones web con diseño responsive, animaciones cuidadas y atención a la accesibilidad.',
+            chips: ['Responsive', 'Accesible', 'Animación']
         },
         {
-            key: 'backend', name: 'BACKEND', title: 'Autenticación, servicios y Java',
-            desc: 'Autenticación y consultas con Supabase en mis proyectos, y Java con JDBC, Hibernate y Maven en mi formación.',
-            chips: ['Supabase', 'Auth', 'Java', 'JDBC']
+            key: 'backend', name: 'BACKEND', title: 'Servicios y autenticación',
+            desc: 'Lógica de negocio, autenticación y acceso a datos pensados para mantenerse con facilidad.',
+            chips: ['Servicios', 'Autenticación', 'Acceso a datos']
         },
         {
-            key: 'datos', name: 'DATOS', title: 'Bases de datos relacionales y SQL',
-            desc: 'PostgreSQL, políticas RLS y atributos JSONB. También PL/SQL, MongoDB y Cassandra.',
-            chips: ['PostgreSQL', 'SQL', 'JSONB', 'RLS']
+            key: 'datos', name: 'DATOS', title: 'Bases de datos relacionales',
+            desc: 'Modelado de datos, consultas y reglas de acceso que mantienen la información ordenada y segura.',
+            chips: ['Modelado', 'Consultas', 'Integridad']
         },
         {
-            key: 'seguridad', name: 'SEGURIDAD', title: 'Permisos en la base de datos',
-            desc: 'Roles de cliente, comercial y administrador con Row Level Security en PostgreSQL: los permisos se aplican en la propia base de datos.',
-            chips: ['RBAC', 'RLS', 'Supabase Auth']
+            key: 'seguridad', name: 'SEGURIDAD', title: 'Permisos por diseño',
+            desc: 'Cada usuario ve y modifica solo lo que le corresponde, aplicando los permisos en la base de datos.',
+            chips: ['Roles', 'Permisos', 'Buenas prácticas']
         },
         {
             key: 'cloud', name: 'DESPLIEGUE', title: 'Control de versiones y publicación',
-            desc: 'Git y GitHub para el código, y Vercel para publicar con una vista previa por cada rama antes de fusionarla.',
-            chips: ['Git', 'GitHub', 'Vercel']
+            desc: 'Código versionado y publicado en la nube, con una vista previa de cada cambio antes de fusionarlo.',
+            chips: ['Versionado', 'Nube', 'Previews']
         }
     ];
     const N = CAPS.length;
