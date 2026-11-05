@@ -629,3 +629,15 @@ body.trek-footer .footer::after { opacity: 1; transform: scaleX(1); }
     .about-cta a { flex: 1 1 100%; justify-content: center; }
     .about-avatar { width: 68px; height: 68px; font-size: 1.5rem; }
 }
+
+/* ---------- Navegación con seis enlaces ---------- */
+@media (max-width: 1240px) {
+    .btn-primary-sm { display: none; }
+    .nav-link { padding: 0.5rem 0.75rem; }
+}
+@media (max-width: 1020px) {
+    .brand-text { display: none; }
+}
+@media (max-width: 860px) {
+    .nav-link { padding: 0.5rem 0.7rem; }
+}
