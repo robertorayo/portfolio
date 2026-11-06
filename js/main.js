@@ -159,8 +159,7 @@
                     ['fab fa-react', 'React 18', 'Componentes, hooks y rutas'], ['fab fa-js', 'TypeScript', 'Tipado en toda la aplicación'],
                     ['fas fa-bolt', 'Vite', 'Desarrollo y build'], ['fas fa-brush', 'Tailwind CSS', 'Diseño responsive'],
                     ['fas fa-cubes', 'Zustand', 'Estado de la aplicación'], ['fas fa-chart-line', 'Recharts', 'Gráficas e informes'],
-                    ['fab fa-html5', 'HTML, CSS y JavaScript', 'Canvas y animación'], ['fas fa-cube', 'Three.js', 'Gráficos 3D con WebGL'],
-                    ['fas fa-file-pdf', 'jsPDF', 'Documentos en PDF']
+                    ['fab fa-html5', 'HTML, CSS y JavaScript', 'Canvas y animación'], ['fas fa-cube', 'Three.js', 'Gráficos 3D con WebGL']
                 ]
             },
             {
