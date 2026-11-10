@@ -38,7 +38,7 @@ y abrir `http://localhost:5173`.
 - Puntos de corte usados: 1240, 1100, 1020, 900, 860, 760 y 560 px. Reutilízalos antes de crear nuevos.
 
 ## Caché de recursos
-`index.html` carga CSS y JS con `?v=N` (ahora `v=40`). **Si cambias `styles.css` o cualquier `js/*.js`, sube el número en las 4 referencias** para que Vercel/el navegador no sirvan la versión vieja.
+`index.html` carga CSS y JS con `?v=N` (ahora `v=41`). **Si cambias `styles.css` o cualquier `js/*.js`, sube el número en las 4 referencias** para que Vercel/el navegador no sirvan la versión vieja.
 
 ## Criterios de contenido
 - Contenido **técnico y honesto**: no afirmar funcionalidades que el código de los proyectos no respalde.
