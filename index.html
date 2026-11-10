@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Roberto Borrallo Álvarez | Desarrollador web full-stack junior</title>
     <meta name="description"
-        content="Portfolio de Roberto Borrallo Álvarez, desarrollador web full-stack. Proyectos con React, TypeScript, PostgreSQL y Supabase: DistribuTech Pro y Shenron.">
+        content="Portfolio de Roberto Borrallo Álvarez, desarrollador web full-stack. Proyectos con React, TypeScript, Python y PostgreSQL: DistribuTech Pro, un agente de citas con IA y Shenron.">
     <meta name="theme-color" content="#06070a">
     <meta property="og:title" content="Roberto Borrallo Álvarez | Desarrollador web full-stack junior">
     <meta property="og:description"
-        content="Desarrollador web full-stack. Proyectos con React, TypeScript, PostgreSQL y Supabase: DistribuTech Pro y Shenron.">
+        content="Desarrollador web full-stack. Proyectos con React, TypeScript, Python y PostgreSQL: DistribuTech Pro, un agente de citas con IA y Shenron.">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="es_ES">
     <meta property="og:image" content="https://portfolio-eight-psi-g07adxw176.vercel.app/og-image.png">
@@ -24,20 +24,20 @@
       "@type": "Person",
       "name": "Roberto Borrallo Álvarez",
       "jobTitle": "Desarrollador web full-stack junior",
-      "knowsAbout": ["React", "TypeScript", "Java", "SQL", "PostgreSQL", "Supabase"],
+      "knowsAbout": ["React", "TypeScript", "Python", "FastAPI", "Java", "SQL", "PostgreSQL", "Supabase"],
       "sameAs": ["https://github.com/robertorayo", "https://www.linkedin.com/in/roberto-borrallo-alvarez"]
     }
     </script>
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="preload" href="vendor/fonts/outfit-1.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="vendor/fonts/fonts.css">
-    <link rel="stylesheet" href="styles.css?v=40">
+    <link rel="stylesheet" href="styles.css?v=41">
     <link rel="stylesheet" href="vendor/fontawesome/css/all.min.css">
     <script src="vendor/lib/three.min.js" defer></script>
     <script src="vendor/lib/gsap.min.js" defer></script>
-    <script src="js/hero.js?v=40" defer></script>
-    <script src="js/trail.js?v=40" defer></script>
-    <script src="js/main.js?v=40" defer></script>
+    <script src="js/hero.js?v=41" defer></script>
+    <script src="js/trail.js?v=41" defer></script>
+    <script src="js/main.js?v=41" defer></script>
 </head>
 
 <body>
@@ -245,7 +245,7 @@
                         </div>
                         <h2 class="section-title">Proyectos <em>seleccionados</em></h2>
                         <p class="section-subtitle">
-                            Aplicaciones web con front-end, base de datos y despliegue, y experiencias visuales en el navegador.
+                            Aplicaciones web con front-end, base de datos y despliegue, un asistente conversacional con IA y experiencias visuales en el navegador.
                         </p>
                     </div>
 
@@ -434,9 +434,166 @@
                         </div>
                     </article>
 
+                    <!-- Agente de citas -->
+                    <article class="project-showcase glass-card tilt-card reveal-fade" id="project-agente" data-trail-card>
+                        <span class="project-index" aria-hidden="true">02</span>
+                        <div class="showcase-header">
+                            <div class="showcase-badges-left">
+                                <span class="badge-project-type"><i class="fas fa-robot"></i> Asistente con IA</span>
+                                <span class="badge-industry"><i class="fas fa-headset"></i> Atención y citas</span>
+                                <span class="badge-repo-status"><span class="repo-live-dot"></span> Desplegado · código público</span>
+                            </div>
+                            <a href="https://github.com/robertorayo/agente-citas-telegram" target="_blank"
+                                rel="noopener noreferrer" class="link-github-repo">
+                                <i class="fab fa-github"></i>
+                                <span>robertorayo/agente-citas-telegram</span>
+                                <i class="fas fa-arrow-up-right-from-square"></i>
+                            </a>
+                        </div>
+
+                        <div class="showcase-body">
+                            <div class="showcase-visual-col">
+                                <div class="app-mockup-frame">
+                                    <div class="mockup-chrome">
+                                        <div class="chrome-dots">
+                                            <span class="chrome-dot dot-red"></span>
+                                            <span class="chrome-dot dot-yellow"></span>
+                                            <span class="chrome-dot dot-green"></span>
+                                        </div>
+                                        <div class="chrome-address-bar">
+                                            <i class="fas fa-lock"></i>
+                                            <span>agente-citas-telegram.onrender.com / panel</span>
+                                        </div>
+                                        <div class="chrome-badge"><i class="fab fa-python"></i> FastAPI + React</div>
+                                    </div>
+                                    <div class="mockup-image-wrapper">
+                                        <img src="agente-citas-panel.jpg" loading="lazy"
+                                            alt="Agente de citas: panel de recepción con una conversación pasada a una persona"
+                                            class="mockup-screenshot-img">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="showcase-info-col">
+                                <div class="project-headline">
+                                    <span class="category-tag">Python · IA · Telegram</span>
+                                    <h3>Agente de citas con IA</h3>
+                                    <p class="project-lead">
+                                        Asistente para un centro médico ficticio que atiende por Telegram y por chat web.
+                                        Entiende mensajes escritos con normalidad, consulta huecos, reserva y cancela
+                                        citas, y pasa la conversación a una persona del centro cuando hace falta.
+                                    </p>
+                                </div>
+
+                                <div class="pillars-stack">
+                                    <div class="pillar-row">
+                                        <div class="pillar-bullet"><i class="fas fa-comments"></i></div>
+                                        <div class="pillar-desc">
+                                            <h4>Un núcleo, dos canales</h4>
+                                            <p>El bot de Telegram y el widget de la web comparten el mismo núcleo de
+                                                conversación, que no depende del canal.</p>
+                                        </div>
+                                    </div>
+                                    <div class="pillar-row">
+                                        <div class="pillar-bullet"><i class="fas fa-robot"></i></div>
+                                        <div class="pillar-desc">
+                                            <h4>IA con herramientas</h4>
+                                            <p>Un modelo de lenguaje consulta la agenda real con herramientas y solo
+                                                reserva o cancela tras confirmarlo con el paciente.</p>
+                                        </div>
+                                    </div>
+                                    <div class="pillar-row">
+                                        <div class="pillar-bullet"><i class="fas fa-user-gear"></i></div>
+                                        <div class="pillar-desc">
+                                            <h4>Traspaso a una persona</h4>
+                                            <p>Panel de recepción en React y aviso por Telegram: el equipo responde desde
+                                                el panel o contestando al propio aviso.</p>
+                                        </div>
+                                    </div>
+                                    <div class="pillar-row">
+                                        <div class="pillar-bullet"><i class="fas fa-shield-heart"></i></div>
+                                        <div class="pillar-desc">
+                                            <h4>Guardarraíles y métricas</h4>
+                                            <p>Detección de urgencias, sin consejos médicos, límites de uso, registro de
+                                                auditoría y métricas de tiempos y fallos de la IA.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tech-chips-group">
+                                    <span class="tech-chip"><i class="fab fa-python"></i> Python</span>
+                                    <span class="tech-chip"><i class="fas fa-bolt"></i> FastAPI</span>
+                                    <span class="tech-chip"><i class="fab fa-telegram"></i> aiogram</span>
+                                    <span class="tech-chip"><i class="fas fa-robot"></i> LLM con herramientas</span>
+                                    <span class="tech-chip"><i class="fab fa-react"></i> React</span>
+                                    <span class="tech-chip"><i class="fab fa-js"></i> TypeScript</span>
+                                    <span class="tech-chip"><i class="fas fa-server"></i> PostgreSQL</span>
+                                    <span class="tech-chip"><i class="fab fa-docker"></i> Docker</span>
+                                </div>
+
+                                <div class="project-actions">
+                                    <a href="https://agente-citas-telegram.onrender.com" target="_blank"
+                                        rel="noopener noreferrer" class="btn-project-cta magnetic-btn">
+                                        <i class="fas fa-arrow-up-right-from-square"></i>
+                                        <span>Probar el asistente</span>
+                                    </a>
+                                    <a href="https://github.com/robertorayo/agente-citas-telegram" target="_blank"
+                                        rel="noopener noreferrer" class="btn-project-secondary magnetic-btn">
+                                        <i class="fab fa-github"></i>
+                                        <span>Explorar código</span>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="project-extra">
+                                <div class="project-facts" aria-label="Datos del repositorio">
+                                    <div class="fact"><b>2</b><span>canales</span></div>
+                                    <div class="fact"><b>7</b><span>herramientas de IA</span></div>
+                                    <div class="fact"><b>59</b><span>tests</span></div>
+                                    <div class="fact"><b>1</b><span>proceso</span></div>
+                                </div>
+
+                                <div class="decisions">
+                                    <div class="decision">
+                                        <span class="decision-kicker">DECISIÓN</span>
+                                        <h4>Botones e IA a la vez</h4>
+                                        <p>Pedir, ver y cancelar citas funciona con botones sin IA; el texto libre pasa por
+                                            el modelo. Si la IA falla, el bot sigue atendiendo con el menú.</p>
+                                    </div>
+                                    <div class="decision">
+                                        <span class="decision-kicker">DECISIÓN</span>
+                                        <h4>El servidor decide quién es el usuario</h4>
+                                        <p>El modelo elige qué herramienta usar, pero el paciente lo pone el servidor. Un
+                                            mensaje manipulado no puede consultar ni cancelar citas de otra persona.</p>
+                                    </div>
+                                </div>
+
+                                <details class="demo-box">
+                                    <summary><i class="fas fa-comments"></i> Cómo probarlo <i
+                                            class="fas fa-chevron-down chev"></i></summary>
+                                    <div class="demo-body">
+                                        <div class="demo-table">
+                                            <a class="demo-acct" href="https://agente-citas-telegram.onrender.com" target="_blank" rel="noopener noreferrer">
+                                                <strong>Chat web <i class="fas fa-arrow-up-right-from-square"></i></strong>
+                                                <code>Página de la clínica, abajo a la derecha</code>
+                                            </a>
+                                            <a class="demo-acct" href="https://t.me/turnos_demobot" target="_blank" rel="noopener noreferrer">
+                                                <strong>Telegram <i class="fas fa-arrow-up-right-from-square"></i></strong>
+                                                <code>@turnos_demobot</code>
+                                            </a>
+                                        </div>
+                                        <p class="demo-note">Escribe, por ejemplo, «¿tenéis hueco para fisioterapia el jueves por
+                                            la tarde?» o pide hablar con una persona. Es un centro ficticio: no introduzcas datos
+                                            médicos ni personales reales. El panel de recepción es privado.</p>
+                                    </div>
+                                </details>
+                            </div>
+                        </div>
+                    </article>
+
                     <!-- Shenron -->
                     <article class="project-showcase glass-card tilt-card reveal-fade" id="project-shenron" data-trail-card>
-                        <span class="project-index" aria-hidden="true">02</span>
+                        <span class="project-index" aria-hidden="true">03</span>
                         <div class="showcase-header">
                             <div class="showcase-badges-left">
                                 <span class="badge-project-type"><i class="fas fa-cube"></i> Proyecto personal</span>
