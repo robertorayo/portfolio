@@ -163,11 +163,11 @@
                 ]
             },
             {
-                name: 'Datos y backend', title: 'Bases de datos y servicios', desc: 'Modelado relacional con SQL, seguridad por filas, APIs en Python y acceso a datos desde Java.',
+                name: 'Datos y backend', title: 'Bases de datos y servicios', desc: 'Modelado relacional con SQL, seguridad por filas, APIs en Node.js y Laravel y acceso a datos desde Java.',
                 tiles: [
                     ['fas fa-database', 'PostgreSQL', 'Modelo relacional y JSONB'], ['fas fa-bolt', 'Supabase', 'Autenticación y roles'],
                     ['fas fa-shield-halved', 'Row Level Security', 'Permisos por fila'], ['fas fa-table', 'SQL y PL/SQL', 'Consultas y procedimientos'],
-                    ['fab fa-python', 'Python y FastAPI', 'APIs y bots asíncronos'], ['fas fa-layer-group', 'JDBC e Hibernate', 'Acceso a datos y JPQL'], ['fas fa-leaf', 'MongoDB y Cassandra', 'Bases de datos NoSQL']
+                    ['fab fa-node-js', 'Node.js y TypeScript', 'Bots y tiempo real'], ['fab fa-laravel', 'PHP y Laravel', 'APIs REST y migraciones'], ['fas fa-layer-group', 'JDBC e Hibernate', 'Acceso a datos y JPQL'], ['fas fa-leaf', 'MongoDB y Cassandra', 'Bases de datos NoSQL']
                 ]
             },
             {
