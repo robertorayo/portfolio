@@ -331,6 +331,17 @@ a.app-mockup-frame { display: block; color: inherit; text-decoration: none; curs
     .project-showcase:nth-of-type(even) .app-mockup-frame { transform: rotateY(-7deg) rotateX(2deg) scale(0.97); }
     .project-showcase:hover .app-mockup-frame { transform: none; box-shadow: 0 50px 100px -24px rgba(0,0,0,0.95), 0 0 40px rgba(255,255,255,0.06); }
     .project-showcase:hover .mockup-screenshot-img { transform: scale(1.04); }
+    /* Encima de la captura: se eleva y la imagen se acerca un poco más. El hover se mira en la columna, que no se
+       mueve, para que el marco no parpadee si el cursor está en su borde inferior */
+    .project-showcase .showcase-visual-col:hover a.app-mockup-frame { transform: translateY(-8px); box-shadow: 0 60px 110px -26px rgba(0,0,0,0.95), 0 0 0 1px rgba(255,255,255,0.12), 0 0 34px rgba(255,255,255,0.1); }
+    .project-showcase .showcase-visual-col:hover .mockup-screenshot-img { transform: scale(1.07); }
+}
+/* Al pasar el ratón por la captura aparece la invitación a abrir la demo (solo color y opacidad, sin movimiento) */
+@media (hover: hover) and (pointer: fine) {
+    a.app-mockup-frame .mockup-image-wrapper::before { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, transparent 45%, rgba(6,7,10,0.72)); opacity: 0; transition: opacity 0.4s ease; pointer-events: none; }
+    a.app-mockup-frame .mockup-image-wrapper::after { content: 'Abrir demo'; position: absolute; left: 50%; bottom: 1.2rem; z-index: 2; transform: translateX(-50%); padding: 0.55rem 1.1rem; border-radius: 100px; background: var(--text-primary); color: var(--bg-base); font-family: var(--font-heading); font-weight: 600; font-size: 0.85rem; white-space: nowrap; opacity: 0; transition: opacity 0.35s ease; pointer-events: none; }
+    .showcase-visual-col:hover a.app-mockup-frame { border-color: var(--border-hover); }
+    .showcase-visual-col:hover .mockup-image-wrapper::before, .showcase-visual-col:hover .mockup-image-wrapper::after { opacity: 1; }
 }
 
 .showcase-info-col { display: contents; }
