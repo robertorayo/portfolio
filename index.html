@@ -31,13 +31,13 @@
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="preload" href="vendor/fonts/outfit-1.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="vendor/fonts/fonts.css">
-    <link rel="stylesheet" href="styles.css?v=43">
+    <link rel="stylesheet" href="styles.css?v=44">
     <link rel="stylesheet" href="vendor/fontawesome/css/all.min.css">
     <script src="vendor/lib/three.min.js" defer></script>
     <script src="vendor/lib/gsap.min.js" defer></script>
-    <script src="js/hero.js?v=43" defer></script>
-    <script src="js/trail.js?v=43" defer></script>
-    <script src="js/main.js?v=43" defer></script>
+    <script src="js/hero.js?v=44" defer></script>
+    <script src="js/trail.js?v=44" defer></script>
+    <script src="js/main.js?v=44" defer></script>
 </head>
 
 <body>
@@ -144,9 +144,6 @@
                     <div class="tile-tag" id="tile-tag" aria-hidden="true">
                         <b id="tile-tag-num">01</b><span id="tile-tag-name">FRONTEND</span>
                     </div>
-                    <div class="stage-hint" id="stage-hint" aria-hidden="true">
-                        <i class="fas fa-hand-pointer"></i> Arrastra, desliza o usa las flechas
-                    </div>
                 </div>
 
                 <div class="hero-bottom">
@@ -189,7 +186,6 @@
                     </div>
                 </div>
 
-                <div class="chapter-badge" aria-hidden="true"><b>00</b><span>CAPÍTULO<br>BIENVENIDA</span></div>
             </section>
 
 
@@ -197,12 +193,7 @@
             <section class="project-section" id="proyecto">
                 <div class="section-container">
                     <div class="section-header reveal-fade">
-                        <div class="spotlight-pill" data-trail-station="0">
-                            <span class="pulse-beacon"></span>
-                            <span class="tag-mono-idx">01 //</span>
-                            <span>PROYECTOS</span>
-                        </div>
-                        <h2 class="section-title">Proyectos <em>seleccionados</em></h2>
+                        <h2 class="section-title" data-trail-station="0">Proyectos <em>seleccionados</em></h2>
                         <p class="section-subtitle">
                             Aplicaciones web con front-end, base de datos y despliegue, un asistente conversacional con IA y experiencias visuales en el navegador.
                         </p>
@@ -227,7 +218,7 @@
 
                         <div class="showcase-body">
                             <div class="showcase-visual-col">
-                                <div class="app-mockup-frame">
+                                <a class="app-mockup-frame" href="https://distributech-pro.vercel.app" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
                                     <div class="mockup-chrome">
                                         <div class="chrome-dots">
                                             <span class="chrome-dot dot-red"></span>
@@ -245,7 +236,7 @@
                                             alt="DistribuTech Pro: panel de administración"
                                             class="mockup-screenshot-img">
                                     </div>
-                                </div>
+                                </a>
                             </div>
 
                             <div class="showcase-info-col">
@@ -415,7 +406,7 @@
 
                         <div class="showcase-body">
                             <div class="showcase-visual-col">
-                                <div class="app-mockup-frame">
+                                <a class="app-mockup-frame" href="https://agente-citas-telegram.onrender.com" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
                                     <div class="mockup-chrome">
                                         <div class="chrome-dots">
                                             <span class="chrome-dot dot-red"></span>
@@ -433,7 +424,7 @@
                                             alt="Agente de citas: panel de recepción con una conversación pasada a una persona"
                                             class="mockup-screenshot-img">
                                     </div>
-                                </div>
+                                </a>
                             </div>
 
                             <div class="showcase-info-col">
@@ -580,7 +571,7 @@
 
                         <div class="showcase-body">
                             <div class="showcase-visual-col">
-                                <div class="app-mockup-frame">
+                                <a class="app-mockup-frame" href="https://shenronwebsite.vercel.app/" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
                                     <div class="mockup-chrome">
                                         <div class="chrome-dots">
                                             <span class="chrome-dot dot-red"></span>
@@ -597,7 +588,7 @@
                                         <img src="shenron-preview.jpg" loading="lazy"
                                             alt="Shenron: experiencia web inmersiva" class="mockup-screenshot-img">
                                     </div>
-                                </div>
+                                </a>
                             </div>
 
                             <div class="showcase-info-col">
@@ -624,16 +615,15 @@
                                 </div>
 
                                 <div class="project-actions">
-                                    <a href="https://github.com/robertorayo/shenronwebsite" target="_blank"
-                                        rel="noopener noreferrer" class="btn-project-cta magnetic-btn">
-                                        <i class="fab fa-github"></i>
-                                        <span>Explorar código</span>
-                                        <i class="fas fa-arrow-right"></i>
-                                    </a>
                                     <a href="https://shenronwebsite.vercel.app/" target="_blank"
-                                        rel="noopener noreferrer" class="btn-project-secondary magnetic-btn">
+                                        rel="noopener noreferrer" class="btn-project-cta magnetic-btn">
                                         <i class="fas fa-arrow-up-right-from-square"></i>
                                         <span>Ver web en vivo</span>
+                                    </a>
+                                    <a href="https://github.com/robertorayo/shenronwebsite" target="_blank"
+                                        rel="noopener noreferrer" class="btn-project-secondary magnetic-btn">
+                                        <i class="fab fa-github"></i>
+                                        <span>Explorar código</span>
                                     </a>
                                 </div>
                                 <div class="pillars-stack">
@@ -679,9 +669,7 @@
             <section class="skills-section" id="habilidades">
                 <div class="section-container">
                     <div class="section-header-compact reveal-fade">
-                        <span class="section-tag" data-trail-station="1"><span class="tag-mono-idx">02 //</span> <i
-                                class="fas fa-cubes"></i> TECNOLOGÍAS</span>
-                        <h2 class="section-heading">Tecnologías, <em>por áreas</em></h2>
+                        <h2 class="section-heading" data-trail-station="1">Tecnologías, <em>por áreas</em></h2>
                         <p class="section-lead">Lo que uso para construir una aplicación completa, agrupado por área.</p>
                     </div>
 
@@ -707,8 +695,6 @@
                     <div class="contact-banner glass-card reveal-fade" data-trail-card="2">
                         <div class="contact-rings" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
                         <div class="contact-banner-content">
-                            <span class="section-tag"><span class="tag-mono-idx">03 //</span> <i
-                                    class="fas fa-comments"></i> COMUNICACIÓN DIRECTA</span>
                             <h2 class="contact-title">¿Construimos algo que <em>merezca la pena</em>?</h2>
                             <p class="contact-text">
                                 Estoy disponible para nuevos retos, proyectos de software y consultas sobre

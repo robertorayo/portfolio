@@ -63,10 +63,10 @@
     let hud = null;
 
     const sectionDefs = [
-        { pill: '#proyecto .spotlight-pill', title: '#proyecto .section-title' },
-        { pill: '#habilidades .section-tag', title: '#habilidades .section-heading' },
-        { pill: '#contacto .section-tag', title: '#contacto .contact-title' }
-    ].map((d) => ({ pill: document.querySelector(d.pill), title: document.querySelector(d.title) }));
+        { title: '#proyecto .section-title' },
+        { title: '#habilidades .section-heading' },
+        { title: '#contacto .contact-title' }
+    ].map((d) => ({ title: document.querySelector(d.title) }));
 
     const absRect = (el) => {
         const r = el.getBoundingClientRect();
@@ -129,9 +129,13 @@
         const items = [];
         document.querySelectorAll('[data-trail-station]').forEach((el) => {
             const r = absRect(el);
+            // La estación va en el margen izquierdo de la sección (no junto al título), para que la línea
+            // baje por el margen y no cruce el texto de la cabecera
+            const box = el.closest('.section-container');
+            const left = box ? absRect(box).L + parseFloat(getComputedStyle(box).paddingLeft) : r.L;
             items.push({
                 kind: 'pt', sortY: r.T,
-                x: isMobile ? 14 : Math.max(40, r.L - 28),
+                x: isMobile ? 14 : Math.max(40, left - 28),
                 y: (r.T + r.B) / 2,
                 station: parseInt(el.getAttribute('data-trail-station'), 10)
             });
@@ -165,10 +169,13 @@
                 range.selectNodeContents(walker.currentNode);
                 for (const r of range.getClientRects()) {
                     if (r.width < 1 || r.height < 1) continue;
-                    rects.push({ x: r.left + window.scrollX, y: r.top + window.scrollY, w: r.width, h: r.height, k: 1.5 });
+                    // El % se dibuja por debajo del texto: los títulos y subtítulos de sección pesan casi como una
+                    // tarjeta opaca para que no se coloque detrás; el resto del texto mantiene su peso bajo
+                    const k = walker.currentNode.parentElement.closest('.section-header, .section-header-compact') ? 9 : 1.5;
+                    rects.push({ x: r.left + window.scrollX, y: r.top + window.scrollY, w: r.width, h: r.height, k });
                 }
             }
-            root.querySelectorAll('.section-tag, .spotlight-pill, .hero-badge').forEach((el) => {
+            root.querySelectorAll('.hero-badge').forEach((el) => {
                 if (el.closest('.glass-card, .project-showcase')) return;
                 const r = absRect(el);
                 rects.push({ x: r.L, y: r.T, w: r.R - r.L, h: r.B - r.T, k: 10, g: 8 });
@@ -237,6 +244,10 @@
             const L = r.L - o, R = r.R + o, T = r.T - o, B = r.B + o, CX = (L + R) / 2;
             const cssRad = parseFloat(getComputedStyle(wp.el).borderTopLeftRadius) || 20;
             const rad = Math.max(1, Math.min(cssRad + o, (R - L) / 2 - 1, (B - T) / 2 - 1));
+            // Desde una estación del margen, la línea baja recta y solo gira hacia el centro en el hueco sobre
+            // la tarjeta: así no atraviesa el título ni el subtítulo (y el % tiene sitio libre en el margen)
+            const last = pts[pts.length - 1];
+            if (last && Math.abs(last.x - CX) > 40) push({ x: last.x, y: Math.max(T - 36, (last.y + T) / 2) });
             if (!push({ x: CX, y: T })) return;
             flush();
             const dL = `M ${CX} ${T} H ${L + rad} A ${rad} ${rad} 0 0 0 ${L} ${T + rad} V ${B - rad} A ${rad} ${rad} 0 0 0 ${L + rad} ${B} H ${CX}`;
@@ -316,7 +327,7 @@
     }
 
     // Coste de colocar la etiqueta en la posición i: solapamiento con texto y, sobre todo, con elementos opacos
-    // (tarjetas, píldoras, footer) que la esconderían; también cuenta el conector.
+    // (tarjetas, títulos de sección, footer) que la esconderían; también cuenta el conector.
     function hudOverlap(i, x, y) {
         const c = stCenter(i), hx = HUD_BW / 2 + 5, hy = HUD_BH / 2 + 5;
         const L = x + c[0] - hx, R = x + c[0] + hx, T = y + c[1] - hy, B = y + c[1] + hy;
@@ -545,7 +556,6 @@
         });
         sectionDefs.forEach((s, i) => {
             const on = i === activeIdx;
-            if (s.pill) s.pill.classList.toggle('is-active-section', on);
             if (s.title) s.title.classList.toggle('is-active-title', on);
         });
 
