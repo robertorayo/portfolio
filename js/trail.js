@@ -129,13 +129,9 @@
         const items = [];
         document.querySelectorAll('[data-trail-station]').forEach((el) => {
             const r = absRect(el);
-            // La estación va en el margen izquierdo de la sección (no junto al título), para que la línea
-            // baje por el margen y no cruce el texto de la cabecera
-            const box = el.closest('.section-container');
-            const left = box ? absRect(box).L + parseFloat(getComputedStyle(box).paddingLeft) : r.L;
             items.push({
                 kind: 'pt', sortY: r.T,
-                x: isMobile ? 14 : Math.max(40, left - 28),
+                x: isMobile ? 14 : Math.max(40, r.L - 28),
                 y: (r.T + r.B) / 2,
                 station: parseInt(el.getAttribute('data-trail-station'), 10)
             });
@@ -244,10 +240,6 @@
             const L = r.L - o, R = r.R + o, T = r.T - o, B = r.B + o, CX = (L + R) / 2;
             const cssRad = parseFloat(getComputedStyle(wp.el).borderTopLeftRadius) || 20;
             const rad = Math.max(1, Math.min(cssRad + o, (R - L) / 2 - 1, (B - T) / 2 - 1));
-            // Desde una estación del margen, la línea baja recta y solo gira hacia el centro en el hueco sobre
-            // la tarjeta: así no atraviesa el título ni el subtítulo (y el % tiene sitio libre en el margen)
-            const last = pts[pts.length - 1];
-            if (last && Math.abs(last.x - CX) > 40) push({ x: last.x, y: Math.max(T - 36, (last.y + T) / 2) });
             if (!push({ x: CX, y: T })) return;
             flush();
             const dL = `M ${CX} ${T} H ${L + rad} A ${rad} ${rad} 0 0 0 ${L} ${T + rad} V ${B - rad} A ${rad} ${rad} 0 0 0 ${L + rad} ${B} H ${CX}`;
