@@ -8,29 +8,19 @@
 
     const CAPS = [
         {
-            key: 'frontend', name: 'FRONTEND', title: 'Interfaces claras y adaptables',
-            desc: 'Aplicaciones web con diseño responsive, animaciones cuidadas y atención a la accesibilidad.',
-            chips: ['Responsive', 'Accesible', 'Animación']
+            key: 'frontend', name: 'FRONTEND'
         },
         {
-            key: 'backend', name: 'BACKEND', title: 'Servicios y autenticación',
-            desc: 'Lógica de negocio, autenticación y acceso a datos pensados para mantenerse con facilidad.',
-            chips: ['Servicios', 'Autenticación', 'Acceso a datos']
+            key: 'backend', name: 'BACKEND'
         },
         {
-            key: 'datos', name: 'DATOS', title: 'Bases de datos relacionales',
-            desc: 'Modelado de datos, consultas y reglas de acceso que mantienen la información ordenada y segura.',
-            chips: ['Modelado', 'Consultas', 'Integridad']
+            key: 'datos', name: 'DATOS'
         },
         {
-            key: 'seguridad', name: 'SEGURIDAD', title: 'Permisos por diseño',
-            desc: 'Cada usuario ve y modifica solo lo que le corresponde, aplicando los permisos en la base de datos.',
-            chips: ['Roles', 'Permisos', 'Buenas prácticas']
+            key: 'seguridad', name: 'SEGURIDAD'
         },
         {
-            key: 'cloud', name: 'DESPLIEGUE', title: 'Control de versiones y publicación',
-            desc: 'Código versionado y publicado en la nube, con una vista previa de cada cambio antes de fusionarlo.',
-            chips: ['Versionado', 'Nube', 'Previews']
+            key: 'cloud', name: 'DESPLIEGUE'
         }
     ];
     const N = CAPS.length;
@@ -71,65 +61,23 @@
         target = Math.round(target) + dir;
     }
 
-    /* ---------- Panel HTML (capacidad activa) ---------- */
-    const panel = {
-        root: $('cap-panel'), num: $('cap-num'), kicker: $('cap-kicker'), title: $('cap-title'),
-        desc: $('cap-desc'), chips: $('cap-chips'), dots: $('cap-dots'),
-        prev: $('cap-prev'), next: $('cap-next'),
-        tagNum: $('tile-tag-num'), tagName: $('tile-tag-name'), tag: $('tile-tag')
-    };
+    /* ---------- Etiqueta de la tesela activa ---------- */
+    const panel = { tagNum: $('tile-tag-num'), tagName: $('tile-tag-name'), tag: $('tile-tag') };
 
-    function buildDots() {
-        if (!panel.dots) return;
-        panel.dots.innerHTML = '';
-        CAPS.forEach((c, i) => {
-            const b = document.createElement('button');
-            b.type = 'button';
-            b.className = 'cap-dot';
-            b.setAttribute('role', 'tab');
-            b.setAttribute('aria-label', `${pad2(i + 1)} ${c.name}`);
-            b.innerHTML = `<span>${pad2(i + 1)}</span>`;
-            b.addEventListener('click', () => goTo(i));
-            panel.dots.appendChild(b);
-        });
-    }
-
-    let panelTimer = 0;
     function renderPanel() {
         const c = CAPS[activeIdx];
-        if (!panel.root) return;
-        panel.root.classList.add('is-swapping');
-        clearTimeout(panelTimer);
-        panelTimer = setTimeout(() => {
-            panel.num.textContent = pad2(activeIdx + 1);
-            panel.kicker.textContent = `${c.name} · ${pad2(activeIdx + 1)}/${pad2(N)}`;
-            panel.title.textContent = c.title;
-            panel.desc.textContent = c.desc;
-            panel.chips.innerHTML = c.chips.map((t) => `<span class="cap-chip">${t}</span>`).join('');
-            panel.root.classList.remove('is-swapping');
-        }, panel.root.dataset.ready ? 160 : 0);
-        panel.root.dataset.ready = '1';
-        if (panel.dots) {
-            [...panel.dots.children].forEach((d, i) => {
-                const on = i === activeIdx;
-                d.classList.toggle('is-active', on);
-                d.setAttribute('aria-selected', on ? 'true' : 'false');
-            });
-        }
         if (panel.tagNum) panel.tagNum.textContent = pad2(activeIdx + 1);
         if (panel.tagName) panel.tagName.textContent = c.name;
         if (fallbackIcon) fallbackIcon.className = `stage-fallback-icon ${ICON_FA[c.key]}`;
     }
 
     const ICON_FA = {
-        frontend: 'fas fa-code', backend: 'fas fa-server', datos: 'fas fa-database',        seguridad: 'fas fa-shield-halved', cloud: 'fas fa-cloud-arrow-up'
+        frontend: 'fas fa-code', backend: 'fas fa-server', datos: 'fas fa-database',
+        seguridad: 'fas fa-shield-halved', cloud: 'fas fa-cloud-arrow-up'
     };
     let fallbackIcon = null;
 
-    buildDots();
     renderPanel();
-    if (panel.prev) panel.prev.addEventListener('click', () => step(-1));
-    if (panel.next) panel.next.addEventListener('click', () => step(1));
 
     document.addEventListener('keydown', (e) => {
         if (e.target && /input|textarea|select/i.test(e.target.tagName)) return;

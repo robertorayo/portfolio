@@ -156,7 +156,7 @@
                 acceptNode: (n) => {
                     if (!n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
                     const p = n.parentElement;
-                    if (!p || p.closest('.glass-card, .marquee-strip-wrapper, .hero-stage')) return NodeFilter.FILTER_REJECT;
+                    if (!p || p.closest('.glass-card, .project-showcase, .hero-stage')) return NodeFilter.FILTER_REJECT;
                     return NodeFilter.FILTER_ACCEPT;
                 }
             });
@@ -168,15 +168,15 @@
                     rects.push({ x: r.left + window.scrollX, y: r.top + window.scrollY, w: r.width, h: r.height, k: 1.5 });
                 }
             }
-            root.querySelectorAll('.section-tag, .spotlight-pill, .hero-badge, .marquee-strip-wrapper').forEach((el) => {
-                if (el.closest('.glass-card')) return;
+            root.querySelectorAll('.section-tag, .spotlight-pill, .hero-badge').forEach((el) => {
+                if (el.closest('.glass-card, .project-showcase')) return;
                 const r = absRect(el);
-                rects.push({ x: r.L, y: r.T, w: r.R - r.L, h: r.B - r.T, k: el.matches('.marquee-strip-wrapper') ? 5 : 10, g: el.matches('.marquee-strip-wrapper') ? 6 : 8 });
+                rects.push({ x: r.L, y: r.T, w: r.R - r.L, h: r.B - r.T, k: 10, g: 8 });
             });
         }
         // Obstáculos para colocar el indicador de progreso donde menos estorbe
         obstacles = rects.map((r) => Object.assign({}, r));
-        document.querySelectorAll('.glass-card').forEach((el) => {
+        document.querySelectorAll('.glass-card, .project-showcase').forEach((el) => {
             if (el.closest('.navbar-wrapper')) return;
             const r = absRect(el);
             obstacles.push({ x: r.L, y: r.T, w: r.R - r.L, h: r.B - r.T, k: 10, g: 2 });

@@ -31,13 +31,13 @@
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="preload" href="vendor/fonts/outfit-1.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="vendor/fonts/fonts.css">
-    <link rel="stylesheet" href="styles.css?v=42">
+    <link rel="stylesheet" href="styles.css?v=43">
     <link rel="stylesheet" href="vendor/fontawesome/css/all.min.css">
     <script src="vendor/lib/three.min.js" defer></script>
     <script src="vendor/lib/gsap.min.js" defer></script>
-    <script src="js/hero.js?v=42" defer></script>
-    <script src="js/trail.js?v=42" defer></script>
-    <script src="js/main.js?v=42" defer></script>
+    <script src="js/hero.js?v=43" defer></script>
+    <script src="js/trail.js?v=43" defer></script>
+    <script src="js/main.js?v=43" defer></script>
 </head>
 
 <body>
@@ -170,24 +170,6 @@
                     </div>
 
                     <div class="hero-side reveal-fade">
-                        <div class="cap-panel" id="cap-panel" aria-live="polite">
-                            <div class="cap-panel__top">
-                                <span class="cap-panel__num" id="cap-num">01</span>
-                                <span class="cap-panel__kicker" id="cap-kicker">CAPACIDAD</span>
-                            </div>
-                            <h2 class="cap-panel__title" id="cap-title">Interfaces rápidas y accesibles</h2>
-                            <p class="cap-panel__desc" id="cap-desc"></p>
-                            <div class="cap-panel__chips" id="cap-chips"></div>
-                        </div>
-
-                        <div class="cap-controls">
-                            <button class="cap-arrow" id="cap-prev" aria-label="Capacidad anterior"><i
-                                    class="fas fa-arrow-left"></i></button>
-                            <div class="cap-dots" id="cap-dots" role="tablist" aria-label="Capacidades"></div>
-                            <button class="cap-arrow" id="cap-next" aria-label="Capacidad siguiente"><i
-                                    class="fas fa-arrow-right"></i></button>
-                        </div>
-
                         <div class="hero-cta-group">
                             <a href="#proyecto" class="btn-hero-primary magnetic-btn">
                                 <span>Ver proyectos</span>
@@ -210,29 +192,6 @@
                 <div class="chapter-badge" aria-hidden="true"><b>00</b><span>CAPÍTULO<br>BIENVENIDA</span></div>
             </section>
 
-            <!-- Cinta doble -->
-            <div class="marquee-strip-wrapper reveal-fade" aria-hidden="true">
-                <div class="marquee-row">
-                    <div class="marquee-track">
-                        <div class="marquee-group">
-                            <span>Full-stack</span><i class="marquee-star"></i><span>React</span><i class="marquee-star"></i><span>TypeScript</span><i class="marquee-star"></i><span>Java</span><i class="marquee-star"></i><span>SQL</span><i class="marquee-star"></i>
-                        </div>
-                        <div class="marquee-group">
-                            <span>Full-stack</span><i class="marquee-star"></i><span>React</span><i class="marquee-star"></i><span>TypeScript</span><i class="marquee-star"></i><span>Java</span><i class="marquee-star"></i><span>SQL</span><i class="marquee-star"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="marquee-row marquee-row--outline">
-                    <div class="marquee-track">
-                        <div class="marquee-group">
-                            <span>PostgreSQL</span><i class="marquee-star"></i><span>Supabase</span><i class="marquee-star"></i><span>Tailwind</span><i class="marquee-star"></i><span>Three.js</span><i class="marquee-star"></i><span>Vercel</span><i class="marquee-star"></i>
-                        </div>
-                        <div class="marquee-group">
-                            <span>PostgreSQL</span><i class="marquee-star"></i><span>Supabase</span><i class="marquee-star"></i><span>Tailwind</span><i class="marquee-star"></i><span>Three.js</span><i class="marquee-star"></i><span>Vercel</span><i class="marquee-star"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <!-- ============ PROYECTOS ============ -->
             <section class="project-section" id="proyecto">
@@ -250,7 +209,7 @@
                     </div>
 
                     <!-- DistribuTech Pro -->
-                    <article class="project-showcase glass-card tilt-card reveal-fade" id="project-card" data-trail-card>
+                    <article class="project-showcase reveal-fade" id="project-card" data-trail-card>
                         <span class="project-index" aria-hidden="true">01</span>
                         <div class="showcase-header">
                             <div class="showcase-badges-left">
@@ -301,6 +260,30 @@
                                     </p>
                                 </div>
 
+
+                                <div class="tech-chips-group">
+                                    <span class="tech-chip"><i class="fab fa-react"></i> React 18</span>
+                                    <span class="tech-chip"><i class="fab fa-js"></i> TypeScript</span>
+                                    <span class="tech-chip"><i class="fas fa-bolt"></i> Vite</span>
+                                    <span class="tech-chip"><i class="fab fa-css3-alt"></i> Tailwind</span>
+                                    <span class="tech-chip"><i class="fas fa-database"></i> Supabase</span>
+                                    <span class="tech-chip"><i class="fas fa-server"></i> PostgreSQL</span>
+                                    <span class="tech-chip"><i class="fas fa-cubes"></i> Zustand</span>
+                                    <span class="tech-chip"><i class="fas fa-chart-line"></i> Recharts</span>
+                                </div>
+
+                                <div class="project-actions">
+                                    <a href="https://distributech-pro.vercel.app" target="_blank"
+                                        rel="noopener noreferrer" class="btn-project-cta magnetic-btn">
+                                        <i class="fas fa-arrow-up-right-from-square"></i>
+                                        <span>Ver demo en vivo</span>
+                                    </a>
+                                    <a href="https://github.com/robertorayo/DistribuTech-Pro" target="_blank"
+                                        rel="noopener noreferrer" class="btn-project-secondary magnetic-btn">
+                                        <i class="fab fa-github"></i>
+                                        <span>Explorar código</span>
+                                    </a>
+                                </div>
                                 <div class="pillars-stack">
                                     <div class="pillar-row">
                                         <div class="pillar-bullet"><i class="fas fa-database"></i></div>
@@ -335,33 +318,11 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="tech-chips-group">
-                                    <span class="tech-chip"><i class="fab fa-react"></i> React 18</span>
-                                    <span class="tech-chip"><i class="fab fa-js"></i> TypeScript</span>
-                                    <span class="tech-chip"><i class="fas fa-bolt"></i> Vite</span>
-                                    <span class="tech-chip"><i class="fab fa-css3-alt"></i> Tailwind</span>
-                                    <span class="tech-chip"><i class="fas fa-database"></i> Supabase</span>
-                                    <span class="tech-chip"><i class="fas fa-server"></i> PostgreSQL</span>
-                                    <span class="tech-chip"><i class="fas fa-cubes"></i> Zustand</span>
-                                    <span class="tech-chip"><i class="fas fa-chart-line"></i> Recharts</span>
-                                </div>
-
-                                <div class="project-actions">
-                                    <a href="https://distributech-pro.vercel.app" target="_blank"
-                                        rel="noopener noreferrer" class="btn-project-cta magnetic-btn">
-                                        <i class="fas fa-arrow-up-right-from-square"></i>
-                                        <span>Ver demo en vivo</span>
-                                    </a>
-                                    <a href="https://github.com/robertorayo/DistribuTech-Pro" target="_blank"
-                                        rel="noopener noreferrer" class="btn-project-secondary magnetic-btn">
-                                        <i class="fab fa-github"></i>
-                                        <span>Explorar código</span>
-                                    </a>
-                                </div>
                             </div>
 
-                            <div class="project-extra">
+                            <details class="project-more">
+                                <summary aria-label="Ver detalles de DistribuTech Pro: datos, decisiones y ejemplos"><span>Ver detalles</span><span class="project-more__hint">datos, decisiones y ejemplos</span><i class="fas fa-plus" aria-hidden="true"></i></summary>
+                                <div class="project-extra">
                                 <div class="project-facts" aria-label="Datos del repositorio">
                                     <div class="fact"><b>70+</b><span>commits</span></div>
                                     <div class="fact"><b>8.000+</b><span>líneas TypeScript</span></div>
@@ -431,11 +392,12 @@
                                     </div>
                                 </details>
                             </div>
+                            </details>
                         </div>
                     </article>
 
                     <!-- Agente de citas -->
-                    <article class="project-showcase glass-card tilt-card reveal-fade" id="project-agente" data-trail-card>
+                    <article class="project-showcase reveal-fade" id="project-agente" data-trail-card>
                         <span class="project-index" aria-hidden="true">02</span>
                         <div class="showcase-header">
                             <div class="showcase-badges-left">
@@ -485,6 +447,31 @@
                                     </p>
                                 </div>
 
+
+                                <div class="tech-chips-group">
+                                    <span class="tech-chip"><i class="fab fa-node-js"></i> Node.js</span>
+                                    <span class="tech-chip"><i class="fab fa-js"></i> TypeScript</span>
+                                    <span class="tech-chip"><i class="fab fa-php"></i> PHP</span>
+                                    <span class="tech-chip"><i class="fab fa-laravel"></i> Laravel</span>
+                                    <span class="tech-chip"><i class="fas fa-code"></i> JSON y OpenAPI</span>
+                                    <span class="tech-chip"><i class="fas fa-robot"></i> LLM con herramientas</span>
+                                    <span class="tech-chip"><i class="fab fa-react"></i> React</span>
+                                    <span class="tech-chip"><i class="fas fa-server"></i> PostgreSQL</span>
+                                    <span class="tech-chip"><i class="fab fa-docker"></i> Docker</span>
+                                </div>
+
+                                <div class="project-actions">
+                                    <a href="https://agente-citas-telegram.onrender.com" target="_blank"
+                                        rel="noopener noreferrer" class="btn-project-cta magnetic-btn">
+                                        <i class="fas fa-arrow-up-right-from-square"></i>
+                                        <span>Probar el asistente</span>
+                                    </a>
+                                    <a href="https://github.com/robertorayo/agente-citas-telegram" target="_blank"
+                                        rel="noopener noreferrer" class="btn-project-secondary magnetic-btn">
+                                        <i class="fab fa-github"></i>
+                                        <span>Explorar código</span>
+                                    </a>
+                                </div>
                                 <div class="pillars-stack">
                                     <div class="pillar-row">
                                         <div class="pillar-bullet"><i class="fas fa-comments"></i></div>
@@ -521,34 +508,11 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="tech-chips-group">
-                                    <span class="tech-chip"><i class="fab fa-node-js"></i> Node.js</span>
-                                    <span class="tech-chip"><i class="fab fa-js"></i> TypeScript</span>
-                                    <span class="tech-chip"><i class="fab fa-php"></i> PHP</span>
-                                    <span class="tech-chip"><i class="fab fa-laravel"></i> Laravel</span>
-                                    <span class="tech-chip"><i class="fas fa-code"></i> JSON y OpenAPI</span>
-                                    <span class="tech-chip"><i class="fas fa-robot"></i> LLM con herramientas</span>
-                                    <span class="tech-chip"><i class="fab fa-react"></i> React</span>
-                                    <span class="tech-chip"><i class="fas fa-server"></i> PostgreSQL</span>
-                                    <span class="tech-chip"><i class="fab fa-docker"></i> Docker</span>
-                                </div>
-
-                                <div class="project-actions">
-                                    <a href="https://agente-citas-telegram.onrender.com" target="_blank"
-                                        rel="noopener noreferrer" class="btn-project-cta magnetic-btn">
-                                        <i class="fas fa-arrow-up-right-from-square"></i>
-                                        <span>Probar el asistente</span>
-                                    </a>
-                                    <a href="https://github.com/robertorayo/agente-citas-telegram" target="_blank"
-                                        rel="noopener noreferrer" class="btn-project-secondary magnetic-btn">
-                                        <i class="fab fa-github"></i>
-                                        <span>Explorar código</span>
-                                    </a>
-                                </div>
                             </div>
 
-                            <div class="project-extra">
+                            <details class="project-more">
+                                <summary aria-label="Ver detalles de el agente de citas: datos, decisiones y ejemplos"><span>Ver detalles</span><span class="project-more__hint">datos, decisiones y ejemplos</span><i class="fas fa-plus" aria-hidden="true"></i></summary>
+                                <div class="project-extra">
                                 <div class="project-facts" aria-label="Datos del repositorio">
                                     <div class="fact"><b>2</b><span>canales</span></div>
                                     <div class="fact"><b>7</b><span>herramientas de IA</span></div>
@@ -592,11 +556,12 @@
                                     </div>
                                 </details>
                             </div>
+                            </details>
                         </div>
                     </article>
 
                     <!-- Shenron -->
-                    <article class="project-showcase glass-card tilt-card reveal-fade" id="project-shenron" data-trail-card>
+                    <article class="project-showcase reveal-fade" id="project-shenron" data-trail-card>
                         <span class="project-index" aria-hidden="true">03</span>
                         <div class="showcase-header">
                             <div class="showcase-badges-left">
@@ -648,6 +613,29 @@
                                         lucro y sin afiliación con los titulares de Dragon Ball.</p>
                                 </div>
 
+
+                                <div class="tech-chips-group">
+                                    <span class="tech-chip"><i class="fab fa-html5"></i> HTML5</span>
+                                    <span class="tech-chip"><i class="fab fa-css3-alt"></i> CSS moderno</span>
+                                    <span class="tech-chip"><i class="fab fa-js"></i> JavaScript</span>
+                                    <span class="tech-chip"><i class="fas fa-film"></i> Canvas 2D</span>
+                                    <span class="tech-chip"><i class="fas fa-wave-square"></i> Scroll-driven</span>
+                                    <span class="tech-chip"><i class="fas fa-server"></i> Vercel</span>
+                                </div>
+
+                                <div class="project-actions">
+                                    <a href="https://github.com/robertorayo/shenronwebsite" target="_blank"
+                                        rel="noopener noreferrer" class="btn-project-cta magnetic-btn">
+                                        <i class="fab fa-github"></i>
+                                        <span>Explorar código</span>
+                                        <i class="fas fa-arrow-right"></i>
+                                    </a>
+                                    <a href="https://shenronwebsite.vercel.app/" target="_blank"
+                                        rel="noopener noreferrer" class="btn-project-secondary magnetic-btn">
+                                        <i class="fas fa-arrow-up-right-from-square"></i>
+                                        <span>Ver web en vivo</span>
+                                    </a>
+                                </div>
                                 <div class="pillars-stack">
                                     <div class="pillar-row">
                                         <div class="pillar-bullet"><i class="fas fa-film"></i></div>
@@ -680,29 +668,6 @@
                                             <p>Integración con GitHub y distribución global en Vercel.</p>
                                         </div>
                                     </div>
-                                </div>
-
-                                <div class="tech-chips-group">
-                                    <span class="tech-chip"><i class="fab fa-html5"></i> HTML5</span>
-                                    <span class="tech-chip"><i class="fab fa-css3-alt"></i> CSS moderno</span>
-                                    <span class="tech-chip"><i class="fab fa-js"></i> JavaScript</span>
-                                    <span class="tech-chip"><i class="fas fa-film"></i> Canvas 2D</span>
-                                    <span class="tech-chip"><i class="fas fa-wave-square"></i> Scroll-driven</span>
-                                    <span class="tech-chip"><i class="fas fa-server"></i> Vercel</span>
-                                </div>
-
-                                <div class="project-actions">
-                                    <a href="https://github.com/robertorayo/shenronwebsite" target="_blank"
-                                        rel="noopener noreferrer" class="btn-project-cta magnetic-btn">
-                                        <i class="fab fa-github"></i>
-                                        <span>Explorar código</span>
-                                        <i class="fas fa-arrow-right"></i>
-                                    </a>
-                                    <a href="https://shenronwebsite.vercel.app/" target="_blank"
-                                        rel="noopener noreferrer" class="btn-project-secondary magnetic-btn">
-                                        <i class="fas fa-arrow-up-right-from-square"></i>
-                                        <span>Ver web en vivo</span>
-                                    </a>
                                 </div>
                             </div>
                         </div>

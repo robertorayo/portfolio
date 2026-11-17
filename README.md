@@ -1,15 +1,16 @@
 # Portfolio
 
-Mi portfolio web: una página única con un carrusel 3D en el inicio, una línea de scroll que enlaza las secciones y un explorador de tecnologías por áreas.
+Mi portfolio web: una página única centrada en mis proyectos, con un carrusel 3D en el inicio, una línea de scroll que enlaza las secciones y un explorador de tecnologías por áreas.
 
 **Web:** <https://portfolio-eight-psi-g07adxw176.vercel.app>
 
 ## Qué incluye
 
+- **Proyectos en bandas alternas:** captura grande a un lado y lo esencial al otro (descripción, tecnologías, demo y código), los puntos clave debajo y los datos, decisiones y ejemplos en un desplegable.
 - **Carrusel 3D** en Three.js con gestos de rueda y panel táctil: bloqueo de eje, suavizado y ajuste al elemento más cercano al soltar.
-- **Línea de scroll** que recorre el proyecto, las tecnologías y el contacto, con el porcentaje de avance.
+- **Línea de scroll** que recorre los proyectos, las tecnologías y el contacto, con el porcentaje de avance.
 - **Explorador de stack** con pestañas navegables por teclado.
-- **Animaciones** con GSAP, inclinación 3D de tarjetas y botones magnéticos solo en dispositivos con puntero fino.
+- **Animaciones** con GSAP, inclinación 3D de las capturas de los proyectos y botones magnéticos solo en dispositivos con puntero fino.
 - **Accesibilidad y rendimiento:** respeta `prefers-reduced-motion`, roles ARIA en las pestañas y carga sin dependencias externas.
 
 ## Tecnología
