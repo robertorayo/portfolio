@@ -50,6 +50,10 @@ No hay build, lint ni tests automatizados. En su lugar:
 1. Abrir en el navegador y revisar que **la consola no tenga errores**.
 2. Comprobar escritorio y móvil (al menos 1440, 1024, 768 y 375 px de ancho) y con `prefers-reduced-motion` activo.
 3. Probar el carrusel con rueda, arrastre y panel táctil, la línea de scroll y las pestañas del stack con teclado.
+   - **Auditoría con Chrome DevTools MCP** (servidor `chrome-devtools`, para lo que el navegador integrado no emula), sobre `http://localhost:5173`:
+     - `emulate` con `prefersReducedMotion: "reduce"`: el carrusel, el tilt, los magnéticos y la línea de scroll no deben animarse.
+     - `emulate` con `cpuThrottlingRate: 4` y viewport móvil (375 px): el carrusel 3D debe seguir siendo usable. Si va a tirones, haz una traza con `performance_start_trace`/`performance_stop_trace` y revisa los insights (LCP, CLS, tareas largas).
+     - `lighthouse_audit` (desktop y mobile): sin fallos nuevos de accesibilidad, SEO ni buenas prácticas.
 4. Si cambias contenido o estructura, actualizar el `README.md`.
 5. Si la página cambia de forma visible, revisar `og-image.png` y los metadatos SEO.
 
