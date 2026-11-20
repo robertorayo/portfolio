@@ -180,7 +180,7 @@ body.trek-finale .contact-banner::after { opacity: 1; }
    HERO · CARRUSEL 3D
    ========================================================================== */
 .hero-section {
-    position: relative; min-height: max(100svh, 820px); display: grid; grid-template-rows: 1fr auto; overflow: hidden;
+    position: relative; min-height: max(100svh, 600px); display: grid; grid-template-rows: 1fr auto; overflow: hidden;
     padding-top: var(--nav-h);
     background:
         radial-gradient(55% 85% at 100% 38%, rgba(255,255,255,0.2), rgba(255,255,255,0.06) 45%, transparent 70%),
@@ -200,7 +200,7 @@ body.trek-finale .contact-banner::after { opacity: 1; }
 .stage-fallback-icon { position: absolute; left: 50%; top: 36%; transform: translate(-50%, -50%); font-size: clamp(5rem, 14vw, 9rem); color: #e7eaf0; text-shadow: 0 0 60px rgba(255,255,255,0.4); }
 
 
-.hero-bottom { position: relative; z-index: 2; align-self: end; width: 100%; max-width: 1440px; margin: 0 auto; padding: 0 var(--gutter) clamp(1.6rem, 3.5vw, 2.8rem); display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr); gap: clamp(1.5rem, 5vw, 5rem); align-items: end; pointer-events: none; }
+.hero-bottom { position: relative; z-index: 2; align-self: end; width: 100%; max-width: 1440px; margin: 0 auto; padding: 0 var(--gutter) clamp(1.4rem, min(3.5vw, 4svh), 2.8rem); display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr); gap: clamp(1.5rem, 5vw, 5rem); align-items: end; pointer-events: none; }
 .hero-badge, .hero-cta-group { pointer-events: auto; }
 .hero-copy { display: flex; flex-direction: column; align-items: flex-start; gap: 1rem; }
 
@@ -211,7 +211,7 @@ body.trek-finale .contact-banner::after { opacity: 1; }
 .badge-time { display: inline-flex; gap: 0.4rem; color: var(--text-muted); }
 
 .hero-eyebrow { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
-.hero-title { font-family: var(--font-heading); font-weight: 600; font-size: clamp(2.5rem, 6.6vw, 6.2rem); line-height: 1; letter-spacing: -0.035em; text-shadow: 0 6px 40px rgba(0,0,0,0.6); }
+.hero-title { font-family: var(--font-heading); font-weight: 600; font-size: clamp(2.5rem, min(6.6vw, 10.5svh), 6.2rem); line-height: 1; letter-spacing: -0.035em; text-shadow: 0 6px 40px rgba(0,0,0,0.6); }
 .hero-title em { font-style: normal; background: linear-gradient(100deg, #ffffff 20%, #8b95a7 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .hero-description { max-width: 540px; font-size: clamp(0.95rem, 1.2vw, 1.08rem); color: var(--text-secondary); line-height: 1.65; }
 
@@ -435,10 +435,10 @@ a.app-mockup-frame { display: block; color: inherit; text-decoration: none; curs
 .social-btn:hover { background: #fff; color: #06070a; transform: translateX(4px); }
 .footer-wordmark { position: relative; margin: clamp(2rem, 5vw, 3.5rem) 0 0.8rem; font-family: var(--font-heading); font-weight: 800; font-size: min(8.6vw, 9.6rem); font-size: 9.7cqw; line-height: 0.85; letter-spacing: -0.045em; text-align: center; white-space: nowrap; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.22); user-select: none; -webkit-mask-image: linear-gradient(to bottom, #000 40%, transparent 108%); mask-image: linear-gradient(to bottom, #000 40%, transparent 108%); transition: -webkit-text-stroke-color 1s ease; }
 /* Barrido plateado: banda blanca con degradado a plata y negro que recorre las letras en bucle */
-.footer-wordmark::after { content: attr(data-text); position: absolute; inset: 0; background: linear-gradient(100deg, #05060a 0%, #05060a 32%, #6c7485 41%, #c9ced8 46%, #ffffff 50%, #c9ced8 54%, #6c7485 59%, #05060a 68%, #05060a 100%); background-size: 260% 100%; background-position: 130% 0; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; -webkit-text-stroke: 0; animation: wordSweep 4.2s cubic-bezier(0.45, 0, 0.25, 1) infinite; }
+.footer-wordmark::after { content: attr(data-text); position: absolute; inset: 0; background: linear-gradient(100deg, #05060a 0%, #05060a 32%, #6c7485 41%, #c9ced8 46%, #ffffff 50%, #c9ced8 54%, #6c7485 59%, #05060a 68%, #05060a 100%); background-size: 260% 100%; background-position: 110% 0; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; -webkit-text-stroke: 0; animation: wordSweep 2.6s cubic-bezier(0.45, 0, 0.25, 1) infinite; }
 /* Resplandor que respira por debajo de las letras */
-.footer-wordmark::before { content: ''; position: absolute; left: 50%; top: 50%; width: 70%; height: 140%; transform: translate(-50%, -50%); background: radial-gradient(closest-side, rgba(255,255,255,0.1), transparent 72%); filter: blur(24px); animation: wordGlow 4.2s ease-in-out infinite; pointer-events: none; }
-@keyframes wordSweep { 0% { background-position: 130% 0; } 74%, 100% { background-position: -30% 0; } }
+.footer-wordmark::before { content: ''; position: absolute; left: 50%; top: 50%; width: 70%; height: 140%; transform: translate(-50%, -50%); background: radial-gradient(closest-side, rgba(255,255,255,0.1), transparent 72%); filter: blur(24px); animation: wordGlow 2.6s ease-in-out infinite; pointer-events: none; }
+@keyframes wordSweep { 0% { background-position: 110% 0; } 85%, 100% { background-position: -10% 0; } }
 @keyframes wordGlow { 0%, 100% { opacity: 0.35; } 38% { opacity: 1; } }
 body.trek-footer .footer-wordmark { -webkit-text-stroke-color: rgba(255,255,255,0.42); }
 
