@@ -2,7 +2,7 @@
 
 Mi portfolio web: una página única centrada en mis proyectos, con un carrusel 3D en el inicio, una línea de scroll que enlaza las secciones y un explorador de tecnologías por áreas.
 
-**Web:** <https://portfolio-eight-psi-g07adxw176.vercel.app>
+**Web:** <https://roberto-borrallo.vercel.app>
 
 ## Qué incluye
 
