@@ -395,6 +395,7 @@ a.app-mockup-frame { display: block; color: inherit; text-decoration: none; curs
 .contact-rings i:nth-child(4) { --d: 1120px; --dl: 1.8s; }
 @keyframes ringPulse { 0%, 100% { opacity: 0.35; transform: translate(-50%, -50%) scale(0.97); } 50% { opacity: 1; transform: translate(-50%, -50%) scale(1.03); } }
 .contact-banner-content { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 1.3rem; }
+.contact-photo { width: clamp(96px, 14vw, 136px); height: auto; aspect-ratio: 1; border-radius: 50%; object-fit: cover; border: 1px solid var(--border-hover); box-shadow: 0 0 0 6px rgba(255,255,255,0.04), var(--shadow-glass); }
 .contact-title { font-family: var(--font-heading); font-size: clamp(2.1rem, 5vw, 3.9rem); font-weight: 700; line-height: 1.08; letter-spacing: -0.03em; }
 .contact-text { color: var(--text-muted); font-size: 1.05rem; max-width: 560px; }
 .email-copy-box { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.6rem; padding: 0.5rem; border-radius: 100px; border: 1px solid var(--border-card); background: rgba(255,255,255,0.04); margin-top: 0.3rem; }
@@ -420,7 +421,7 @@ a.app-mockup-frame { display: block; color: inherit; text-decoration: none; curs
 .footer-container { max-width: 1240px; margin: 0 auto; container-type: inline-size; }
 .footer-top { display: grid; grid-template-columns: 1.4fr 1fr 0.9fr; gap: clamp(2rem, 5vw, 4rem); }
 .footer-brand { display: flex; align-items: center; gap: 0.9rem; margin-top: 1.1rem; }
-.footer-monogram { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #fff, #94a3b8); color: #06070a; font-weight: 800; font-family: var(--font-heading); }
+.footer-photo { flex-shrink: 0; width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border-hover); }
 .footer-name { font-family: var(--font-heading); font-size: 1.2rem; line-height: 1.2; }
 .footer-role { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; color: var(--text-muted); }
 .footer-bio { color: var(--text-muted); font-size: 0.92rem; max-width: 380px; }
