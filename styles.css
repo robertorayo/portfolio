@@ -59,8 +59,9 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 :focus-visible { outline: 2px solid #ffffff; outline-offset: 3px; border-radius: 8px; }
 
 /* ---------- Scrollbar ---------- */
-/* La del navegador, en tonos oscuros para que no destaque sobre el fondo negro */
-html { color-scheme: dark; scrollbar-color: var(--border-hover) var(--bg-base); }
+/* Sin barra visible: se desplaza con rueda, panel táctil, dedo o teclado. color-scheme oscuro para los controles nativos */
+html { color-scheme: dark; scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
 
 /* ---------- Fondo ---------- */
 .dynamic-background-container { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
@@ -157,19 +158,26 @@ body.trek-finale .contact-banner::after { opacity: 1; }
 .liquid-glass { --lg-tint: rgba(10, 12, 17, 0.35); }
 .navbar.liquid-glass { --lg-tint: rgba(10, 12, 17, 0.66); }
 .demo-pill.liquid-glass { --lg-tint: rgba(10, 12, 17, 0.55); }
+/* Dentro de las tarjetas el fondo es liso y oscuro: un tinte claro, como el que ya tenían, y el borde de luz del cristal */
+.btn-project-secondary.liquid-glass, .link-github-repo.liquid-glass, .chrome-badge.liquid-glass, .badge-project-type.liquid-glass,
+.badge-industry.liquid-glass, .badge-repo-status.liquid-glass, .email-copy-box.liquid-glass, .social-btn.liquid-glass, .contact-link.liquid-glass,
+.project-more > summary i.liquid-glass { --lg-tint: rgba(255, 255, 255, 0.06); }
 .liquid-glass.is-liquid {
     background: var(--lg-tint) !important; border-color: transparent;
     -webkit-backdrop-filter: var(--lg-filter); backdrop-filter: var(--lg-filter);
     box-shadow: inset 1px 1px 0 rgba(255,255,255,0.5), inset -1px -1px 0 rgba(255,255,255,0.2), inset 0 0 18px rgba(255,255,255,0.07), 0 10px 30px rgba(0,0,0,0.35);
 }
-.btn-hero-secondary.is-liquid:hover { --lg-tint: rgba(255, 255, 255, 0.12); border-color: transparent; }
+/* Estados al pasar el ratón: el tinte con !important taparía su fondo, así que cambian la variable */
+.btn-hero-secondary.is-liquid:hover, .btn-project-secondary.is-liquid:hover, .link-github-repo.is-liquid:hover { --lg-tint: rgba(255, 255, 255, 0.14); }
+.social-btn.is-liquid:hover, .contact-link.is-liquid:hover, .project-more > summary:hover i.is-liquid, .project-more > summary:focus-visible i.is-liquid { --lg-tint: var(--text-primary); }
 .liquid-glass-defs { position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none; }
 
 /* Quien pide menos transparencia en el sistema ve fondos opacos, sin desenfoques ni refracción.
    main.js ya no activa el cristal en ese caso; estas reglas cubren también el cambio con la página abierta */
 @media (prefers-reduced-transparency: reduce) {
-    .liquid-glass, .liquid-glass.is-liquid { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--bg-elevated) !important; }
-    .navbar, .navbar.liquid-glass.is-liquid { background: rgba(12, 15, 21, 0.96) !important; }
+    .liquid-glass.is-liquid { -webkit-backdrop-filter: none; backdrop-filter: none; }
+    .navbar, .navbar.liquid-glass.is-liquid { -webkit-backdrop-filter: none; backdrop-filter: none; background: rgba(12, 15, 21, 0.96) !important; }
+    .demo-pill, .demo-pill.liquid-glass.is-liquid { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--bg-elevated) !important; }
 }
 .nav-brand { display: flex; align-items: center; gap: 0.65rem; font-family: var(--font-heading); font-weight: 700; flex-shrink: 0; }
 .brand-monogram { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, #fff, #94a3b8); color: #06070a; font-size: 0.8rem; font-weight: 800; }
