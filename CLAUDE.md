@@ -14,7 +14,7 @@ index.html     estructura, contenido, SEO (meta, Open Graph, JSON-LD)
 styles.css     todos los estilos (variables en :root)
 js/hero.js     carrusel 3D del inicio (Three.js): rueda, panel táctil, inercia, ajuste
 js/trail.js    línea de trayectoria al hacer scroll (SVG, estaciones, % de avance)
-js/main.js     scrollbar flotante, tilt, botones magnéticos, reveal, nav activa, explorador de stack, copiar email
+js/main.js     cristal líquido (.liquid-glass), tilt, botones magnéticos, reveal, nav activa, explorador de stack, copiar email
 vendor/        librerías y fuentes incluidas en el repo
 *.png, *.jpg   imágenes (og-image, previews de proyectos, logos)
 ```
@@ -38,7 +38,7 @@ y abrir `http://localhost:5173`.
 - Puntos de corte usados: 1240, 1100, 1020, 900, 860, 760 y 560 px. Reutilízalos antes de crear nuevos.
 
 ## Caché de recursos
-`index.html` carga CSS y JS con `?v=N` (ahora `v=49`). **Si cambias `styles.css` o cualquier `js/*.js`, sube el número en las 4 referencias** para que Vercel/el navegador no sirvan la versión vieja.
+`index.html` carga CSS y JS con `?v=N` (ahora `v=53`). **Si cambias `styles.css` o cualquier `js/*.js`, sube el número en las 4 referencias** para que Vercel/el navegador no sirvan la versión vieja.
 
 ## Criterios de contenido
 - Contenido **técnico y honesto**: no afirmar funcionalidades que el código de los proyectos no respalde.

@@ -1,65 +1,9 @@
-/* Interacciones generales: scrollbar flotante, tilt, botones magnéticos, reveal, nav activa, reloj, terminal y copiar email. */
+/* Interacciones generales: cristal líquido, tilt, botones magnéticos, reveal, nav activa, reloj, terminal y copiar email. */
 (function () {
     'use strict';
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-
-    /* 1. Línea de scroll flotante */
-    (function floatingScrollbar() {
-        const fsb = document.getElementById('fsb');
-        const thumb = document.getElementById('fsb-thumb');
-        if (!fsb || !thumb || !finePointer) return;
-        const doc = document.documentElement, PAD = 4;
-        let hideTimer = 0, raf = 0, drag = null;
-
-        const geo = () => {
-            const vh = window.innerHeight, total = doc.scrollHeight;
-            const th = Math.max(38, (vh * vh) / total);
-            return { vh, max: total - vh, th, run: vh - th - PAD * 2 };
-        };
-        const update = () => {
-            raf = 0;
-            const g = geo();
-            fsb.classList.toggle('is-none', g.max <= 4);
-            if (g.max <= 4) return;
-            thumb.style.height = g.th + 'px';
-            thumb.style.transform = `translateY(${PAD + (window.scrollY / g.max) * g.run}px)`;
-        };
-        const req = () => { if (!raf) raf = requestAnimationFrame(update); };
-        const show = () => {
-            fsb.classList.add('is-on');
-            clearTimeout(hideTimer);
-            hideTimer = setTimeout(() => { if (!drag && !fsb.matches(':hover')) fsb.classList.remove('is-on'); }, 850);
-        };
-        window.addEventListener('scroll', () => { req(); show(); }, { passive: true });
-        window.addEventListener('resize', req, { passive: true });
-        new ResizeObserver(req).observe(document.body);
-
-        thumb.addEventListener('pointerdown', (e) => {
-            if (e.button !== 0) return;
-            e.preventDefault(); e.stopPropagation();
-            thumb.setPointerCapture(e.pointerId);
-            drag = { y: e.clientY, s: window.scrollY };
-            fsb.classList.add('is-drag', 'is-on');
-        });
-        thumb.addEventListener('pointermove', (e) => {
-            if (!drag) return;
-            const g = geo();
-            window.scrollTo(0, drag.s + (e.clientY - drag.y) * (g.max / g.run));
-        });
-        const end = () => { if (!drag) return; drag = null; fsb.classList.remove('is-drag'); show(); };
-        thumb.addEventListener('pointerup', end);
-        thumb.addEventListener('pointercancel', end);
-        fsb.addEventListener('pointerdown', (e) => {
-            if (e.target !== fsb || e.button !== 0) return;
-            const r = thumb.getBoundingClientRect();
-            window.scrollBy({ top: (e.clientY < r.top ? -1 : 1) * window.innerHeight * 0.85, behavior: 'smooth' });
-        });
-        fsb.addEventListener('pointerenter', () => { fsb.classList.add('is-on'); clearTimeout(hideTimer); });
-        fsb.addEventListener('pointerleave', show);
-        update();
-    })();
 
     /* 2. Tilt 3D de tarjetas y botones magnéticos (solo puntero fino) */
     if (window.gsap && finePointer && !reduceMotion) {
@@ -142,6 +86,114 @@
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(email).then(done).catch(() => { label.textContent = email; });
             } else label.textContent = email;
+        });
+    })();
+
+    /* 7. Cristal líquido (barra, pastilla y botones del inicio, «Ver demo» de las capturas)
+       Un mapa de desplazamiento (R = X, G = Y, 128 = quieto) desplaza el fondo hacia dentro en el bisel
+       del borde, como una lente. Solo Chromium pinta filtros SVG en backdrop-filter; Safari dice que sí en
+       @supports pero no lo dibuja, así que se detecta el motor y el resto se queda con el estilo del CSS.
+       Cada elemento .liquid-glass tiene su propio filtro, porque el mapa depende de su tamaño. */
+    (function liquidGlass() {
+        const els = document.querySelectorAll('.liquid-glass');
+        // Marcas del motor; si vienen vacías (p. ej. con el agente de usuario sobrescrito), se mira el texto clásico.
+        // En iOS todos los navegadores son WebKit aunque digan Chrome (CriOS) o Firefox (FxiOS)
+        const brands = (navigator.userAgentData && navigator.userAgentData.brands) || [];
+        const ua = navigator.userAgent;
+        const chromium = brands.length ? brands.some((b) => b.brand === 'Chromium')
+            : /\bChrome\/\d/.test(ua) && !/CriOS|FxiOS|EdgiOS/.test(ua);
+        if (!els.length || !chromium) return;
+        if (window.matchMedia('(prefers-reduced-transparency: reduce)').matches) return;
+        const NS = 'http://www.w3.org/2000/svg';
+        const attrs = (el, o) => Object.keys(o).forEach((k) => el.setAttribute(k, o[k]));
+
+        const svg = document.createElementNS(NS, 'svg');
+        svg.setAttribute('class', 'liquid-glass-defs');
+        svg.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(svg);
+
+        const makeFilter = (id) => {
+            const filter = document.createElementNS(NS, 'filter');
+            attrs(filter, { id, x: '0', y: '0', filterUnits: 'userSpaceOnUse', 'color-interpolation-filters': 'sRGB' });
+            const blur = document.createElementNS(NS, 'feGaussianBlur');
+            attrs(blur, { in: 'SourceGraphic', stdDeviation: '1.5', result: 'b' });
+            const map = document.createElementNS(NS, 'feImage');
+            attrs(map, { x: '0', y: '0', result: 'map', preserveAspectRatio: 'none' });
+            const disp = document.createElementNS(NS, 'feDisplacementMap');
+            attrs(disp, { in: 'b', in2: 'map', xChannelSelector: 'R', yChannelSelector: 'G', result: 'd' });
+            const sat = document.createElementNS(NS, 'feColorMatrix');
+            attrs(sat, { in: 'd', type: 'saturate', values: '1.6' });
+            filter.append(blur, map, disp, sat);
+            svg.appendChild(filter);
+            return { filter, map, disp };
+        };
+
+        // Distancia al borde de un rectángulo redondeado; en el bisel, empuje hacia dentro con perfil convexo
+        const buildMap = (w, h, radius, BISEL) => {
+            const cv = document.createElement('canvas');
+            cv.width = w; cv.height = h;
+            const ctx = cv.getContext('2d');
+            const img = ctx.createImageData(w, h);
+            const r = Math.min(radius, w / 2, h / 2);
+            for (let y = 0; y < h; y++) {
+                for (let x = 0; x < w; x++) {
+                    const px = x + 0.5 - w / 2, py = y + 0.5 - h / 2;
+                    const qx = Math.abs(px) - (w / 2 - r), qy = Math.abs(py) - (h / 2 - r);
+                    const ox = Math.max(qx, 0), oy = Math.max(qy, 0);
+                    const depth = r - Math.hypot(ox, oy) - Math.min(Math.max(qx, qy), 0);
+                    let dx = 0, dy = 0;
+                    if (depth >= 0 && depth < BISEL) {
+                        let nx = 0, ny = 1;
+                        if (qx > 0 && qy > 0) { const l = Math.hypot(ox, oy) || 1; nx = ox / l; ny = oy / l; }
+                        else if (qx > qy) { nx = 1; ny = 0; }
+                        const f = Math.pow(1 - depth / BISEL, 2.2);
+                        dx = -nx * (Math.sign(px) || 1) * f;
+                        dy = -ny * (Math.sign(py) || 1) * f;
+                    }
+                    const i = (y * w + x) * 4;
+                    img.data[i] = 128 + dx * 127; img.data[i + 1] = 128 + dy * 127; img.data[i + 2] = 128; img.data[i + 3] = 255;
+                }
+            }
+            ctx.putImageData(img, 0, 0);
+            return cv.toDataURL();
+        };
+
+        const items = new Map();
+        const update = (el) => {
+            const it = items.get(el);
+            const w = Math.round(el.offsetWidth), h = Math.round(el.offsetHeight);
+            const radius = Math.min(parseFloat(getComputedStyle(el).borderTopLeftRadius) || h / 2, h / 2);
+            const key = w + 'x' + h + 'r' + radius;
+            if (!w || !h || key === it.key) return;
+            it.key = key;
+            // Bisel y fuerza proporcionales a la altura: la barra (57px) usa 20 y 60; una pastilla pequeña, menos
+            const bisel = Math.min(20, h * 0.4), escala = Math.min(60, Math.round(h * 1.4));
+            const url = buildMap(w, h, radius, bisel);
+            // La clase solo se pone con el mapa ya decodificado: si no, el feImage vacío desplaza el fondo un fotograma
+            const im = new Image();
+            im.src = url;
+            im.decode().then(() => {
+                if (it.key !== key) return;
+                attrs(it.filter, { width: String(w), height: String(h) });
+                attrs(it.map, { width: String(w), height: String(h), href: url });
+                it.disp.setAttribute('scale', String(escala));
+                // Por variable y no inline, para que el CSS pueda anularlo (p. ej. con reduced-transparency)
+                el.style.setProperty('--lg-filter', `url(#${it.id})`);
+                el.classList.add('is-liquid');
+            }).catch(() => { if (it.key === key) it.key = ''; });
+        };
+        // Mientras se redimensiona, el mapa anterior se estira; se rehace al parar (~120 ms)
+        const ro = new ResizeObserver((entries) => {
+            entries.forEach(({ target }) => {
+                const it = items.get(target);
+                clearTimeout(it.timer);
+                it.timer = setTimeout(() => requestAnimationFrame(() => update(target)), it.key ? 120 : 0);
+            });
+        });
+        els.forEach((el, i) => {
+            const id = 'liquid-glass-' + i;
+            items.set(el, Object.assign({ id, key: '', timer: 0 }, makeFilter(id)));
+            ro.observe(el);
         });
     })();
 
