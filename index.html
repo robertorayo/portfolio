@@ -35,13 +35,13 @@
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="preload" href="vendor/fonts/outfit-1.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="vendor/fonts/fonts.css">
-    <link rel="stylesheet" href="styles.css?v=49">
+    <link rel="stylesheet" href="styles.css?v=50">
     <link rel="stylesheet" href="vendor/fontawesome/css/all.min.css">
     <script src="vendor/lib/three.min.js" defer></script>
     <script src="vendor/lib/gsap.min.js" defer></script>
-    <script src="js/hero.js?v=49" defer></script>
-    <script src="js/trail.js?v=49" defer></script>
-    <script src="js/main.js?v=49" defer></script>
+    <script src="js/hero.js?v=50" defer></script>
+    <script src="js/trail.js?v=50" defer></script>
+    <script src="js/main.js?v=50" defer></script>
 </head>
 
 <body>
@@ -104,6 +104,9 @@
             </g>
             <g id="trek-hud" class="trek-hud"></g>
         </svg>
+
+        <!-- Desenfoque progresivo del borde superior: capas con blur creciente -->
+        <div class="edge-blur" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
 
         <!-- Navegación -->
         <header class="navbar-wrapper">

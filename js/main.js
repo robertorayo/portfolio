@@ -145,6 +145,89 @@
         });
     })();
 
+    /* 7. Cristal líquido de la barra
+       Un mapa de desplazamiento (R = X, G = Y, 128 = quieto) desplaza el fondo hacia dentro en el bisel
+       del borde, como una lente. Solo Chromium pinta filtros SVG en backdrop-filter; Safari dice que sí en
+       @supports pero no lo dibuja, así que se detecta el motor y el resto se queda con el blur normal. */
+    (function liquidNav() {
+        const nav = document.querySelector('.navbar');
+        const brands = navigator.userAgentData && navigator.userAgentData.brands;
+        if (!nav || !brands || !brands.some((b) => b.brand === 'Chromium')) return;
+        if (window.matchMedia('(prefers-reduced-transparency: reduce)').matches) return;
+        const NS = 'http://www.w3.org/2000/svg', BISEL = 20, ESCALA = 60;
+
+        const svg = document.createElementNS(NS, 'svg');
+        svg.setAttribute('class', 'nav-glass-defs');
+        svg.setAttribute('aria-hidden', 'true');
+        const filter = document.createElementNS(NS, 'filter');
+        const attrs = (el, o) => Object.keys(o).forEach((k) => el.setAttribute(k, o[k]));
+        attrs(filter, { id: 'nav-glass', x: '0', y: '0', filterUnits: 'userSpaceOnUse', 'color-interpolation-filters': 'sRGB' });
+        const blur = document.createElementNS(NS, 'feGaussianBlur');
+        attrs(blur, { in: 'SourceGraphic', stdDeviation: '1.5', result: 'b' });
+        const map = document.createElementNS(NS, 'feImage');
+        attrs(map, { x: '0', y: '0', result: 'map', preserveAspectRatio: 'none' });
+        const disp = document.createElementNS(NS, 'feDisplacementMap');
+        attrs(disp, { in: 'b', in2: 'map', scale: String(ESCALA), xChannelSelector: 'R', yChannelSelector: 'G', result: 'd' });
+        const sat = document.createElementNS(NS, 'feColorMatrix');
+        attrs(sat, { in: 'd', type: 'saturate', values: '1.6' });
+        filter.append(blur, map, disp, sat);
+        svg.appendChild(filter);
+        document.body.appendChild(svg);
+
+        // Distancia al borde de un rectángulo redondeado; en el bisel, empuje hacia dentro con perfil convexo
+        const buildMap = (w, h, radius) => {
+            const cv = document.createElement('canvas');
+            cv.width = w; cv.height = h;
+            const ctx = cv.getContext('2d');
+            const img = ctx.createImageData(w, h);
+            const r = Math.min(radius, w / 2, h / 2);
+            for (let y = 0; y < h; y++) {
+                for (let x = 0; x < w; x++) {
+                    const px = x + 0.5 - w / 2, py = y + 0.5 - h / 2;
+                    const qx = Math.abs(px) - (w / 2 - r), qy = Math.abs(py) - (h / 2 - r);
+                    const ox = Math.max(qx, 0), oy = Math.max(qy, 0);
+                    const depth = r - Math.hypot(ox, oy) - Math.min(Math.max(qx, qy), 0);
+                    let dx = 0, dy = 0;
+                    if (depth >= 0 && depth < BISEL) {
+                        let nx = 0, ny = 1;
+                        if (qx > 0 && qy > 0) { const l = Math.hypot(ox, oy) || 1; nx = ox / l; ny = oy / l; }
+                        else if (qx > qy) { nx = 1; ny = 0; }
+                        const f = Math.pow(1 - depth / BISEL, 2.2);
+                        dx = -nx * (Math.sign(px) || 1) * f;
+                        dy = -ny * (Math.sign(py) || 1) * f;
+                    }
+                    const i = (y * w + x) * 4;
+                    img.data[i] = 128 + dx * 127; img.data[i + 1] = 128 + dy * 127; img.data[i + 2] = 128; img.data[i + 3] = 255;
+                }
+            }
+            ctx.putImageData(img, 0, 0);
+            return cv.toDataURL();
+        };
+
+        let lastKey = '', timer = 0;
+        const update = () => {
+            const w = Math.round(nav.offsetWidth), h = Math.round(nav.offsetHeight);
+            const radius = Math.min(parseFloat(getComputedStyle(nav).borderTopLeftRadius) || h / 2, h / 2);
+            const key = w + 'x' + h + 'r' + radius;
+            if (!w || !h || key === lastKey) return;
+            lastKey = key;
+            const url = buildMap(w, h, radius);
+            // La clase solo se pone con el mapa ya decodificado: si no, el feImage vacío desplaza el fondo un fotograma
+            const im = new Image();
+            im.src = url;
+            im.decode().then(() => {
+                attrs(filter, { width: String(w), height: String(h) });
+                attrs(map, { width: String(w), height: String(h), href: url });
+                nav.classList.add('is-liquid');
+            }).catch(() => {});
+        };
+        // Mientras se redimensiona, el mapa anterior se estira; se rehace al parar (~120 ms)
+        new ResizeObserver(() => {
+            clearTimeout(timer);
+            timer = setTimeout(() => requestAnimationFrame(update), lastKey ? 120 : 0);
+        }).observe(nav);
+    })();
+
     /* 8. Explorador de stack */
     (function stackExplorer() {
         const tabsEl = document.getElementById('stack-tabs');

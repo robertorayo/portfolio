@@ -163,6 +163,39 @@ body.trek-finale .contact-banner::after { opacity: 1; }
     border-radius: 100px; background: rgba(10, 12, 17, 0.72) !important; -webkit-backdrop-filter: blur(22px) saturate(1.4); backdrop-filter: blur(22px) saturate(1.4);
 }
 .navbar:hover { transform: none; }
+
+/* Cristal líquido (solo Chromium, lo activa main.js): el filtro SVG #nav-glass refracta el fondo en el bisel
+   y el tinte oscuro mantiene legibles los enlaces sobre capturas claras */
+.navbar.is-liquid {
+    background: rgba(10, 12, 17, 0.66) !important; border-color: transparent;
+    -webkit-backdrop-filter: url(#nav-glass); backdrop-filter: url(#nav-glass);
+    box-shadow: inset 1px 1px 0 rgba(255,255,255,0.5), inset -1px -1px 0 rgba(255,255,255,0.2), inset 0 0 18px rgba(255,255,255,0.07), 0 10px 30px rgba(0,0,0,0.35);
+}
+.nav-glass-defs { position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none; }
+
+/* Desenfoque progresivo bajo la barra: cada capa duplica el blur de la anterior y su máscara
+   solo la deja ver en su franja, así el desenfoque crece sin corte duro (como la barra de estado de iOS) */
+.edge-blur { position: fixed; top: 0; left: 0; right: 0; height: calc(var(--nav-h) + 54px); z-index: 90; pointer-events: none; }
+.edge-blur::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(6,7,10,0.55), transparent); }
+.edge-blur > i {
+    position: absolute; inset: 0;
+    -webkit-backdrop-filter: blur(var(--b)); backdrop-filter: blur(var(--b));
+    --m: linear-gradient(to top, transparent calc((var(--k) - 1) * 100% / 7), #000 calc(var(--k) * 100% / 7), #000 calc((var(--k) + 1) * 100% / 7), transparent calc((var(--k) + 2) * 100% / 7));
+    -webkit-mask-image: var(--m); mask-image: var(--m);
+}
+/* La escala es de 7 franjas, pero las tres de abajo (0,25 a 1px) no se notaban: solo se pintan las cuatro
+   superiores, y la primera ya entra desde transparente. Máximo de 16px: con más, la barra refractaría un
+   fondo ya borroso y la lente apenas se vería */
+.edge-blur > i:nth-child(1) { --k: 3; --b: 2px; }
+.edge-blur > i:nth-child(2) { --k: 4; --b: 4px; }
+.edge-blur > i:nth-child(3) { --k: 5; --b: 8px; }
+.edge-blur > i:nth-child(4) { --k: 6; --b: 16px; }
+
+/* Quien pide menos transparencia en el sistema ve la barra opaca, sin desenfoques */
+@media (prefers-reduced-transparency: reduce) {
+    .edge-blur { display: none; }
+    .navbar, .navbar.is-liquid { -webkit-backdrop-filter: none; backdrop-filter: none; background: rgba(12, 15, 21, 0.96) !important; }
+}
 .nav-brand { display: flex; align-items: center; gap: 0.65rem; font-family: var(--font-heading); font-weight: 700; flex-shrink: 0; }
 .brand-monogram { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, #fff, #94a3b8); color: #06070a; font-size: 0.8rem; font-weight: 800; }
 .nav-menu { display: flex; gap: 0.25rem; }
