@@ -58,21 +58,9 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 
 :focus-visible { outline: 2px solid #ffffff; outline-offset: 3px; border-radius: 8px; }
 
-/* ---------- Scrollbar flotante ---------- */
-@media (hover: hover) and (pointer: fine) {
-    html { scrollbar-width: none; }
-    html::-webkit-scrollbar { display: none; }
-}
-.fsb { position: fixed; top: 0; right: 0; bottom: 0; z-index: 999; width: 20px; opacity: 0; pointer-events: none; transition: opacity 0.35s ease; }
-.fsb.is-on { opacity: 1; pointer-events: auto; }
-.fsb.is-none { display: none; }
-.fsb__thumb {
-    position: absolute; top: 0; right: 5px; width: 5px; border-radius: 8px; cursor: grab;
-    background: rgba(255, 255, 255, 0.45); box-shadow: 0 0 10px rgba(255, 255, 255, 0.35), inset 0 0 2px rgba(255, 255, 255, 0.8);
-    transition: width 0.16s ease, background 0.16s ease, box-shadow 0.16s ease;
-}
-.fsb:hover .fsb__thumb, .fsb.is-drag .fsb__thumb { width: 8px; background: rgba(255, 255, 255, 0.9); box-shadow: 0 0 16px rgba(255, 255, 255, 0.75), inset 0 0 3px #fff; }
-.fsb.is-drag .fsb__thumb { cursor: grabbing; }
+/* ---------- Scrollbar ---------- */
+/* La del navegador, en tonos oscuros para que no destaque sobre el fondo negro */
+html { color-scheme: dark; scrollbar-color: var(--border-hover) var(--bg-base); }
 
 /* ---------- Fondo ---------- */
 .dynamic-background-container { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
@@ -164,37 +152,24 @@ body.trek-finale .contact-banner::after { opacity: 1; }
 }
 .navbar:hover { transform: none; }
 
-/* Cristal líquido (solo Chromium, lo activa main.js): el filtro SVG #nav-glass refracta el fondo en el bisel
-   y el tinte oscuro mantiene legibles los enlaces sobre capturas claras */
-.navbar.is-liquid {
-    background: rgba(10, 12, 17, 0.66) !important; border-color: transparent;
-    -webkit-backdrop-filter: url(#nav-glass); backdrop-filter: url(#nav-glass);
+/* Cristal líquido (solo Chromium, lo activa main.js en cada .liquid-glass): su filtro SVG refracta el fondo
+   en el bisel, dentro del propio elemento. El tinte (--lg-tint) mantiene legible el texto sobre fondos claros */
+.liquid-glass { --lg-tint: rgba(10, 12, 17, 0.35); }
+.navbar.liquid-glass { --lg-tint: rgba(10, 12, 17, 0.66); }
+.demo-pill.liquid-glass { --lg-tint: rgba(10, 12, 17, 0.55); }
+.liquid-glass.is-liquid {
+    background: var(--lg-tint) !important; border-color: transparent;
+    -webkit-backdrop-filter: var(--lg-filter); backdrop-filter: var(--lg-filter);
     box-shadow: inset 1px 1px 0 rgba(255,255,255,0.5), inset -1px -1px 0 rgba(255,255,255,0.2), inset 0 0 18px rgba(255,255,255,0.07), 0 10px 30px rgba(0,0,0,0.35);
 }
-.nav-glass-defs { position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none; }
+.btn-hero-secondary.is-liquid:hover { --lg-tint: rgba(255, 255, 255, 0.12); border-color: transparent; }
+.liquid-glass-defs { position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none; }
 
-/* Desenfoque progresivo bajo la barra: cada capa duplica el blur de la anterior y su máscara
-   solo la deja ver en su franja, así el desenfoque crece sin corte duro (como la barra de estado de iOS) */
-.edge-blur { position: fixed; top: 0; left: 0; right: 0; height: calc(var(--nav-h) + 54px); z-index: 90; pointer-events: none; }
-.edge-blur::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(6,7,10,0.55), transparent); }
-.edge-blur > i {
-    position: absolute; inset: 0;
-    -webkit-backdrop-filter: blur(var(--b)); backdrop-filter: blur(var(--b));
-    --m: linear-gradient(to top, transparent calc((var(--k) - 1) * 100% / 7), #000 calc(var(--k) * 100% / 7), #000 calc((var(--k) + 1) * 100% / 7), transparent calc((var(--k) + 2) * 100% / 7));
-    -webkit-mask-image: var(--m); mask-image: var(--m);
-}
-/* La escala es de 7 franjas, pero las tres de abajo (0,25 a 1px) no se notaban: solo se pintan las cuatro
-   superiores, y la primera ya entra desde transparente. Máximo de 16px: con más, la barra refractaría un
-   fondo ya borroso y la lente apenas se vería */
-.edge-blur > i:nth-child(1) { --k: 3; --b: 2px; }
-.edge-blur > i:nth-child(2) { --k: 4; --b: 4px; }
-.edge-blur > i:nth-child(3) { --k: 5; --b: 8px; }
-.edge-blur > i:nth-child(4) { --k: 6; --b: 16px; }
-
-/* Quien pide menos transparencia en el sistema ve la barra opaca, sin desenfoques */
+/* Quien pide menos transparencia en el sistema ve fondos opacos, sin desenfoques ni refracción.
+   main.js ya no activa el cristal en ese caso; estas reglas cubren también el cambio con la página abierta */
 @media (prefers-reduced-transparency: reduce) {
-    .edge-blur { display: none; }
-    .navbar, .navbar.is-liquid { -webkit-backdrop-filter: none; backdrop-filter: none; background: rgba(12, 15, 21, 0.96) !important; }
+    .liquid-glass, .liquid-glass.is-liquid { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--bg-elevated) !important; }
+    .navbar, .navbar.liquid-glass.is-liquid { background: rgba(12, 15, 21, 0.96) !important; }
 }
 .nav-brand { display: flex; align-items: center; gap: 0.65rem; font-family: var(--font-heading); font-weight: 700; flex-shrink: 0; }
 .brand-monogram { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, #fff, #94a3b8); color: #06070a; font-size: 0.8rem; font-weight: 800; }
@@ -358,6 +333,13 @@ a.app-mockup-frame { display: block; color: inherit; text-decoration: none; curs
 .chrome-badge { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.2rem 0.6rem; border-radius: 100px; background: rgba(255,255,255,0.07); border: 1px solid var(--border-card); font-family: var(--font-mono); font-size: 0.62rem; white-space: nowrap; }
 .mockup-image-wrapper { position: relative; overflow: hidden; background: #000; }
 .mockup-screenshot-img { width: 100%; height: auto; display: block; transition: transform 0.9s var(--ease); }
+/* Pastilla «Ver demo» sobre la captura: cristal líquido en Chromium y blur normal en el resto */
+.demo-pill {
+    position: absolute; right: 1rem; bottom: 1rem; z-index: 2; display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.6rem 1.1rem; border-radius: 100px; font-family: var(--font-heading); font-weight: 600; font-size: 0.85rem; color: var(--text-primary); white-space: nowrap; pointer-events: none;
+    background: rgba(10, 12, 17, 0.55); border: 1px solid var(--border-hover); -webkit-backdrop-filter: blur(12px) saturate(1.4); backdrop-filter: blur(12px) saturate(1.4);
+}
+.demo-pill i { font-size: 0.75rem; }
 /* Solo con ratón: la captura se inclina hacia el texto y se endereza (y se acerca) al pasar por encima */
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
     .app-mockup-frame { transform: rotateY(7deg) rotateX(2deg) scale(0.97); }
@@ -369,12 +351,11 @@ a.app-mockup-frame { display: block; color: inherit; text-decoration: none; curs
     .project-showcase .showcase-visual-col:hover a.app-mockup-frame { transform: translateY(-8px); box-shadow: 0 60px 110px -26px rgba(0,0,0,0.95), 0 0 0 1px rgba(255,255,255,0.12), 0 0 34px rgba(255,255,255,0.1); }
     .project-showcase .showcase-visual-col:hover .mockup-screenshot-img { transform: scale(1.07); }
 }
-/* Al pasar el ratón por la captura aparece la invitación a abrir la demo (solo color y opacidad, sin movimiento) */
+/* Al pasar el ratón por la captura se oscurece la parte baja, bajo la pastilla «Ver demo» (solo color y opacidad) */
 @media (hover: hover) and (pointer: fine) {
     a.app-mockup-frame .mockup-image-wrapper::before { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, transparent 45%, rgba(6,7,10,0.72)); opacity: 0; transition: opacity 0.4s ease; pointer-events: none; }
-    a.app-mockup-frame .mockup-image-wrapper::after { content: 'Abrir demo'; position: absolute; left: 50%; bottom: 1.2rem; z-index: 2; transform: translateX(-50%); padding: 0.55rem 1.1rem; border-radius: 100px; background: var(--text-primary); color: var(--bg-base); font-family: var(--font-heading); font-weight: 600; font-size: 0.85rem; white-space: nowrap; opacity: 0; transition: opacity 0.35s ease; pointer-events: none; }
     .showcase-visual-col:hover a.app-mockup-frame { border-color: var(--border-hover); }
-    .showcase-visual-col:hover .mockup-image-wrapper::before, .showcase-visual-col:hover .mockup-image-wrapper::after { opacity: 1; }
+    .showcase-visual-col:hover .mockup-image-wrapper::before { opacity: 1; }
 }
 
 .showcase-info-col { display: contents; }
@@ -531,6 +512,7 @@ body.trek-footer .footer::after { opacity: 1; transform: scaleX(1); }
     .btn-copy-email, .btn-send-mail { width: 100%; justify-content: center; }
     .email-display { font-size: 0.78rem; padding: 0.3rem 0; word-break: break-all; }
     .chrome-badge { display: none; }
+    .demo-pill { right: 0.6rem; bottom: 0.6rem; padding: 0.45rem 0.85rem; font-size: 0.75rem; }
     .link-github-repo { width: 100%; }
 }
 
