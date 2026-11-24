@@ -36,6 +36,7 @@ y abrir `http://localhost:5173`.
 - Mantén la accesibilidad: roles ARIA en las pestañas, navegación por teclado, `aria-label` en secciones.
 - **Diseño monocromático** (negro, grafito, plata, blanco): usa las variables de `:root` (`--bg-*`, `--text-*`, `--border-*`, `--font-*`, `--ease`); no metas colores sueltos.
 - Puntos de corte usados: 1240, 1100, 1020, 900, 860, 760 y 560 px. Reutilízalos antes de crear nuevos.
+- **Cristal líquido:** basta con añadir la clase `liquid-glass`; `main.js` le crea su filtro solo en Chromium y sin `prefers-reduced-transparency`. Úsalo en controles que flotan (botones, pastillas, etiquetas), no en el contenido ni en un elemento que ya esté dentro de otro cristal. El tinte va en `--lg-tint` (con `!important`), así que un hover que cambie el fondo debe cambiar esa variable, no `background`. No hay desenfoque fuera de los elementos ni barra de scroll visible.
 
 ## Caché de recursos
 `index.html` carga CSS y JS con `?v=N` (ahora `v=53`). **Si cambias `styles.css` o cualquier `js/*.js`, sube el número en las 4 referencias** para que Vercel/el navegador no sirvan la versión vieja.
@@ -49,6 +50,7 @@ y abrir `http://localhost:5173`.
 No hay build, lint ni tests automatizados. En su lugar:
 1. Abrir en el navegador y revisar que **la consola no tenga errores**.
 2. Comprobar escritorio y móvil (al menos 1440, 1024, 768 y 375 px de ancho) y con `prefers-reduced-motion` activo.
+   - El cristal líquido no se activa si Windows tiene desactivados los «Efectos de transparencia» (Chrome lo trata como `prefers-reduced-transparency`) ni en el navegador integrado con el panel oculto, porque ahí no corre `requestAnimationFrame`. En esos casos, compruébalo con Chrome DevTools MCP.
 3. Probar el carrusel con rueda, arrastre y panel táctil, la línea de scroll y las pestañas del stack con teclado.
    - **Auditoría con Chrome DevTools MCP** (servidor `chrome-devtools`, para lo que el navegador integrado no emula), sobre `http://localhost:5173`:
      - `emulate` con `prefersReducedMotion: "reduce"`: el carrusel, el tilt, los magnéticos y la línea de scroll no deben animarse.

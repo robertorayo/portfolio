@@ -11,7 +11,8 @@ Mi portfolio web: una página única centrada en mis proyectos, con un carrusel 
 - **Línea de scroll** que recorre los proyectos, las tecnologías y el contacto, con el porcentaje de avance.
 - **Explorador de stack** con pestañas navegables por teclado.
 - **Animaciones** con GSAP, inclinación 3D de las capturas de los proyectos y botones magnéticos solo en dispositivos con puntero fino.
-- **Accesibilidad y rendimiento:** respeta `prefers-reduced-motion`, roles ARIA en las pestañas y carga sin dependencias externas.
+- **Cristal líquido** en la barra de navegación, los botones, las etiquetas y la pastilla «Ver demo» de las capturas: cada elemento genera en un canvas un mapa de desplazamiento a su medida, y un filtro SVG en `backdrop-filter` curva el fondo en el borde, como una lente. Solo los navegadores basados en Chromium pintan ese filtro; Safari y Firefox muestran un desenfoque normal.
+- **Accesibilidad y rendimiento:** respeta `prefers-reduced-motion` y `prefers-reduced-transparency`, roles ARIA en las pestañas y carga sin dependencias externas.
 
 ## Tecnología
 
@@ -22,7 +23,7 @@ index.html     estructura y contenido
 styles.css     estilos
 js/hero.js     carrusel 3D (Three.js)
 js/trail.js    línea de scroll
-js/main.js     interacciones generales y explorador de stack
+js/main.js     interacciones generales, cristal líquido y explorador de stack
 vendor/        librerías incluidas en el repositorio
 ```
 
